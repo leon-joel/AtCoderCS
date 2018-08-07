@@ -7,12 +7,26 @@ namespace AtCoderCS
 	{
 		string ReadLine();
 	}
-
 	public class ConsoleReader : IReader
 	{
 		public string ReadLine() {
 			return Console.ReadLine();
 		}
+	}
+
+	public interface IWriter
+	{
+		void WriteLine(string line);
+		void WriteLine(int value);
+		void WriteLine(ulong value);
+	}
+	public class ConsoleWriter : IWriter
+	{
+		public void WriteLine(string line){
+			Console.WriteLine(line);
+		}
+		public void WriteLine(ulong value) { Console.WriteLine(value); }
+		public void WriteLine(int value) { Console.WriteLine(value); }
 	}
 
 	public class SPoint
@@ -36,12 +50,19 @@ namespace AtCoderCS
 	public class Solver
 	{
 		IReader _reader;
+		IWriter _writer;
 
-		public Solver(IReader reader = null) {
+		public Solver(IReader reader = null, IWriter writer = null) {
 			if (reader == null) {
 				_reader = new ConsoleReader();
 			} else {
 				_reader = reader;
+			}
+
+			if (writer == null) {
+				_writer = new ConsoleWriter();
+			} else {
+				_writer = writer;
 			}
 		}
 
@@ -115,7 +136,7 @@ namespace AtCoderCS
 					ans += sp.PermuteCount();
 				}
 			}
-			Console.WriteLine(ans);
+			_writer.WriteLine(ans);
 		}
 
 		private static void DumpGrid(int height, int width, SPoint[,] grid) {
