@@ -10,7 +10,7 @@ namespace AtCoderCS
 		public DataReader(string inputSource){
 			_reader = new StringReader(inputSource);
 		}
-public DataReader(TextReader reader) {
+		public DataReader(TextReader reader) {
 			_reader = reader;
 		}
 

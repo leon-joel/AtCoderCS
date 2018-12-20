@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Test.cs" />
     <Compile Include="DataReaderWriter.cs" />
+    <Compile Include="Test_Mujin2018.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
