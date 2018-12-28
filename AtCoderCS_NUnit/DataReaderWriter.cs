@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace AtCoderCS
@@ -14,9 +16,12 @@ namespace AtCoderCS
 			_reader = reader;
 		}
 
-		public string ReadLine() {
-			return _reader.ReadLine();
-		}
+		public string ReadLine() => _reader.ReadLine();
+		public int ReadInt() => int.Parse(_reader.ReadLine());
+		public long ReadLong() => long.Parse(_reader.ReadLine());
+		public string[] ReadStringArray() => _reader.ReadLine().Split(' ');
+		public int[] ReadIntArray() => _reader.ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
+		public long[] ReadLongArray() => _reader.ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
 	}
 
 	public class DataWriter : IWriter

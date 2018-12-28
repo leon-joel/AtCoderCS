@@ -34,9 +34,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
+    <Compile Include="Test_ARC061-C.cs" />
     <Compile Include="DataReaderWriter.cs" />
     <Compile Include="Test_Mujin2018.cs" />
+    <Compile Include="Test_Dwango5-C.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace AtCoderCS
 {
+#if false
 	public interface IReader
 	{
 		string ReadLine();
@@ -97,4 +98,5 @@ namespace AtCoderCS
 			new Solver().Run();
 		}
 	}
+#endif
 }
