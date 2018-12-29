@@ -53,18 +53,25 @@ namespace AtCoderCS
 			var N = _reader.ReadInt();
 			//Console.WriteLine(N);
 
-			// DMCを数値化
 			var S = _reader.ReadLine();
-			byte[] s_ary = new byte[S.Length];
+
+			// D/M数, DM組数を累積和で保持する ★i番目の前までの和 を格納する
+			ulong[] accumD = new ulong[S.Length];
+			ulong[] accumM = new ulong[S.Length];
+			ulong[] accumDM = new ulong[S.Length];
+			ulong sumD = 0, sumM = 0, sumDM = 0;
 			for (int i = 0; i < S.Length; i++) {
-				var c = S[i];
-				switch (c) {
-					case 'D': s_ary[i] = 1; break;
-					case 'M': s_ary[i] = 2; break;
-					case 'C': s_ary[i] = 3; break;
+				accumD[i] = sumD;
+				accumM[i] = sumM;
+				accumDM[i] = sumDM;
+				switch (S[i]) {
+					case 'D': ++sumD; break;
+					case 'M':
+						sumDM += sumD;
+						++sumM;
+						break;
 				}
 			}
-			Dump(s_ary);
 			_reader.ReadInt();
 
 			int[] k_ary = _reader.ReadIntArray();
@@ -72,33 +79,15 @@ namespace AtCoderCS
 
 			foreach (var k in k_ary) {
 				int sect_len = k - 1;
-				ulong d_num = 0;
-				ulong m_num = 0;
-				ulong dm_num = 0;
+				int l = 0;
 				ulong ans = 0;
 
 				// 右端のindexをインクリメントしていく
-				for (int r = 0; r < N; r++) {
-					// 追加される文字の処理
-					var c = s_ary[r];
-					if (c == 3) // C
-						ans += dm_num;
-					else if (c == 1) // D
-						++d_num;
-					else if (c == 2) {// M
-						dm_num += d_num;
-						++m_num;
-					}
-
-					// 左端から区間外に飛び出す文字の処理
-					if (0 <= r - sect_len) {
-						var lc = s_ary[r - sect_len];
-						if (lc == 1) {// D
-							dm_num -= m_num;
-							--d_num;
-						} else if (lc == 2) {// M
-							--m_num;
-						}
+				for (int r = 2; r < N; r++) {
+					// 左端
+					if (S[r] == 'C') {
+						if (0 <= r - sect_len) l = r - sect_len;
+						ans += accumDM[r] - accumDM[l] - accumD[l] * (accumM[r] - accumM[l]);
 					}
 				}
 				_writer.WriteLine(ans);

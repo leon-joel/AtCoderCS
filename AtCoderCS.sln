@@ -20,4 +20,17 @@ Global
 		{C0E5C84C-6260-4383-A261-051BDBAE47D3}.Release|x86.ActiveCfg = Release|Any CPU
 		{C0E5C84C-6260-4383-A261-051BDBAE47D3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = PrefixedHierarchical
+		$0.StandardHeader = $2
+		$0.VersionControlPolicy = $3
+		$3.CommitMessageStyle = $4
+		$4.FirstFilePrefix = 
+		$4.FileSeparator = ", "
+		$4.LineAlign = 0
+		$4.InterMessageLines = 0
+		$4.Wrap = False
+	EndGlobalSection
 EndGlobal
