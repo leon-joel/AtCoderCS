@@ -31,7 +31,6 @@ namespace AtCoderCS
 			_sb = sb;
 		}
 		public void WriteLine(string line) { _sb.AppendLine(line); }
-		public void WriteLine(ulong value) { _sb.AppendLine(value.ToString()); }
-		public void WriteLine(int value) { _sb.AppendLine(value.ToString()); }
+		public void WriteLine<T>(T value) where T : IFormattable => _sb.AppendLine(value.ToString());
 	}
 }

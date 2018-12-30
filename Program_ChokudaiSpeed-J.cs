@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AtCoderCS
 {
@@ -35,6 +34,43 @@ namespace AtCoderCS
 		public void WriteLine<T>(T value) where T : IFormattable => Console.WriteLine(value);
 	}
 
+	public class BinaryIndexedTree
+	{
+		public int MaxNum { get; private set; }
+
+		int[] bit;
+
+		public BinaryIndexedTree(int maxNum) {
+			MaxNum = maxNum;
+			bit = new int[maxNum + 1];
+		}
+
+		// i の個数を x 増加
+		// ※i は1以上
+		public void Add(int i, int v) {
+			for (int x = i; x <= MaxNum; x += x & -x)
+				bit[x] += v;
+		}
+
+		// i 以下の総数を返す
+		// ※0以下のi を与えた場合は0を返す
+		public int Sum(int i) {
+			int ret = 0;
+			for (int x = i; 0 < x; x -= x & -x)
+				ret += bit[x];
+			return ret;
+		}
+
+		// [lower, upper] つまり lower以上 upper以下 の総数を返す
+		public int RangeSum(int lower, int upper) {
+			return Sum(upper) - Sum(lower - 1);
+		}
+
+		// i の個数を返す
+		public int Count(int i) {
+			return Sum(i) - Sum(i - 1);
+		}
+	}
 	public partial class Solver
 	{
 		readonly IReader _reader;
@@ -48,48 +84,19 @@ namespace AtCoderCS
 		partial void Dump<T>(IEnumerable<T> array);
 
 		public void Run() {
-			var N = _reader.ReadInt();
-			//Console.WriteLine(N);
 
-			var S = _reader.ReadLine();
+			var n = _reader.ReadInt();
+			var nums = _reader.ReadIntArray();
 
-			// D/M数, DM組数を累積和で保持する ★i番目の前までの和 を格納する
-			ulong[] accumD = new ulong[S.Length];
-			ulong[] accumM = new ulong[S.Length];
-			ulong[] accumDM = new ulong[S.Length];
-			ulong sumD = 0, sumM = 0, sumDM = 0;
-			for (int i = 0; i < S.Length; i++) {
-				accumD[i] = sumD;
-				accumM[i] = sumM;
-				accumDM[i] = sumDM;
-				switch (S[i]) {
-					case 'D': ++sumD; break;
-					case 'M':
-						sumDM += sumD;
-						++sumM;
-						break;
-				}
+			var bit = new BinaryIndexedTree(n);
+
+			long ans = 0;
+			for (int i = 0; i < n; i++) {
+				ans += i - bit.Sum(nums[i]);
+				bit.Add(nums[i], 1);
 			}
-			_reader.ReadInt();
 
-			int[] k_ary = _reader.ReadIntArray();
-			//k_ary.Dump();
-
-			foreach (var k in k_ary) {
-				int sect_len = k - 1;
-				int l = 0;
-				ulong ans = 0;
-
-				// 右端のindexをインクリメントしていく
-				for (int r = 2; r < N; r++) {
-					// 左端
-					if (S[r] == 'C') {
-						if (0 <= r - sect_len) l = r - sect_len;
-						ans += accumDM[r] - accumDM[l] - accumD[l] * (accumM[r] - accumM[l]);
-					}
-				}
-				_writer.WriteLine(ans);
-			}
+			_writer.WriteLine(ans);
 		}
 	}
 

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Test_ChokudaiSpeed-J.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AtCoderCS.csproj">
