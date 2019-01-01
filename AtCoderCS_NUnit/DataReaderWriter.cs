@@ -30,7 +30,7 @@ namespace AtCoderCS
 		public DataWriter(StringBuilder sb) {
 			_sb = sb;
 		}
-		public void WriteLine(string line) { _sb.AppendLine(line); }
+		public void WriteLine(string line) => _sb.AppendLine(line);
 		public void WriteLine<T>(T value) where T : IFormattable => _sb.AppendLine(value.ToString());
 	}
 }

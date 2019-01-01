@@ -34,7 +34,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataReaderWriter.cs" />
     <Compile Include="Test_Mujin2018.cs" />
     <Compile Include="Test_KnapsackProblem.cs" />
   </ItemGroup>
@@ -43,6 +42,7 @@
     <None Include="Test_ChokudaiSpeed-J.cs" />
     <None Include="Test_ARC061-C.cs" />
     <None Include="Test_Dwango5-C.cs" />
+    <None Include="DataReaderWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AtCoderCS.csproj">

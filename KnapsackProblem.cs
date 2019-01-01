@@ -4,56 +4,20 @@ using System.Linq;
 
 namespace AtCoderCS
 {
-	public interface IReader
-	{
-		string ReadLine();
-		int ReadInt();
-		long ReadLong();
-		string[] ReadStringArray();
-		int[] ReadIntArray();
-		long[] ReadLongArray();
-	}
-	public class ConsoleReader : IReader
-	{
-		public string ReadLine() => Console.ReadLine();
-		public int ReadInt() => int.Parse(ReadLine());
-		public long ReadLong() => long.Parse(ReadLine());
-		public string[] ReadStringArray() => ReadLine().Split(' ');
-		public int[] ReadIntArray() => ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
-		public long[] ReadLongArray() => ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
-	}
-
-	public interface IWriter
-	{
-		void WriteLine(string line);
-		void WriteLine<T>(T value) where T : IFormattable;
-	}
-	public class ConsoleWriter : IWriter
-	{
-		public void WriteLine(string line) => Console.WriteLine(line);
-		public void WriteLine<T>(T value) where T : IFormattable => Console.WriteLine(value);
-	}
-
 	// 問題2: ナップサック問題
 	// https://qiita.com/drken/items/a5e6fe22863b7992efdb
 	// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_1_B&lang=jp
 	public partial class Solver
 	{
-		readonly IReader _reader;
-		readonly IWriter _writer;
-		public Solver(IReader reader = null, IWriter writer = null) {
-			_reader = reader ?? new ConsoleReader();
-			_writer = writer ?? new ConsoleWriter();
-		}
-		string ReadLine() => _reader.ReadLine();
-		int ReadInt() => _reader.ReadInt();
-		long ReadLong() => _reader.ReadLong();
-		string[] ReadStringArray() => _reader.ReadStringArray();
-		int[] ReadIntArray() => _reader.ReadIntArray();
-		long[] ReadLongArray() => _reader.ReadLongArray();
-		void WriteLine(string line) => _writer.WriteLine(line);
-		void WriteLine<T>(T value) where T : IFormattable => _writer.WriteLine(value);
-		
+		virtual protected string ReadLine() => Console.ReadLine();
+		virtual protected int ReadInt() => int.Parse(ReadLine());
+		virtual protected long ReadLong() => long.Parse(ReadLine());
+		virtual protected string[] ReadStringArray() => ReadLine().Split(' ');
+		virtual protected int[] ReadIntArray() => ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
+		virtual protected long[] ReadLongArray() => ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
+		virtual protected void WriteLine(string line) => Console.WriteLine(line);
+		virtual protected void WriteLine<T>(T value) where T : IFormattable => Console.WriteLine(value);
+
 		partial void Dump<T>(IEnumerable<T> array);
 
 		struct Item
@@ -106,7 +70,7 @@ namespace AtCoderCS
 		int[,] DP;
 		int DpSolve() {
 			DP = new int[N + 1, UpperW + 1];
-			for (int i = 0; i < N+1; i++) {
+			for (int i = 0; i < N + 1; i++) {
 				for (int j = 0; j < UpperW + 1; j++) {
 					DP[i, j] = 0;
 				}
@@ -114,7 +78,7 @@ namespace AtCoderCS
 
 			for (int i = 0; i < N; i++) {
 				var item = Items[i];
-				for (int w = 0; w < UpperW+1; w++) {
+				for (int w = 0; w < UpperW + 1; w++) {
 					if (w < item.Weight) {
 						// 現在itemの重さより左側（現在itemが使えない部分）は上から下ろしてくるだけ
 						DP[i + 1, w] = DP[i, w];
@@ -135,7 +99,7 @@ namespace AtCoderCS
 		int MemoizeRecursive() {
 			Memo = new int[N, UpperW + 1];
 			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < UpperW+1; j++) {
+				for (int j = 0; j < UpperW + 1; j++) {
 					Memo[i, j] = -1;
 				}
 			}
@@ -158,7 +122,7 @@ namespace AtCoderCS
 			var value1 = Search(i + 1, upper);
 			var value2 = Search(i + 1, upper - item.Weight) + item.Value;
 
-			var value= Math.Max(value1, value2);
+			var value = Math.Max(value1, value2);
 			Memo[i, upper] = value;
 			return value;
 		}
