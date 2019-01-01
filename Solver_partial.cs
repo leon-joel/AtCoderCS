@@ -12,7 +12,7 @@ namespace AtCoderCS
 			var sb = new StringBuilder();
 			foreach (var item in array) {
 				sb.Append(item);
-				sb.Append(" ");
+				sb.Append(", ");
 			}
 			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
 			Console.WriteLine(sb.ToString());
