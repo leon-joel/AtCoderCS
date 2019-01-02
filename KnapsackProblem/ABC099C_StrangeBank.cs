@@ -56,7 +56,9 @@ namespace ABC099C_StrangeBank
 			// 貰うDPで解く
 			//var ans = ReceiveDP();
 			// 配るDPで解く
-			var ans = DistributeDP();
+			//var ans = DistributeDP();
+			// BFS（幅優先探索）で解く
+			var ans = Bfs();
 			WriteLine(ans);
 		}
 
@@ -98,6 +100,47 @@ namespace ABC099C_StrangeBank
 					DP[w + curW] = Math.Min(DP[w + curW], DP[w] + 1);
 				}
 			}
+			return DP[UpperW];
+		}
+
+		// BFS（幅優先探索）
+		int Bfs() {
+			int[] DP = new int[UpperW+1];
+			for (int i = 0; i < UpperW+1; i++) {
+				DP[i] = -1;
+			}
+			DP[0] = 0;
+
+			Queue<int> que = new Queue<int>();
+			que.Enqueue(0);
+
+			// BFS
+			while (0 < que.Count) {
+				var v = que.Dequeue();
+
+				for (int w = 1; v + w <= UpperW; w *= 6) {
+					if (DP[v + w] == -1) {
+						DP[v + w] = DP[v] + 1;
+						// 配ったらその配布先をキューに入れる
+						// BFSでは『最初に配る』＝『最短』である
+						que.Enqueue(v + w);
+					}
+				}
+				for (int w = 9; v + w <= UpperW; w *= 9) {
+					if (DP[v + w] == -1) {
+						DP[v + w] = DP[v] + 1;
+						que.Enqueue(v + w);
+					}
+				}
+			}
+			// BFS 1周目〜3周目までのDP配列の様子
+			// ※空欄は -1
+			//  w->0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 ...
+			//0    0                                              ...
+			//1    0 1         1     1                            ...
+			//2    0 1 2       1 2   1  2     2        2        2 ...
+			//3    0 1 2 3     1 2 3 1  2  3  2  3     2  3     2 ...
+			//↑配布ターン
 			return DP[UpperW];
 		}
 
