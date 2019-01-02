@@ -52,8 +52,30 @@ namespace ABC099C_StrangeBank
 			// 個数制限なしナップサックDP【1次元配列版】で解く
 			//var ans = DpSolveOne();
 			// メモ探索で解く
-			var ans = MemoizeRecursive();
+			//var ans = MemoizeRecursive();
+			// 貰うDPで解く
+			var ans = ReceiveDP();
 			WriteLine(ans);
+		}
+
+		// 貰うDP
+		int ReceiveDP() {
+			int[] DP = new int[UpperW + 1];
+			for (int i = 0; i < UpperW + 1; i++) {
+				DP[i] = 1 << 29;	// INF
+			}
+			DP[0] = 0;
+
+			// 貰う DP --- dp[w] に遷移を集める＝遷移先でループする
+			for (int w = 1; w < UpperW+1; w++) {
+				for (int curW = 1; curW <= w; curW *= 6) {
+					DP[w] = Math.Min(DP[w], DP[w - curW] + 1);
+				}
+				for (int curW = 9; curW <= w; curW *= 9) {
+					DP[w] = Math.Min(DP[w], DP[w - curW] + 1);
+				}
+			}
+			return DP[UpperW];
 		}
 
 		// 個数制限なしナップサックDP
