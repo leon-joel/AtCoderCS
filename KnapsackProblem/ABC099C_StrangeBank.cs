@@ -54,7 +54,9 @@ namespace ABC099C_StrangeBank
 			// メモ探索で解く
 			//var ans = MemoizeRecursive();
 			// 貰うDPで解く
-			var ans = ReceiveDP();
+			//var ans = ReceiveDP();
+			// 配るDPで解く
+			var ans = DistributeDP();
 			WriteLine(ans);
 		}
 
@@ -69,10 +71,31 @@ namespace ABC099C_StrangeBank
 			// 貰う DP --- dp[w] に遷移を集める＝遷移先でループする
 			for (int w = 1; w < UpperW+1; w++) {
 				for (int curW = 1; curW <= w; curW *= 6) {
+					// 遷移先 = 遷移先 or 遷移元+1
 					DP[w] = Math.Min(DP[w], DP[w - curW] + 1);
 				}
 				for (int curW = 9; curW <= w; curW *= 9) {
 					DP[w] = Math.Min(DP[w], DP[w - curW] + 1);
+				}
+			}
+			return DP[UpperW];
+		}
+		// 配るDP
+		int DistributeDP() {
+			int[] DP = new int[UpperW + 1];
+			for (int i = 0; i < UpperW + 1; i++) {
+				DP[i] = 1 << 29;    // INF
+			}
+			DP[0] = 0;
+
+			// 配るDP --- dp[w] からの遷移先を更新する＝遷移元でループする
+			for (int w = 0; w < UpperW; w++) {
+				for (int curW = 1; w + curW <= UpperW; curW *= 6) {
+					// 遷移先 = 遷移先 or 遷移元+1
+					DP[w + curW] = Math.Min(DP[w + curW], DP[w] + 1);
+				}
+				for (int curW = 9; w + curW <= UpperW; curW *= 9) {
+					DP[w + curW] = Math.Min(DP[w + curW], DP[w] + 1);
 				}
 			}
 			return DP[UpperW];
