@@ -38,6 +38,7 @@
     <Compile Include="Program_ARC061-C.cs" />
     <Compile Include="KnapsackProblem\KnapsackProblem.cs" />
     <Compile Include="KnapsackProblem\ABC099C_StrangeBank.cs" />
+    <Compile Include="KnapsackProblem\PartialSumProblems.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />

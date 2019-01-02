@@ -37,6 +37,7 @@
     <Compile Include="Test_Mujin2018.cs" />
     <Compile Include="KnapsackProblem\Test_KnapsackProblem.cs" />
     <Compile Include="KnapsackProblem\Test_ABC099C_StrangeBank.cs" />
+    <Compile Include="KnapsackProblem\Test_PartialSumProblems.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
