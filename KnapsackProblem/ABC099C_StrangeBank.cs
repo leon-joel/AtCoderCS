@@ -37,25 +37,28 @@ namespace ABC099C_StrangeBank
 
 		readonly int[] Sixes = { 1, 6, 36, 216, 1296, 7776, 46656 };
 		readonly int[] Nines = { 1, 9, 81, 729, 6561, 59049 };
-		readonly int[] Items = { 1, 6, 36, 216, 1296, 7776, 46656, 9, 81, 729, 6561, 59049 };
+		int[] Items;
 
 		public void Run() {
 			UpperW = ReadInt();
+
+			Items = Sixes.Union(Nines).ToArray();
+			Array.Sort(Items);
+			//Array.Reverse(Items);
 			N = Items.Length;
 
 			// 個数制限なしナップサックDPで解く
-			var ans = DpSolve();
+			//var ans = DpSolve();
+			// 個数制限なしナップサックDP【1次元配列版】で解く
+			//var ans = DpSolveOne();
 			// メモ探索で解く
-			//var ans = MemoizeRecursive();
-			// 全探索で解く
-			//var ans = SearchAll(0, UpperW);
+			var ans = MemoizeRecursive();
 			WriteLine(ans);
 		}
 
 		// 個数制限なしナップサックDP
-		int[,] DP;
 		int DpSolve() {
-			DP = new int[N + 1, UpperW + 1];
+			int[,] DP = new int[N + 1, UpperW + 1];
 			for (int i = 0; i < N + 1; i++) {
 				for (int j = 0; j < UpperW + 1; j++) {
 					DP[i, j] = 1 << 29;	// INF
@@ -88,6 +91,57 @@ namespace ABC099C_StrangeBank
 			}
 
 			return DP[N, UpperW];
+		}
+
+		// 個数制限なしナップサックDP ★1次元配列での実装
+		int DpSolveOne() {
+			int[] DP = new int[UpperW + 1];
+			for (int i = 0; i < UpperW+1; i++) {
+				DP[i] = 1 << 29;
+			}
+			DP[0] = 0;
+
+			//DPテーブルが2次元の場合と違い、
+			//現在金額より左側の部分（現在金額が使えない部分）をただ下に下ろすだけの処理が必要なくなるので、
+			//ループの開始を現在金額にする
+			for (int i = 0; i < N; i++) {
+				for (int w = Items[i]; w < UpperW+1; w++) {
+					DP[w] = Math.Min(DP[w], DP[w - Items[i]] + 1);
+				}
+			}
+			return DP[UpperW];
+		}
+
+		// メモ探索（＝再帰関数のメモ化）での実装
+		// ★Qiitaに載っている実装だとC#ではStackOverFlowが発生する。
+		//  （1円引き出すたびに再帰が入るので…。C++だと大丈夫のようだ。）
+		//   理論的な裏付けはないが、この実装では6/9各シリーズのrest内最大金額だけを探索するようにした。
+		int[] Memo;
+		int MemoizeRecursive() {
+			Memo = new int[UpperW + 1];
+			for (int i = 0; i < UpperW+1; i++) {
+				Memo[i] = -1;
+			}
+			return Recurse(UpperW);
+		}
+		int Recurse(int rest) {
+			if (rest < 6) return rest;
+
+			// 計算済み？
+			if (Memo[rest] != -1)
+				return Memo[rest];
+
+			// 6円シリーズのrest内最大金額と9円シリーズのrest内最大金額を試す
+			int result = 1 << 29; // INF
+
+			var w = Sixes.Where((i) => i <= rest).Max();
+			result = Math.Min(result, Recurse(rest - w) + 1);
+
+			w = Nines.Where((i) => i <= rest).Max();
+			result = Math.Min(result, Recurse(rest - w) + 1);
+
+			Memo[rest] = result;
+			return result;
 		}
 
 #if !MYHOME

@@ -56,10 +56,10 @@ namespace ABC099C_StrangeBank
 	public static class TestDataFactory {
 		public static TestData[] Cases() {
 			return new TestData[] {
-				new TestData("test1",
+				new TestData("Test1",
 @"127",
 @"4"),
-				new TestData("test2",
+				new TestData("Test2",
 @"3",
 @"3"),
 				new TestData("Test3",
@@ -68,9 +68,9 @@ namespace ABC099C_StrangeBank
 				new TestData("Test4",
 @"1",
 @"1"),
-//				new TestData("Test5",
-//@"1",
-//@"1"),
+				new TestData("Test5",
+@"37",
+@"2"),
 				new TestData("Test6",
 @"35",
 @"6"),
