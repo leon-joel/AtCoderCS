@@ -35,6 +35,7 @@ namespace PartialSumProblems
 		int UpperW;
 		int[] Nums;
 
+		// 問題 3:　部分和問題　
 		public void Run() {
 			var ary = ReadIntArray();
 			N = ary[0];
@@ -99,6 +100,45 @@ namespace PartialSumProblems
 
 			return DP[UpperW];
 		}
+
+		// 問題 4:　部分和数え上げ問題　
+		public void RunPartialCountUp() {
+			var ary = ReadIntArray();
+			N = ary[0];
+			UpperW = ary[1];
+
+			Nums = ReadIntArray();
+
+			var ans = DpSolveForPartialCountUp();
+			WriteLine(ans);
+		}
+		// 動的計画法（DP）（＝漸化式＋ループ）での実装
+		const int MOD = 1000000009;
+		int DpSolveForPartialCountUp() {
+			var DP = new int[N + 1, UpperW + 1];
+			for (int i = 0; i < N + 1; i++) {
+				for (int j = 0; j < UpperW + 1; j++) {
+					DP[i, j] = 0;
+				}
+			}
+			DP[0, 0] = 1;
+
+			for (int i = 0; i < N; i++) {
+				for (int w = 0; w < UpperW + 1; w++) {
+					if (w < Nums[i]) {
+						// 現在itemの重さより左側（現在itemが使えない部分）は上から下ろしてくるだけ
+						DP[i + 1, w] = DP[i, w];
+					} else {
+						// 現在itemの重さ以上の部分（右側）は
+						// 重さ分左のvalue | 現在value or 下ろしてくるだけ
+						DP[i + 1, w] = (DP[i, w] + DP[i, w - Nums[i]]) % MOD;
+					}
+				}
+			}
+
+			return DP[N, UpperW];
+		}
+
 
 #if !MYHOME
 		public static void Main(string[] args) {

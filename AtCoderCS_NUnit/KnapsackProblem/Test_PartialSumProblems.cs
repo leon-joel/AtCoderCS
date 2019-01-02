@@ -38,6 +38,16 @@ namespace PartialSumProblems
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
 		}
+		[TestCaseSource(typeof(TestDataFactoryForPartialCountUp), "Cases")]
+		public void TestCaseForPartialCountUp(TestData data) {
+			var sb = new StringBuilder();
+			var solver = new NunitSolver(data.Input, sb);
+			var sw = Stopwatch.StartNew();
+			solver.RunPartialCountUp();
+			sw.Stop();
+			Console.WriteLine($"Elapsed: {sw.Elapsed}");
+			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
+		}
 	}
 
 	public class TestData {
@@ -96,4 +106,21 @@ namespace PartialSumProblems
 			};
 		}
 	}
+
+	public static class TestDataFactoryForPartialCountUp
+	{
+		public static TestData[] Cases() {
+			return new TestData[] {
+				new TestData("Test1",
+@"5 12
+7 5 3 1 8",
+@"2"),
+				new TestData("Test2",
+@"4 5
+4 1 1 1",
+@"3"),
+			};
+		}
+	}
+
 }
