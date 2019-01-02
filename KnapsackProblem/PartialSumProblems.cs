@@ -139,6 +139,7 @@ namespace PartialSumProblems
 			return DP[N, UpperW];
 		}
 
+		// 問題 5:　最小個数部分和問題　===========================
 		public void RunMinimumPartialCountUp() {
 			var ary = ReadIntArray();
 			N = ary[0];
@@ -175,6 +176,65 @@ namespace PartialSumProblems
 			}
 
 			return DP[N, UpperW] < INF ? DP[N, UpperW] : -1;
+		}
+
+		// 問題 7:　個数制限付き部分和問題 ============================
+		// http://poj.org/problem?id=1742
+		public void RunPartialSumWithCntLimitation() {
+			while (true) {
+				var nm = ReadIntArray();
+				N = nm[0];
+				UpperW = nm[1];
+				if (N == 0 && UpperW == 0) break;
+
+				Nums = new int[N];
+				int[] Cnts = new int[N];
+				var nc = ReadIntArray();
+				for (int i = 0; i < N; i++) {
+					Nums[i] = nc[i];
+					Cnts[i] = nc[i + N];
+				}
+
+				var DP = new int[N + 1, UpperW + 1];
+				for (int i = 0; i < N + 1; i++) {
+					for (int j = 0; j < UpperW + 1; j++) {
+						DP[i, j] = -1;
+					}
+				}
+				// 0個の整数の和が 0 なので
+				DP[0, 0] = 0;
+
+				// DP[i][金額] = i番目コインの残り数 ※その金額を作れない場合は-1
+				// 使用するコインが 3円, 5円, 7円 の順にDPした場合の例
+				// ※空欄は -1 
+				//  w->0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18...
+				//0    0                                             ...
+				//3(3) 3     2     1     0
+				//5(2) 2     2   1 2   1 2  0  1     0  1     0      ...
+				//7(1) 1     1   1 1 0 1 1  1  1  0  1  1  0  0  0  0...
+				// ()内は使用可能枚数
+				for (int i = 0; i < N; i++) {
+					for (int w = 0; w < UpperW + 1; w++) {
+						if (0 <= DP[i, w])
+							// すでにi-1番目までの数のグループを使って数wを作れるとき:
+							// i番目の数字は1つも使わなくていいので
+							DP[i + 1, w] = Cnts[i];
+						else if (Nums[i] <= w && 0 < DP[i + 1, w - Nums[i]])
+							// DP[i+1][w-現在金額]が1枚以上の場合、
+							// DP[i+1][w]には1枚減らして格納
+							DP[i + 1, w] = DP[i + 1, w - Nums[i]] - 1;
+						else
+							DP[i + 1, w] = -1;
+					}
+				}
+				// 『何通りの金額を作れるか』を返す ※0円は除く
+				var ans = 0;
+				for (int i = 1; i <= UpperW; i++) {
+					if (0 <= DP[N, i])
+						++ans;
+				}
+				WriteLine(ans);
+			}
 		}
 
 
