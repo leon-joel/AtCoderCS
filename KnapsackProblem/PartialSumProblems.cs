@@ -35,7 +35,7 @@ namespace PartialSumProblems
 		int UpperW;
 		int[] Nums;
 
-		// 問題 3:　部分和問題　
+		// 問題 3:　部分和問題　=============================
 		public void Run() {
 			var ary = ReadIntArray();
 			N = ary[0];
@@ -101,7 +101,7 @@ namespace PartialSumProblems
 			return DP[UpperW];
 		}
 
-		// 問題 4:　部分和数え上げ問題　
+		// 問題 4:　部分和数え上げ問題　=============================
 		public void RunPartialCountUp() {
 			var ary = ReadIntArray();
 			N = ary[0];
@@ -137,6 +137,44 @@ namespace PartialSumProblems
 			}
 
 			return DP[N, UpperW];
+		}
+
+		public void RunMinimumPartialCountUp() {
+			var ary = ReadIntArray();
+			N = ary[0];
+			UpperW = ary[1];
+
+			Nums = ReadIntArray();
+
+			var ans = DpSolveForMinimumPartialCountUp();
+			WriteLine(ans);
+		}
+		// 動的計画法（DP）（＝漸化式＋ループ）での実装
+		int DpSolveForMinimumPartialCountUp() {	
+			const int INF = 1 << 29;
+			var DP = new int[N + 1, UpperW + 1];
+			for (int i = 0; i < N + 1; i++) {
+				for (int j = 0; j < UpperW + 1; j++) {
+					DP[i, j] = INF;
+				}
+			}
+			// 0個の整数の和が 0 なので
+			DP[0, 0] = 0;
+
+			for (int i = 0; i < N; i++) {
+				for (int w = 0; w < UpperW + 1; w++) {
+					if (w < Nums[i]) {
+						// 現在itemの重さより左側（現在itemが使えない部分）は上から下ろしてくるだけ
+						DP[i + 1, w] = DP[i, w];
+					} else {
+						// 現在itemの重さ以上の部分（右側）は
+						// 重さ分左のvalue + 1 or 下ろしてくるだけ
+						DP[i + 1, w] = Math.Min(DP[i, w], DP[i, w - Nums[i]] + 1);
+					}
+				}
+			}
+
+			return DP[N, UpperW] < INF ? DP[N, UpperW] : -1;
 		}
 
 
