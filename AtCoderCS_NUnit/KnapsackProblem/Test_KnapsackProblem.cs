@@ -1,11 +1,13 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using KnapsackProblem;
 
-namespace AtCoderCS
+namespace KnapsackProblem
 {
 	public class NunitSolver : Solver
 	{

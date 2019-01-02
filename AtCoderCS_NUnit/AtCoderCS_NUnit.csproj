@@ -35,7 +35,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test_Mujin2018.cs" />
-    <Compile Include="Test_KnapsackProblem.cs" />
+    <Compile Include="KnapsackProblem\Test_KnapsackProblem.cs" />
+    <Compile Include="KnapsackProblem\Test_ABC099C_StrangeBank.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -43,6 +44,9 @@
     <None Include="Test_ARC061-C.cs" />
     <None Include="Test_Dwango5-C.cs" />
     <None Include="DataReaderWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="KnapsackProblem\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AtCoderCS.csproj">

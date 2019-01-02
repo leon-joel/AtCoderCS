@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
-namespace AtCoderCS
+namespace ABC099C_StrangeBank
 {
-	// 問題2: ナップサック問題
-	// https://qiita.com/drken/items/a5e6fe22863b7992efdb
-	// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=DPL_1_B&lang=jp
-	public partial class Solver
+	// DP, メモ探索, BFS など、様々な解法で実装
+	// https://atcoder.jp/contests/abc099/tasks/abc099_c
+	// https://qiita.com/drken/items/ace3142967c4f01d42e9#%E8%A7%A3%E6%B3%95-1-1-%E3%83%88%E3%83%83%E3%83%97%E3%83%80%E3%82%A6%E3%83%B3%E3%81%AB-n-%E3%82%92%E9%99%8D%E4%B8%8B%E3%81%97%E3%81%A6%E3%81%84%E3%81%8F%E3%83%A1%E3%83%A2%E5%8C%96%E5%86%8D%E5%B8%B0
+	public class Solver
 	{
 		virtual protected string ReadLine() => Console.ReadLine();
 		virtual protected int ReadInt() => int.Parse(ReadLine());
@@ -18,7 +20,17 @@ namespace AtCoderCS
 		virtual protected void WriteLine(string line) => Console.WriteLine(line);
 		virtual protected void WriteLine<T>(T value) where T : IFormattable => Console.WriteLine(value);
 
-		partial void Dump<T>(IEnumerable<T> array);
+		[Conditional("DEBUG")]
+		void Dump<T>(IEnumerable<T> array) {
+			var sb = new StringBuilder();
+			foreach (var item in array) {
+				sb.Append(item);
+				sb.Append(", ");
+			}
+			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
+			Console.WriteLine(sb.ToString());
+			//_writer.WriteLine(sb.ToString());
+		}
 
 		struct Item
 		{
@@ -145,12 +157,10 @@ namespace AtCoderCS
 			var value2 = SearchAll(i + 1, upper - item.Weight) + item.Value;
 			return Math.Max(value1, value2);
 		}
-	}
-
-	class MainClass
-	{
+#if !MYHOME
 		public static void Main(string[] args) {
 			new Solver().Run();
 		}
+#endif
 	}
 }
