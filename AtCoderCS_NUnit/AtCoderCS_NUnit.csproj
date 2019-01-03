@@ -38,6 +38,7 @@
     <Compile Include="KnapsackProblem\Test_KnapsackProblem.cs" />
     <Compile Include="KnapsackProblem\Test_ABC099C_StrangeBank.cs" />
     <Compile Include="KnapsackProblem\Test_PartialSumProblems.cs" />
+    <Compile Include="TypicalDPContest\Test_TypicalDPContest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -48,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="KnapsackProblem\" />
+    <Folder Include="TypicalDPContest\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AtCoderCS.csproj">

@@ -39,6 +39,7 @@
     <Compile Include="KnapsackProblem\KnapsackProblem.cs" />
     <Compile Include="KnapsackProblem\ABC099C_StrangeBank.cs" />
     <Compile Include="KnapsackProblem\PartialSumProblems.cs" />
+    <Compile Include="TypicalDPContest\TypicalDPContest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />
@@ -47,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="KnapsackProblem\" />
+    <Folder Include="TypicalDPContest\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
