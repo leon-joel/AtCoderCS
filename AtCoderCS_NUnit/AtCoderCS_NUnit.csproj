@@ -40,6 +40,7 @@
     <Compile Include="KnapsackProblem\Test_PartialSumProblems.cs" />
     <Compile Include="TypicalDPContest\Test_TypicalDPContest.cs" />
     <Compile Include="KnapsackProblem\Test_2-Dim-Knapsack.cs" />
+    <Compile Include="Paiza\Test_S024_Sea.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -51,6 +52,7 @@
   <ItemGroup>
     <Folder Include="KnapsackProblem\" />
     <Folder Include="TypicalDPContest\" />
+    <Folder Include="Paiza\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AtCoderCS.csproj">

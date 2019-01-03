@@ -41,6 +41,7 @@
     <Compile Include="KnapsackProblem\PartialSumProblems.cs" />
     <Compile Include="TypicalDPContest\TypicalDPContest.cs" />
     <Compile Include="KnapsackProblem\2-Dim-Knapsack.cs" />
+    <Compile Include="Paiza\S024_Sea.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />
@@ -50,6 +51,7 @@
   <ItemGroup>
     <Folder Include="KnapsackProblem\" />
     <Folder Include="TypicalDPContest\" />
+    <Folder Include="Paiza\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
