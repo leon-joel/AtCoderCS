@@ -40,6 +40,7 @@
     <Compile Include="KnapsackProblem\ABC099C_StrangeBank.cs" />
     <Compile Include="KnapsackProblem\PartialSumProblems.cs" />
     <Compile Include="TypicalDPContest\TypicalDPContest.cs" />
+    <Compile Include="KnapsackProblem\2-Dim-Knapsack.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />

@@ -39,6 +39,7 @@
     <Compile Include="KnapsackProblem\Test_ABC099C_StrangeBank.cs" />
     <Compile Include="KnapsackProblem\Test_PartialSumProblems.cs" />
     <Compile Include="TypicalDPContest\Test_TypicalDPContest.cs" />
+    <Compile Include="KnapsackProblem\Test_2-Dim-Knapsack.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

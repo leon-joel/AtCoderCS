@@ -5,8 +5,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using KnapsackProblem;
 
-namespace TypicalDPContest
+namespace TwoDimensionalKnapsack
 {
 	public class NunitSolver : Solver
 	{
@@ -37,36 +38,6 @@ namespace TypicalDPContest
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
 		}
-		//[TestCaseSource(typeof(TestDataFactoryForPartialCountUp), "Cases")]
-		//public void TestCaseForPartialCountUp(TestData data) {
-		//	var sb = new StringBuilder();
-		//	var solver = new NunitSolver(data.Input, sb);
-		//	var sw = Stopwatch.StartNew();
-		//	solver.RunPartialCountUp();
-		//	sw.Stop();
-		//	Console.WriteLine($"Elapsed: {sw.Elapsed}");
-		//	Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
-		//}
-		//[TestCaseSource(typeof(TestDataFactoryForMinimumPartialCountUp), "Cases")]
-		//public void TestCaseForMinimumPartialCountUp(TestData data) {
-		//	var sb = new StringBuilder();
-		//	var solver = new NunitSolver(data.Input, sb);
-		//	var sw = Stopwatch.StartNew();
-		//	solver.RunMinimumPartialCountUp();
-		//	sw.Stop();
-		//	Console.WriteLine($"Elapsed: {sw.Elapsed}");
-		//	Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
-		//}
-		//[TestCaseSource(typeof(TestDataFactoryForPartialSumWithCntLimitation), "Cases")]
-		//public void TestCaseForPartialSumWithCntLimitation(TestData data) {
-		//	var sb = new StringBuilder();
-		//	var solver = new NunitSolver(data.Input, sb);
-		//	var sw = Stopwatch.StartNew();
-		//	solver.RunPartialSumWithCntLimitation();
-		//	sw.Stop();
-		//	Console.WriteLine($"Elapsed: {sw.Elapsed}");
-		//	Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
-		//}
 	}
 
 	public class TestData {
@@ -86,21 +57,19 @@ namespace TypicalDPContest
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"3
-2 3 5",
-@"7"),
+@"abcde
+acbef",
+@"3"),
 				new TestData("Test2",
-@"10
-1 1 1 1 1 1 1 1 1 1",
-@"11"),
+@"pirikapirirara
+poporinapeperuto",
+@"6"),
 //				new TestData("Test3",
-//@"3 10
-//7 4 8",
-//@"No"),
+//@"44852",
+//@"16"),
 //				new TestData("Test4",
-//@"3 10
-//7 10 3",
-//@"Yes"),
+//@"1",
+//@"1"),
 //				new TestData("Test5",
 //@"37",
 //@"2"),
@@ -122,57 +91,6 @@ namespace TypicalDPContest
 //				new TestData("Test11",
 //@"93312",
 //@"2"),
-			};
-		}
-	}
-
-	public static class TestDataFactoryForPartialCountUp
-	{
-		public static TestData[] Cases() {
-			return new TestData[] {
-				new TestData("Test1",
-@"5 12
-7 5 3 1 8",
-@"2"),
-				new TestData("Test2",
-@"4 5
-4 1 1 1",
-@"3"),
-			};
-		}
-	}
-
-	public static class TestDataFactoryForMinimumPartialCountUp
-	{
-		public static TestData[] Cases() {
-			return new TestData[] {
-				new TestData("Test1",
-@"5 12
-7 5 3 1 8",
-@"2"),
-				new TestData("Test2",
-@"2 6
-7 5",
-@"-1"),
-			};
-		}
-	}
-	public static class TestDataFactoryForPartialSumWithCntLimitation
-	{
-		public static TestData[] Cases() {
-			return new TestData[] {
-				new TestData("Test1",
-@"3 10
-1 2 4 2 1 1
-2 5
-1 4 2 1
-0 0",
-@"8
-4"),
-//				new TestData("Test2",
-//@"2 6
-//7 5",
-//@"-1"),
 			};
 		}
 	}
