@@ -18,6 +18,62 @@ namespace Paiza.S024_Sea
 		}
 	}
 
+	class Node
+	{
+		public int Parent;
+		public int Rank;
+
+		public Node(int id) {
+			Parent = id;
+			Rank = 0;
+		}
+	}
+
+	public class UnionFindTree
+	{
+		readonly Node[] Nodes;
+
+		// 0 から n-1 まで（計 n個）のNodeを作る
+		public UnionFindTree(int n) {
+			Nodes = new Node[n];
+			for (int i = 0; i < n; i++) {
+				Nodes[i] = new Node(i);
+			}
+		}
+
+		// x要素のルート親を返す
+		public int Find(int x) {
+			if (Nodes[x].Parent == x)
+				return x;
+
+			return Nodes[x].Parent = Find(Nodes[x].Parent);
+		}
+
+		// a, b を同一グループ化する
+		// 既に同じグループだったらfalseを返す
+		public bool Unite(int a, int b) {
+			a = Find(a);
+			b = Find(b);
+
+			if (a == b)
+				return false;
+
+			if (Nodes[a].Rank < Nodes[b].Rank) {
+				Nodes[a].Parent = b;
+			} else {
+				Nodes[b].Parent = a;
+				if (Nodes[a].Rank == Nodes[b].Rank)
+					Nodes[a].Rank += 1;
+			}
+			return true;
+		}
+
+		// a, b が同一グループ？
+		public bool IsSame(int a, int b) {
+			return Find(a) == Find(b);
+		}
+	}
+
 	public class Solver
 	{
 		virtual protected string ReadLine() => Console.ReadLine();
@@ -53,6 +109,9 @@ namespace Paiza.S024_Sea
 		int[,] Grid;
 		int[,] GridT;
 
+		// LandID(1〜)の連結処理に使用する
+		UnionFindTree Tree;
+
 		public void Run() {
 			var ary = ReadIntArray();
 			H = ary[0];
@@ -60,14 +119,15 @@ namespace Paiza.S024_Sea
 			N = ary[2];
 			//Console.WriteLine($"{H}, {W}, {N}");
 
-			Grid = new int[H+2, W+2];
+			Tree = new UnionFindTree(H * W + 1);
+			Grid = new int[H + 2, W + 2];
 			var g1 = new List<int>(H * W);
-			for (int i = 1; i < H+1; i++) {
+			for (int i = 1; i < H + 1; i++) {
 				var row = ReadIntArray();
 				// 陸地を配列化
 				g1.AddRange(row);
 
-				for (int j = 1; j < W+1; j++) {
+				for (int j = 1; j < W + 1; j++) {
 					Grid[i, j] = row[j - 1];
 				}
 			}
@@ -87,50 +147,53 @@ namespace Paiza.S024_Sea
 				return;
 			}
 
-			// 海面の高さを0から上げていく
+			// 海面の高さをMaxから下げていく
+			int lowerAns = int.MaxValue;
+			int landNum = 0;
 			GridT = new int[H + 2, W + 2];
-			for (int i = 0; i < heightArray.Length; i++) {
-				var num = CountIslandsNum(heightArray[i]);
+			for (int i = heightArray.Length - 1; 0 <= i; i--) {
+				landNum += AddLands(heightArray[i]);
 
-				// 最初に島数Nになった点で終了
-				if (num == N) {
-					// 海面の高さを圧縮前のデータに復元
-					WriteLine(heightArray[i]);
-					return;
+				// 島数Nになったら高さを更新
+				if (landNum == N) {
+					// 最低の海面高なるように海面の高さを調整する
+					lowerAns = 0 < i ? heightArray[i - 1] : 0;
 				}
 			}
+			WriteLine(lowerAns);
 		}
 
-		int CountIslandsNum(int level) {
-			for (int i = 1; i < H+1; i++) {
-				for (int j = 1; j < W+1; j++) {
-					GridT[i, j] = level < Grid[i, j] ? 1 : 0;
+		// 陸地追加処理
+		// 島の増加数を返す
+		int AddLands(int height) {
+			int ret = 0;
+			for (int i = 1; i < H + 1; i++) {
+				for (int j = 1; j < W + 1; j++) {
+					if (Grid[i, j] != height) continue;
+
+					// 新たな陸地を発見
+					ret += ConnectLand(i, j);
 				}
 			}
-			int cnt = 0;
-			for (int i = 1; i < H+1; i++) {
-				for (int j = 1; j < W+1; j++) {
-					if (GridT[i, j] == 1) {
-						// 陸地
-						Recurse(i, j);
-						++cnt;
-					}
-				}
-			}
-			return cnt;
+			return ret;
 		}
 		int[] DX = { 1, -1, 0, 0 };
 		int[] DY = { 0, 0, 1, -1 };
-		void Recurse(int x, int y) {
-			GridT[x, y] = 0;
+		int landId = 1;
+		int ConnectLand(int x, int y) {
+			GridT[x, y] = landId++;
+			int ret = 1;
+
 			for (int i = 0; i < 4; i++) {
 				int px = x + DX[i];
 				int py = y + DY[i];
-				if (GridT[px, py] == 0) continue;
-				Recurse(px, py);
+				if (0 < GridT[px, py]) {
+					if (Tree.Unite(GridT[px, py], GridT[x, y]))
+						--ret;
+				}
 			}
+			return ret;
 		}
-
 
 #if !MYHOME
 		public static void Main(string[] args) {
