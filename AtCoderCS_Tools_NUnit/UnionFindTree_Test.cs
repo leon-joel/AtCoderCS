@@ -22,17 +22,17 @@ namespace AtCoderCS_Tools_NUnit
 			Assert.IsTrue(tree.Unite(0, 1));
 			Assert.AreEqual(0, tree.Find(0));
 			Assert.AreEqual(0, tree.Find(1));
-			Assert.IsTrue(tree.Same(0, 1));
+			Assert.IsTrue(tree.IsSame(0, 1));
 
 			// 既に同一グループ
 			Assert.IsFalse(tree.Unite(0, 1));
 
 			// 別グループ
-			Assert.IsFalse(tree.Same(1, 2));
+			Assert.IsFalse(tree.IsSame(1, 2));
 
 			// 同一グループ化
 			Assert.IsTrue(tree.Unite(1, 2));
-			Assert.IsTrue(tree.Same(1, 2));
+			Assert.IsTrue(tree.IsSame(1, 2));
 		}
 	}
 }

@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="BinaryIndexedTree_Test.cs" />
     <Compile Include="UnionFindTree_Test.cs" />
+    <Compile Include="WeightedUnionFindTree_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

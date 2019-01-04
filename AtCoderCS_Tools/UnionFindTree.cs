@@ -37,24 +37,24 @@ namespace AtCoderCS_Tools
 		// a, b を同一グループ化する
 		// 既に同じグループだったらfalseを返す
 		public bool Unite(int a, int b) {
-			a = Find(a);
-			b = Find(b);
+			var ra = Find(a);
+			var rb = Find(b);
 
-			if (a == b)
+			if (ra == rb)
 				return false;
 
-			if (Nodes[a].Rank < Nodes[b].Rank) {
-				Nodes[a].Parent = b;
+			if (Nodes[ra].Rank < Nodes[rb].Rank) {
+				Nodes[ra].Parent = rb;
 			} else {
-				Nodes[b].Parent = a;
-				if (Nodes[a].Rank == Nodes[b].Rank)
-					Nodes[a].Rank += 1;
+				Nodes[rb].Parent = ra;
+				if (Nodes[ra].Rank == Nodes[rb].Rank)
+					Nodes[ra].Rank += 1;
 			}
 			return true;
 		}
 
 		// a, b が同一グループ？
-		public bool Same(int a, int b) {
+		public bool IsSame(int a, int b) {
 			return Find(a) == Find(b);
 		}
 	}
