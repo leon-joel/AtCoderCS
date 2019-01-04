@@ -41,6 +41,7 @@
     <Compile Include="TypicalDPContest\Test_TypicalDPContest.cs" />
     <Compile Include="KnapsackProblem\Test_2-Dim-Knapsack.cs" />
     <Compile Include="Paiza\Test_S024_Sea.cs" />
+    <Compile Include="Test_ABC087-D.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
