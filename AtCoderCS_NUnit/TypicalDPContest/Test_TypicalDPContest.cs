@@ -78,6 +78,24 @@ namespace TypicalDPContest
 		override protected void WriteLine<T>(T value) => _sb.AppendLine(value.ToString());
 		override protected void WriteLine(double d) => _sb.AppendLine($"{d:F9}");
 	}
+	public class NunitSolverE : SolverE
+	{
+		readonly StringReader _reader;
+		readonly StringBuilder _sb;
+		public NunitSolverE(string input, StringBuilder writer) {
+			_reader = new StringReader(input);
+			_sb = writer;
+		}
+		override protected string ReadLine() => _reader.ReadLine();
+		override protected int ReadInt() => int.Parse(_reader.ReadLine());
+		override protected long ReadLong() => long.Parse(_reader.ReadLine());
+		override protected string[] ReadStringArray() => _reader.ReadLine().Split(' ');
+		override protected int[] ReadIntArray() => _reader.ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
+		override protected long[] ReadLongArray() => _reader.ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
+		override protected void WriteLine(string line) => _sb.AppendLine(line);
+		override protected void WriteLine<T>(T value) => _sb.AppendLine(value.ToString());
+		override protected void WriteLine(double d) => _sb.AppendLine($"{d:F9}");
+	}
 	[TestFixture()]
 	public class SolverTest {
 		[TestCaseSource(typeof(TestDataFactory), "Cases")]
@@ -115,6 +133,16 @@ namespace TypicalDPContest
 		public void TestCaseD(TestData data) {
 			var sb = new StringBuilder();
 			var solver = new NunitSolverD(data.Input, sb);
+			var sw = Stopwatch.StartNew();
+			solver.Run();
+			sw.Stop();
+			Console.WriteLine($"Elapsed: {sw.Elapsed}");
+			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
+		}
+		[TestCaseSource(typeof(TestDataFactoryE), "Cases")]
+		public void TestCaseE(TestData data) {
+			var sb = new StringBuilder();
+			var solver = new NunitSolverE(data.Input, sb);
 			var sw = Stopwatch.StartNew();
 			solver.Run();
 			sw.Stop();
@@ -3292,6 +3320,42 @@ namespace TypicalDPContest
 				new TestData("Test3",
 @"100 1000000000000000000",
 @"0.400592558"),
+			};
+		}
+	}
+
+	public static class TestDataFactoryE
+	{
+		public static TestData[] Cases() {
+			return new TestData[] {
+				new TestData("Test1",
+@"3
+100",
+@"33"),
+				new TestData("Test2",
+@"7
+123456789012345678901234567890",
+@"468357804"),
+				new TestData("Test3",
+@"100
+99",
+@"0"),
+				new TestData("Test4",
+@"1
+1",
+@"1"),
+				new TestData("Test5",
+@"1
+1000000007",
+@"0"),
+				new TestData("Test6",
+@"1
+1000000006",
+@"1000000006"),
+				new TestData("Test7",
+@"1
+1000000008",
+@"1"),
 			};
 		}
 	}

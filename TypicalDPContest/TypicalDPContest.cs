@@ -9,8 +9,7 @@ using System.Text;
 //
 namespace TypicalDPContest
 {
-	public static class Util
-	{
+	public static class Util {
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
 			var sb = new StringBuilder();
 			foreach (var item in array) {
@@ -29,8 +28,7 @@ namespace TypicalDPContest
 		}
 	}
 
-	public class SolverBase
-	{
+	public class SolverBase {
 		virtual protected string ReadLine() => Console.ReadLine();
 		virtual protected int ReadInt() => int.Parse(ReadLine());
 		virtual protected long ReadLong() => long.Parse(ReadLine());
@@ -43,6 +41,8 @@ namespace TypicalDPContest
 
 		[Conditional("DEBUG")]
 		protected void Dump(string s) => Console.WriteLine(s);
+		[Conditional("DEBUG")]
+		protected void Dump(char c) => Console.WriteLine(c);
 		[Conditional("DEBUG")]
 		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
 		[Conditional("DEBUG")]
@@ -77,8 +77,7 @@ namespace TypicalDPContest
 	}
 
 	// A: コンテスト 
-	public class Solver : SolverBase
-	{
+	public class Solver : SolverBase {
 		int N;
 		int[] Nums;
 		int UpperW = 100 * 100;
@@ -117,7 +116,7 @@ namespace TypicalDPContest
 			}
 
 			int cnt = 0;
-			for (int i = 0; i < UpperW+1; i++) {
+			for (int i = 0; i < UpperW + 1; i++) {
 				if (DP[N, i]) ++cnt;
 			}
 
@@ -134,7 +133,7 @@ namespace TypicalDPContest
 			// 配るDP --- dp[w] からの遷移先を更新する＝遷移元でループする
 			foreach (var point in Nums) {
 				// ※1次元DPなので、2度配りしないように末尾からループする
-				for (int w = UpperW-1; 0 <= w; w--) {
+				for (int w = UpperW - 1; 0 <= w; w--) {
 					// 配布元がfalse（＝配布元にくばる経路がない）はスキップ
 					if (DP[w]) {
 						// 点数リストでループし、配布先に配る
@@ -157,8 +156,7 @@ namespace TypicalDPContest
 	}
 
 	// B: ゲーム 2次元DP
-	public class SolverB : SolverBase
-	{
+	public class SolverB : SolverBase {
 		public void Run() {
 			var ary = ReadIntArray();
 			var nA = ary[0];
@@ -235,8 +233,7 @@ namespace TypicalDPContest
 	}
 
 	// C: トーナメント
-	public class SolverC : SolverBase
-	{
+	public class SolverC : SolverBase {
 		public void Run() {
 			var K = ReadInt();
 			var playerNum = (int)Math.Pow(2, K);
@@ -248,13 +245,13 @@ namespace TypicalDPContest
 
 			// 動的計画法（DP）（＝漸化式＋ループ）での実装
 			// DP[i回戦, j番目の選手] = i回戦目まで勝ち上がってくる確率(~1)
-			var DP = new double[K+1, playerNum];
+			var DP = new double[K + 1, playerNum];
 			// 0回戦目は全員勝ち上がり確率 1 とする
 			for (int i = 0; i < playerNum; i++) {
 				DP[0, i] = 1;
 			}
 
-			for (int i = 1; i < K+1; i++) {
+			for (int i = 1; i < K + 1; i++) {
 				for (int j = 0; j < playerNum; j++) {
 					// i回戦目(1~)の対戦相手
 					//   jのiビット目を反転
@@ -263,15 +260,15 @@ namespace TypicalDPContest
 
 					// 積算対戦勝率
 					double sumRatio = 0;
-					var prefix = j ^ (1 << (i - 1));	// iビットだけ反転
-					prefix &= int.MaxValue << (i - 1);	// iビットより下位は全部0クリ
+					var prefix = j ^ (1 << (i - 1));    // iビットだけ反転
+					prefix &= int.MaxValue << (i - 1);  // iビットより下位は全部0クリ
 					for (int r = 0; r < (1 << (i - 1)); r++) {
 						// 対戦相手
 						var o = prefix | r;
 						//Dump(o.ToString());
 
 						// += 勝率 * 相手がそのラウンドまで勝ち上がってくる確率
-						sumRatio += CalcWinRatioOfA(Rates[j], Rates[o]) * DP[i-1, o];
+						sumRatio += CalcWinRatioOfA(Rates[j], Rates[o]) * DP[i - 1, o];
 					}
 
 					// 自分が(i-1)回戦目まで勝ち上がる確率 * i回戦を勝ち上がる確率
@@ -297,12 +294,11 @@ namespace TypicalDPContest
 	}
 
 	// D: サイコロ
-	public class SolverD : SolverBase
-	{
+	public class SolverD : SolverBase {
 		private const double ZERO = default(double);
 
 		public void Run() {
-			#pragma warning disable RECS0018 // 等値演算子による浮動小数点値の比較
+#pragma warning disable RECS0018 // 等値演算子による浮動小数点値の比較
 			var ary = ReadLongArray();
 			int N = (int)ary[0];
 			var D = ary[1];
@@ -370,9 +366,9 @@ namespace TypicalDPContest
 				}
 
 				// 2,3,5の3重ループ
-				for (int x = 0; x < p2+1; x++) {
-					for (int y = 0; y < p3+1; y++) {
-						for (int z = 0; z < p5+1; z++) {
+				for (int x = 0; x < p2 + 1; x++) {
+					for (int y = 0; y < p3 + 1; y++) {
+						for (int z = 0; z < p5 + 1; z++) {
 							if (DP[cur, x, y, z] == ZERO) continue;
 
 							// 配るDP
@@ -380,13 +376,13 @@ namespace TypicalDPContest
 							// 1が出るなら
 							DP[tar, x, y, z] += DP[cur, x, y, z] / 6.0;
 							// 2 ※所定数以上はすべて配列末尾に加算していく
-							DP[tar, Math.Min(x+1, p2), y, z] += DP[cur, x, y, z] / 6.0;
+							DP[tar, Math.Min(x + 1, p2), y, z] += DP[cur, x, y, z] / 6.0;
 							// 3
-							DP[tar, x, Math.Min(y+1, p3), z] += DP[cur, x, y, z] / 6.0;
+							DP[tar, x, Math.Min(y + 1, p3), z] += DP[cur, x, y, z] / 6.0;
 							// 4
 							DP[tar, Math.Min(x + 2, p2), y, z] += DP[cur, x, y, z] / 6.0;
 							// 5
-							DP[tar, x, y, Math.Min(z+1, p5)] += DP[cur, x, y, z] / 6.0;
+							DP[tar, x, y, Math.Min(z + 1, p5)] += DP[cur, x, y, z] / 6.0;
 							// 6
 							DP[tar, Math.Min(x + 1, p2), Math.Min(y + 1, p3), z] += DP[cur, x, y, z] / 6.0;
 						}
@@ -404,6 +400,65 @@ namespace TypicalDPContest
 #if !MYHOME
 		public static void Main(string[] args) {
 			new SolverD().Run();
+		}
+#endif
+	}
+
+	// E: 数
+	public class SolverE : SolverBase {
+		const int MOD = 1000000007;
+		public void Run() {
+			var D = ReadInt();
+			var S = ReadLine();
+			//for (int i = 0; i < S.Length; i++) {
+			//	// 文字列の先頭からダンプ
+			//	Dump(S[i]);
+			//}
+
+			// DP[pos桁目][各桁の和sum][制約の有無rist] = パターン数
+			//   posは文字列の先頭を1とする
+			//   sumは mod D したもの
+			//   rist は制約あり:1 制約なし:0 とする
+			//   パターン数は mod MOD したもの
+			int[,,] DP = new int[S.Length+1, D, 2];
+			// 初期状態 ※1桁目は必ず制約あり
+			DP[0, 0, 1] = 1;
+
+			// 配るDP
+			for (int pos = 0; pos < S.Length; pos++) {
+				for (int sum = 0; sum < D; sum++) {
+					for (int rist = 0; rist <= 1; rist++) {
+						if (DP[pos, sum, rist] == 0) continue;
+
+						if (rist == 0) {
+							for (int d = 0; d < 10; d++) {
+								// 配布
+								DP[pos + 1, (sum + d) % D, rist] += DP[pos, sum, rist];
+								DP[pos + 1, (sum + d) % D, rist] %= MOD;
+							}
+						} else {
+							// 制約ありなので、Sから制約となる数字を取得する
+							var upper = (char)S[pos] - (char)'0';
+
+							for (int d = 0; d < upper; d++) {
+								// 制約なしの部分なので、配布先は制約なしとなる
+								DP[pos + 1, (sum + d) % D, 0] += DP[pos, sum, rist];
+								DP[pos + 1, (sum + d) % D, 0] %= MOD;
+							}
+							// 制約ありの部分
+							DP[pos + 1, (sum + upper) % D, 1] += DP[pos, sum, rist];
+							DP[pos + 1, (sum + upper) % D, 1] %= MOD;
+						}
+					}
+				}
+			}
+			// 制限なし ＋ 制限あり - オール0の分
+			var ans = (DP[S.Length, 0, 0] + DP[S.Length, 0, 1] - 1) % MOD;
+			WriteLine(ans);
+		}
+#if !MYHOME
+		public static void Main(string[] args) {
+			new SolverE().Run();
 		}
 #endif
 	}
