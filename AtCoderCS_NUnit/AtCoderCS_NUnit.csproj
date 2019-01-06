@@ -42,6 +42,7 @@
     <Compile Include="KnapsackProblem\Test_2-Dim-Knapsack.cs" />
     <Compile Include="Paiza\Test_S024_Sea.cs" />
     <Compile Include="Test_ABC087-D.cs" />
+    <Compile Include="KnapsackProblem\Test_KetaDP.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -43,6 +43,7 @@
     <Compile Include="KnapsackProblem\2-Dim-Knapsack.cs" />
     <Compile Include="Paiza\S024_Sea.cs" />
     <Compile Include="Program_ABC087-D.cs" />
+    <Compile Include="KnapsackProblem\KetaDP.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />
