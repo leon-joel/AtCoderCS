@@ -123,6 +123,8 @@ namespace PartialSumProblems
 			}
 			DP[0, 0] = 1;
 
+			// i番目までの数字を使って、部分和w を作る方法が何通りあるか
+			//   DP[数字i番目まで][部分和w] = 何通り？
 			for (int i = 0; i < N; i++) {
 				for (int w = 0; w < UpperW + 1; w++) {
 					if (w < Nums[i]) {
@@ -162,6 +164,8 @@ namespace PartialSumProblems
 			// 0個の整数の和が 0 なので
 			DP[0, 0] = 0;
 
+			// i番目までの数字を使って、部分和w を作る方法のうち、選ぶ数の最小数
+			//   DP[数字i番目まで][部分和w] = 選ぶ数の最小数
 			for (int i = 0; i < N; i++) {
 				for (int w = 0; w < UpperW + 1; w++) {
 					if (w < Nums[i]) {

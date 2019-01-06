@@ -62,12 +62,18 @@ namespace TwoDimensionalKnapsack
 			//	}
 			//}
 
+			// DP[s0文字列i番目まで][s1文字列j番目まで] = 最長部分文字列長
+
 			// 貰うDP
 			for (int i = 1; i < s0.Length + 1; i++) {
 				for (int j = 1; j < s1.Length + 1; j++) {
 					if (s0[i - 1] != s1[j - 1]) {
+						// 一致しなかったので、上から左から大きい方をコピーしてくる
 						DP[i, j] = Max(DP[i - 1, j - 1], DP[i - 1, j], DP[i, j - 1]);
 					} else {
+						// 一致したので、左上＋1, 上, 左 から最大のものを選ぶ
+						// ★これは常に 左上＋1 でいいような気がする。
+						//  https://qiita.com/_rdtr/items/c49aa20f8d48fbea8bd2
 						DP[i, j] = Max(DP[i - 1, j - 1] + 1, DP[i - 1, j], DP[i, j - 1]);
 					}
 				}
