@@ -44,6 +44,16 @@
     <Compile Include="Paiza\S024_Sea.cs" />
     <Compile Include="Program_ABC087-D.cs" />
     <Compile Include="KnapsackProblem\KetaDP.cs" />
+    <Compile Include="EducationalDPContest\ProblemA.cs" />
+    <Compile Include="EducationalDPContest\ProblemB.cs" />
+    <Compile Include="EducationalDPContest\ProblemC.cs" />
+    <Compile Include="EducationalDPContest\ProblemD.cs" />
+    <Compile Include="EducationalDPContest\ProblemE.cs" />
+    <Compile Include="EducationalDPContest\ProblemF.cs" />
+    <Compile Include="EducationalDPContest\ProblemH.cs" />
+    <Compile Include="EducationalDPContest\ProblemI.cs" />
+    <Compile Include="EducationalDPContest\ProblemS.cs" />
+    <Compile Include="EducationalDPContest\ProblemY.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />
@@ -54,6 +64,7 @@
     <Folder Include="KnapsackProblem\" />
     <Folder Include="TypicalDPContest\" />
     <Folder Include="Paiza\" />
+    <Folder Include="EducationalDPContest\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

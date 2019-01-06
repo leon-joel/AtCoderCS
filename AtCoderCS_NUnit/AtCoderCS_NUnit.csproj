@@ -43,6 +43,16 @@
     <Compile Include="Paiza\Test_S024_Sea.cs" />
     <Compile Include="Test_ABC087-D.cs" />
     <Compile Include="KnapsackProblem\Test_KetaDP.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemA.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemB.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemC.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemD.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemE.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemF.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemH.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemI.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemS.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemY.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -55,6 +65,7 @@
     <Folder Include="KnapsackProblem\" />
     <Folder Include="TypicalDPContest\" />
     <Folder Include="Paiza\" />
+    <Folder Include="EducationalDPContest\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AtCoderCS.csproj">
