@@ -85,10 +85,6 @@ namespace EducationalDPContestE
 
 	public class Solver : SolverBase
 	{
-
-		// WA!!!!!!!!!!!!!!!!!!!!!
-		// https://atcoder.jp/contests/dp/submissions/me
-
 		struct Item
 		{
 			public readonly int Weight;
@@ -150,7 +146,8 @@ namespace EducationalDPContestE
 				}
 			}
 
-			for (int v = UpperValue - 1; 0 <= v; v--) {
+			// 最大価値から下がりながら、重さ制限以内のものを探す
+			for (int v = UpperValue; 0 <= v; v--) {
 				if (DP[v] != long.MaxValue && DP[v] <= UpperW) {
 					return v;
 				}
