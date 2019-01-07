@@ -74,18 +74,51 @@ namespace EducationalDPContestS
 @"98765432109876543210
 58",
 @"635270834"),
-//				new TestData("Test4",
-//@"3 20
-//1 2 3",
-//@"Second"),
-//				new TestData("Test5",
-//@"3 21
-//1 2 3",
-//@"First"),
-//				new TestData("Test6",
-//@"1 100000
-//1",
-//@"Second"),
+				new TestData("Test4",
+@"1
+1",
+@"1"),
+				new TestData("Test5",
+@"2
+3",
+@"0"),
+				new TestData("Test6",
+@"1
+3",
+@"0"),
+				new TestData("Test7",
+@"1000000007
+1",
+@"0"),
+				new TestData("Test8",
+@"1000000006
+1",
+@"1000000006"),
+				new TestData("Test8-1",
+@"1000000005
+1",
+@"1000000005"),
+				new TestData("Test9",
+@"1000000008
+1",
+@"1"),
+				new TestData("Test9-1",
+@"1000000009
+1",
+@"2"),
+
+				new TestData("Test10",
+@"2000000013
+1",
+@"1000000006"),
+				new TestData("Test11",
+@"2000000014
+1",
+@"0"),
+				new TestData("Test12",
+@"2000000015
+1",
+@"1"),
 			};
 		}
 	}

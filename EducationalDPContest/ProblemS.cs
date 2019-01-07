@@ -97,11 +97,6 @@ namespace EducationalDPContestS
 
 	public class Solver : SolverBase
 	{
-
-		// WA!!!!!!!!!!!!!!!!!!!!!
-		// https://atcoder.jp/contests/dp/submissions/me
-
-
 		const int MOD = 1000000007;
 		public void Run() {
 			var S = ReadLine();
@@ -116,7 +111,7 @@ namespace EducationalDPContestS
 			//   sumは mod D したもの
 			//   rist は制約あり:1 制約なし:0 とする
 			//   パターン数は mod MOD したもの
-			int[,,] DP = new int[S.Length + 1, D, 2];
+			long[,,] DP = new long[S.Length + 1, D, 2];
 			// 初期状態 ※1桁目は必ず制約あり
 			DP[0, 0, 1] = 1;
 
@@ -149,7 +144,8 @@ namespace EducationalDPContestS
 				}
 			}
 			// 制限なし ＋ 制限あり - オール0の分
-			var ans = (DP[S.Length, 0, 0] + DP[S.Length, 0, 1] - 1) % MOD;
+			// ★★★ 引き算する場合,MODを加算してから行わないと、ansが負になってしまう場合がある
+			var ans = (DP[S.Length, 0, 0] + DP[S.Length, 0, 1] + MOD - 1) % MOD;
 			WriteLine(ans);
 		}
 
