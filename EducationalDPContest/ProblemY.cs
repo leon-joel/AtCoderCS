@@ -99,6 +99,10 @@ namespace EducationalDPContestY
 		public readonly int X;
 		public readonly int Y;
 
+		public XY(int x, int y) {
+			X = x;
+			Y = y;
+		}
 		public XY(int[] ary) {
 			X = ary[0];
 			Y = ary[1];
@@ -120,6 +124,14 @@ namespace EducationalDPContestY
 					return 0;
 			}
 		}
+		public override bool Equals(object obj) {
+			if (!(obj is XY other)) return false;
+			return CompareTo(other) == 0;
+		}
+
+		public override int GetHashCode() {
+			return X.GetHashCode() ^ Y.GetHashCode();
+		}
 
 		public override string ToString() {
 			return ToString(null, null);
@@ -139,38 +151,30 @@ namespace EducationalDPContestY
 			var W = ary[1];
 			var N = ary[2];
 
-			var Walls = new XY[N];
+			var Walls = new HashSet<XY>();
 			for (int i = 0; i < N; i++) {
-				Walls[i] = new XY(ReadIntArray());
+				Walls.Add(new XY(ReadIntArray()));
 			}
-
-			Array.Sort(Walls);
 			Dump(Walls);
 
-
-			// 
-			// 実装中！！！！！！！！！！！！！！！！！！！！！！
-			// 
-
-
-			var Grid = new List<string>(H);
-			for (int i = 0; i < H; i++) {
-				var s = ReadLine();
-				Grid.Add(s);
-			}
-
-			int[,] DP = new int[H + 1, W + 1];
-			DP[0, 1] = 1;
+			// 左と上に1行/列ずつ追加しておく（ループ内でのIndexチェックを不要にするため）
+			//int[,] DP = new int[H + 1, W + 1];
+			int[] Row0 = new int[W + 1];
+			Row0[1] = 1;
 
 			// 貰うDP
 			for (int i = 1; i < H + 1; i++) {
+				int[] Row1 = new int[W + 1];
 				for (int j = 1; j < W + 1; j++) {
-					if (Grid[i - 1][j - 1] == '#') continue;
+					if (Walls.Contains(new XY(i, j))) continue;
 
-					DP[i, j] = (DP[i - 1, j] + DP[i, j - 1]) % MOD;
+					Row1[j] = (Row0[j] + Row1[j - 1]) % MOD;
 				}
+				Row0 = Row1;
+				Dump(Row0);
 			}
-			WriteLine(DP[H, W]);
+
+			WriteLine(Row0[W]);
 		}
 
 #if !MYHOME
