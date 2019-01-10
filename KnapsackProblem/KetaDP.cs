@@ -145,4 +145,90 @@ namespace KetaDP
 		}
 #endif
 	}
+
+	// ABC029-D: 桁DPで解くこともできる問題
+	// https://abc029.contest.atcoder.jp/tasks/abc029_d
+	public class SolverABC029D : SolverBase
+	{
+		public void Run() {
+			var S = ReadLine();
+
+			// DP[pos桁目][1を使った回数j][制約の有無rist] = 条件を満たす数の総数
+			//   posは文字列の先頭を1とする
+			//   121xxx, 110xxx なら j は 2 ※N<=10^9なので最大10個
+			//   rist は制約あり:1 制約なし:0 とする
+			//      ※制約あり: pos桁目まで上限数Sに張り付いていて、
+			//                次の桁の数字選択に制約が生じるという意味
+			// 
+			var DP = new long[S.Length + 1, 11, 2];
+			// [0桁目, 1の登場回数0回, 制約あり] = 1個 とする
+			DP[0, 0, 1] = 1;
+
+			Action<long[,,]> DumpDP2 = (dp) => {
+				var sb = new StringBuilder();
+				for (int i = 0; i < dp.GetLength(0); i++) {
+					sb.Append($"{i}: ");
+					for (int j = 0; j < dp.GetLength(1); j++) {
+						sb.Append($"{dp[i, j, 0]}-{dp[i, j, 1]}");
+						sb.Append(", ");
+					}
+					sb.AppendLine();
+				}
+				Console.WriteLine(sb.ToString());
+			};
+			// 配るDP
+			for (int pos = 0; pos < S.Length; pos++) {
+				for (int j = 0; j < 11; j++) {
+					for (int rist = 0; rist <= 1; rist++) {
+						if (DP[pos, j, rist] == 0) continue;
+
+						if (rist == 0) {
+							// 制約なし
+							// ここで1を選択した場合:
+							// pos+1桁目までに1がj+1回登場した数の総数 = pos桁目までに1がj回登場した数の総数
+							DP[pos + 1, j + 1, 0] += DP[pos, j, 0];
+							// 1以外を選択した場合:
+							// pos+1桁目までに1がj回登場した数の総数 = pos桁目までに1がj回登場した数の総数 * 9
+							DP[pos + 1, j, 0] += DP[pos, j, 0] * 9;
+						} else {
+							// 制約ありなので、制約となる数字を取得する
+							var upper = S[pos] - '0';
+
+							if (upper == 0) {
+								// 登場回数を増やさず、そのまま加算
+								DP[pos + 1, j, 1] += DP[pos, j, 1];
+							} else if (upper == 1) {
+								// 0を選んだ場合: 登場回数を増やさず、制約なしの方に加算
+								DP[pos + 1, j, 0] += DP[pos, j, 1];
+								// 1を選んだ場合: 登場回数+1して、制約ありの方に加算
+								DP[pos + 1, j + 1, 1] += DP[pos, j, 1];
+							} else if (1 < upper) {
+								// 1を選んだ場合: 登場回数+1して、制約なしの方に加算
+								DP[pos + 1, j + 1, 0] += DP[pos, j, 1];
+								// upperをを選んだ場合: 登場回数を増やさず制約ありの方に加算
+								DP[pos + 1, j, 1] += DP[pos, j, 1];
+								// 上記以外を選んだ場合（upper-1通り）:
+								//                    登場回数を増やさず、制約なしの方に加算
+								DP[pos + 1, j, 0] += DP[pos, j, 1] * (upper - 1);
+							}
+						}
+					}
+				}
+				//Console.WriteLine($"pos: {pos} =======");
+				//DumpDP2(DP);
+			}
+			long ans = 0;
+			for (int j = 1; j < 11; j++) {
+				// += (制約なし + 制約あり) * 出現個数
+				ans += (DP[S.Length, j, 0] + DP[S.Length, j, 1]) * j;
+			}
+			WriteLine(ans);
+		}
+
+#if !MYHOME
+		public static void Main(string[] args) {
+			new SolverABC029D().Run();
+		}
+#endif
+	}
 }
