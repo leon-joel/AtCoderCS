@@ -54,6 +54,7 @@
     <Compile Include="EducationalDPContest\ProblemI.cs" />
     <Compile Include="EducationalDPContest\ProblemS.cs" />
     <Compile Include="EducationalDPContest\ProblemY.cs" />
+    <Compile Include="KnapsackProblem\ABC113D_Amidakuji.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />

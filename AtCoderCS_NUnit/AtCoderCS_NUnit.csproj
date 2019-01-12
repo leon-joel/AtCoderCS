@@ -53,6 +53,7 @@
     <Compile Include="EducationalDPContest\Test_ProblemI.cs" />
     <Compile Include="EducationalDPContest\Test_ProblemS.cs" />
     <Compile Include="EducationalDPContest\Test_ProblemY.cs" />
+    <Compile Include="KnapsackProblem\Test_ABC113D_Amidakuji.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

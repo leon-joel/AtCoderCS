@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace EducationalDPContestY
+namespace ABC113D_Amidakuji
 {
 	public class NunitSolver : Solver
 	{
@@ -63,36 +63,54 @@ namespace EducationalDPContestY
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"5 2 2
-2 1
-4 2",
-@"0"),
+@"1 3 2",
+@"1"),
 				new TestData("Test2",
-@"3 4 2
-2 2
-1 4",
-@"3"),
+@"1 3 1",
+@"2"),
 				new TestData("Test3",
-@"5 5 4
-3 1
-3 5
-1 3
-5 3",
-@"24"),
-				// これはTLE！
-//				new TestData("Test4",
-//@"100000 100000 1
-//50000 50000",
-//@"123445622"),
-
-//				new TestData("Test5",
-//@"3 21
-//1 2 3",
-//@"First"),
-//				new TestData("Test6",
-//@"1 100000
+@"2 3 3",
+@"1"),
+				new TestData("Test4",
+@"2 3 1",
+@"5"),
+				new TestData("Test5",
+@"7 1 1",
+@"1"),
+				new TestData("Test6",
+@"15 8 5",
+@"437760187"),
+				new TestData("Test7",
+@"1 2 1",
+@"1"),
+				new TestData("Test8",
+@"2 2 1",
+@"2"),
+//				new TestData("Test8-1",
+//@"1000000005
 //1",
-//@"Second"),
+//@"1000000005"),
+//				new TestData("Test9",
+//@"1000000008
+//1",
+//@"1"),
+//				new TestData("Test9-1",
+//@"1000000009
+//1",
+//@"2"),
+
+//				new TestData("Test10",
+//@"2000000013
+//1",
+//@"1000000006"),
+//				new TestData("Test11",
+//@"2000000014
+//1",
+//@"0"),
+//				new TestData("Test12",
+//@"2000000015
+//1",
+//@"1"),
 			};
 		}
 	}
