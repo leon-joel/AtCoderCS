@@ -2,11 +2,15 @@
 
 namespace AtCoderCS_Tools
 {
-	public class XY : IComparable<XY>, IFormattable
-	{
+	public class XY : IComparable<XY>, IFormattable {
 		public readonly int X;
 		public readonly int Y;
 
+		public XY() {}
+		public XY(int x, int y) {
+			X = x;
+			Y = y;
+		}
 		public XY(int[] ary) {
 			X = ary[0];
 			Y = ary[1];

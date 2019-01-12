@@ -54,6 +54,10 @@
     <Compile Include="EducationalDPContest\Test_ProblemS.cs" />
     <Compile Include="EducationalDPContest\Test_ProblemY.cs" />
     <Compile Include="KnapsackProblem\Test_ABC113D_Amidakuji.cs" />
+    <Compile Include="AISingContest2019\Test_A.cs" />
+    <Compile Include="AISingContest2019\Test_D.cs" />
+    <Compile Include="AISingContest2019\Test_B.cs" />
+    <Compile Include="AISingContest2019\Test_C.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -67,6 +71,7 @@
     <Folder Include="TypicalDPContest\" />
     <Folder Include="Paiza\" />
     <Folder Include="EducationalDPContest\" />
+    <Folder Include="AISingContest2019\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AtCoderCS.csproj">

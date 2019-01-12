@@ -55,6 +55,10 @@
     <Compile Include="EducationalDPContest\ProblemS.cs" />
     <Compile Include="EducationalDPContest\ProblemY.cs" />
     <Compile Include="KnapsackProblem\ABC113D_Amidakuji.cs" />
+    <Compile Include="AISingContest2019\A.cs" />
+    <Compile Include="AISingContest2019\D.cs" />
+    <Compile Include="AISingContest2019\B.cs" />
+    <Compile Include="AISingContest2019\C.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />
@@ -66,6 +70,7 @@
     <Folder Include="TypicalDPContest\" />
     <Folder Include="Paiza\" />
     <Folder Include="EducationalDPContest\" />
+    <Folder Include="AISingContest2019\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
