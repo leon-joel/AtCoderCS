@@ -6,32 +6,26 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AISingContest2019_A
+// KEYENCE Programming Contest 2019
+// https://atcoder.jp/contests/keyence2019
+namespace KeyenceContest2019_A
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"3
-2
-3",
-@"2"),
+@"1 7 9 4",
+@"YES"),
 				new TestData("Test2",
-@"100
-1
-1",
-@"10000"),
+@"1 9 7 4",
+@"YES"),
 				new TestData("Test3",
-@"5
-4
-2",
-@"8"),
+@"1 2 9 1",
+@"NO"),
 				new TestData("Test4",
-@"1
-1
-1",
-@"1"),
+@"4 9 0 8",
+@"NO"),
 //				new TestData("Test5",
 //@"7 1 1",
 //@"1"),

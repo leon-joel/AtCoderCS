@@ -6,7 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AISingContest2019_D
+// KEYENCE Programming Contest 2019
+// https://atcoder.jp/contests/keyence2019
+namespace KeyenceContest2019_D
 {
 	public static class TestDataFactory
 	{

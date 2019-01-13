@@ -4,19 +4,26 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-// AISingContest2019
-// https://atcoder.jp/contests/aising2019
-namespace AISingContest2019_A
+// KEYENCE Programming Contest 2019
+// https://atcoder.jp/contests/keyence2019
+namespace KeyenceContest2019_A
 {
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadInt();
-			var H = ReadInt();
-			var W = ReadInt();
+			var ary = ReadIntArray();
 
-			var ans = (N - H + 1) * (N - W + 1);
-			WriteLine(ans);
+			bool foundA=false, foundB = false, foundC = false, foundD = false;
+			foreach (var n in ary) {
+				if (n == 1) foundA = true;
+				if (n == 9) foundB = true;
+				if (n == 7) foundC = true;
+				if (n == 4) foundD = true;
+			}
+			if (foundA && foundB && foundC && foundD)
+				WriteLine("YES");
+			else
+				WriteLine("NO");
 		}
 
 #if !MYHOME
@@ -60,6 +67,15 @@ namespace AISingContest2019_A
 				max = max.CompareTo(nums[i]) > 0 ? max : nums[i];
 			}
 			return max;
+		}
+		public static T Min<T>(params T[] nums) where T : IComparable {
+			if (nums.Length == 0) return default(T);
+
+			T min = nums[0];
+			for (int i = 1; i < nums.Length; i++) {
+				min = min.CompareTo(nums[i]) < 0 ? min : nums[i];
+			}
+			return min;
 		}
 	}
 
@@ -112,5 +128,4 @@ namespace AISingContest2019_A
 			Console.WriteLine(sb.ToString());
 		}
 	}
-
 }

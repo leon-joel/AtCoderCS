@@ -4,33 +4,37 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-// AISingContest2019
-// https://atcoder.jp/contests/aising2019
-namespace AISingContest2019_B
+// KEYENCE Programming Contest 2019
+// https://atcoder.jp/contests/keyence2019
+namespace KeyenceContest2019_B
 {
 	public class Solver : SolverBase
 	{
+		static readonly string KEYENCE = "keyence";
 		public void Run() {
-			var N = ReadInt();
-			var ary = ReadIntArray();
-			var A = ary[0];
-			var B = ary[1];
-			var Points = ReadIntArray();
+			var S = ReadLine();
+			// keyence = 7文字
 
-			// 区間ごとにカウントする
-			int cntA = 0;
-			int cntB = 0;
-			int cntC = 0;
-			foreach (var point in Points) {
-				if (point <= A)
-					++cntA;
-				else if (point <= B)
-					++cntB;
+			if (S.Length == KEYENCE.Length) {
+				if (S == KEYENCE)
+					WriteLine("YES");
 				else
-					++cntC;
+					WriteLine("NO");
+				return;
 			}
-			var ans = Util.Min(cntA, cntB, cntC);
-			WriteLine(ans);
+
+			var lenP = S.Length - KEYENCE.Length;
+
+			for (int l = 0; l <= KEYENCE.Length; l++) {
+				int r = KEYENCE.Length - l;
+
+				var s = S.Substring(0, l) + S.Substring(S.Length - r, r);
+				if (s == KEYENCE) { 
+					WriteLine("YES");
+					return;
+				}
+			}
+			WriteLine("NO");
 		}
 
 #if !MYHOME

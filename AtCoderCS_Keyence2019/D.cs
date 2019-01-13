@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-// AISingContest2019
-// https://atcoder.jp/contests/aising2019
-namespace AISingContest2019_D
+// KEYENCE Programming Contest 2019
+// https://atcoder.jp/contests/keyence2019
+namespace KeyenceContest2019_D
 {
 	public class Solver : SolverBase
 	{
@@ -54,6 +54,15 @@ namespace AISingContest2019_D
 				max = max.CompareTo(nums[i]) > 0 ? max : nums[i];
 			}
 			return max;
+		}
+		public static T Min<T>(params T[] nums) where T : IComparable {
+			if (nums.Length == 0) return default(T);
+
+			T min = nums[0];
+			for (int i = 1; i < nums.Length; i++) {
+				min = min.CompareTo(nums[i]) < 0 ? min : nums[i];
+			}
+			return min;
 		}
 	}
 

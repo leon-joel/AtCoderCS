@@ -26,6 +26,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="A.cs" />
+    <Compile Include="B.cs" />
+    <Compile Include="C.cs" />
+    <Compile Include="D.cs" />
+    <Compile Include="Test_A.cs" />
+    <Compile Include="Test_B.cs" />
+    <Compile Include="Test_C.cs" />
+    <Compile Include="Test_D.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

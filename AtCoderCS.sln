@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderCS_Tools", "AtCoderC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderCS_Tools_NUnit", "AtCoderCS_Tools_NUnit\AtCoderCS_Tools_NUnit.csproj", "{45A18005-FABB-4C73-B58F-2CF2AB997B9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderCS_Keyence2019", "AtCoderCS_Keyence2019\AtCoderCS_Keyence2019.csproj", "{7847B923-466F-4669-A561-8FEB27E3910C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -31,6 +33,10 @@ Global
 		{45A18005-FABB-4C73-B58F-2CF2AB997B9B}.Debug|x86.Build.0 = Debug|Any CPU
 		{45A18005-FABB-4C73-B58F-2CF2AB997B9B}.Release|x86.ActiveCfg = Release|Any CPU
 		{45A18005-FABB-4C73-B58F-2CF2AB997B9B}.Release|x86.Build.0 = Release|Any CPU
+		{7847B923-466F-4669-A561-8FEB27E3910C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7847B923-466F-4669-A561-8FEB27E3910C}.Debug|x86.Build.0 = Debug|Any CPU
+		{7847B923-466F-4669-A561-8FEB27E3910C}.Release|x86.ActiveCfg = Release|Any CPU
+		{7847B923-466F-4669-A561-8FEB27E3910C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
