@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FABA4D6A-1438-41D7-A96F-148EFDCAC675}</ProjectGuid>
+    <ProjectGuid>{45A18005-FABB-4C73-B58F-2CF2AB997B9B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>AtCoderCS_Tools</RootNamespace>
-    <AssemblyName>AtCoderCS_Tools</AssemblyName>
+    <RootNamespace>AtCoderCS_Tools_NUnit</RootNamespace>
+    <AssemblyName>AtCoderCS_Tools_NUnit</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -17,25 +17,36 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\BinaryIndexedTree_Test.cs" />
+    <Compile Include="Tests\UnionFindTree_Test.cs" />
+    <Compile Include="Tests\WeightedUnionFindTree_Test.cs" />
     <Compile Include="BinaryIndexedTree.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utils.cs" />
     <Compile Include="UnionFindTree.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="WeightedUnionFindTree.cs" />
     <Compile Include="XY.cs" />
+    <Compile Include="BinarySearch.cs" />
+    <Compile Include="Tests\BinarySearch_Test.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
