@@ -15,29 +15,51 @@ namespace KeyenceContest2019_D
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"1 3 2",
-@"1"),
-				new TestData("Test2",
-@"1 3 1",
+@"2 2
+4 3
+3 4
+",
 @"2"),
+				new TestData("Test2",
+@"3 3
+5 9 7
+3 6 9
+",
+@"0"),
 				new TestData("Test3",
-@"2 3 3",
-@"1"),
+@"2 2
+4 4
+4 4
+",
+@"0"),
 				new TestData("Test4",
-@"2 3 1",
-@"5"),
+@"14 13
+158 167 181 147 178 151 179 182 176 169 180 129 175 168
+181 150 178 179 167 180 176 169 182 177 175 159 173
+",
+@"343772227"),
 				new TestData("Test5",
-@"7 1 1",
+@"1 1
+1
+1",
 @"1"),
 				new TestData("Test6",
-@"15 8 5",
-@"437760187"),
+@"1 2
+2
+2 1
+",
+@"1"),
 				new TestData("Test7",
-@"1 2 1",
+@"3 1
+3 2 1
+3
+",
 @"1"),
 				new TestData("Test8",
-@"2 2 1",
-@"2"),
+@"3 3
+1 2 3
+1 2 3",
+@"0"),
 //				new TestData("Test8-1",
 //@"1000000005
 //1",

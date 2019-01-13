@@ -1,8 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
 namespace AtCoderCS_Tools
 {
 	public static partial class Utils
 	{
+		public readonly static long MOD = 1000000007;
+
+		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
+			var sb = new StringBuilder();
+			foreach (var item in array) {
+				sb.Append(item);
+				sb.Append(", ");
+			}
+			return sb.ToString();
+		}
+
+		public static void InitArray<T>(T[] ary, T value) {
+			for (int i = 0; i < ary.Length; i++) {
+				ary[i] = value;
+			}
+		}
+
+		public static void InitDP<T>(T[,] dp, T value) {
+			for (int i = 0; i < dp.GetLength(0); i++) {
+				for (int j = 0; j < dp.GetLength(1); j++) {
+					dp[i, j] = value;
+				}
+			}
+		}
+
 		public static T Max<T>(params T[] nums) where T : IComparable {
 			if (nums.Length == 0) return default(T);
 

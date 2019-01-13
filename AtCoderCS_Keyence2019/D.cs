@@ -8,9 +8,58 @@ using System.Text;
 // https://atcoder.jp/contests/keyence2019
 namespace KeyenceContest2019_D
 {
+	using static Util;
+
 	public class Solver : SolverBase
 	{
 		public void Run() {
+			var ary = ReadIntArray();
+			var N = ary[0];
+			var M = ary[1];
+			var numsA = ReadIntArray();
+			var numsB = ReadIntArray();
+			Array.Sort(numsA);
+			Array.Sort(numsB);
+
+			// 同じ行 or 列 に同じ数があるのはNG
+			if (HasDuplicateInSortedArray(numsA) ||
+				HasDuplicateInSortedArray(numsB)) {
+				WriteLine(0);
+				return;
+			}
+
+			// グリッドには必ず 1 〜 N*M の連続する整数が1つずつ入っている。
+			// その大きい方から『入りうるセル数』を求め、
+			// すべての積を求める。(mod MOD)
+
+			long ans = 1;
+			for (int i = N * M; 1 <= i; i--) {
+				var idxA = BinarySearch(numsA, i);
+				var idxB = BinarySearch(numsB, i);
+				if (N <= idxA || M <= idxB) {
+					// そもそも置く場所がない
+					WriteLine(0);
+					return;
+				}
+				if (numsA[idxA] == i && numsB[idxB] == i) {
+					// numA, numB 両方に存在 => 入るセルが一意に決まる => 何もしない
+					continue;
+				} else if (numsA[idxA] != i && numsB[idxB] != i) {
+					// numA, numB どちらにも存在しない => 動ける範囲は矩形領域 - 既に入った個数
+					var woc = (N - idxA) * (M - idxB) - (N * M - i);
+					ans = (ans * woc) % MOD;
+				} else {
+					// 片方に存在する => (Aの場合) 動ける範囲はidxB以降 
+					if (numsA[idxA] == i) {
+						var woc = M - idxB;
+						ans = (ans * woc) % MOD;
+					} else {
+						var woc = N - idxA;
+						ans = (ans * woc) % MOD;
+					}
+				}
+			}
+			WriteLine(ans);
 		}
 
 #if !MYHOME
@@ -23,6 +72,8 @@ namespace KeyenceContest2019_D
 
 	public static class Util
 	{
+		public readonly static long MOD = 1000000007;
+
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
 			var sb = new StringBuilder();
 			foreach (var item in array) {
@@ -63,6 +114,56 @@ namespace KeyenceContest2019_D
 				min = min.CompareTo(nums[i]) < 0 ? min : nums[i];
 			}
 			return min;
+		}
+
+		/// <summary>
+		/// ソート済み配列 ary に同じ値の要素が含まれている？
+		/// ※ソート順は昇順/降順どちらでもよい
+		/// </summary>
+		public static bool HasDuplicateInSortedArray<T>(T[] ary) where T : IComparable, IComparable<T> {
+			if (ary.Length <= 1) return false;
+
+			var lastNum = ary[ary.Length - 1];
+
+			foreach (var n in ary) {
+				if (lastNum.CompareTo(n) == 0) {
+					return true;
+				} else {
+					lastNum = n;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// 二分探索
+		/// ※条件を満たす最小のidxを返す
+		/// ※満たすものがない場合は ary.Length を返す
+		/// ※『aryの先頭側が条件を満たさない、末尾側が条件を満たす』という前提
+		/// ただし、IsOK(...)の戻り値を逆転させれば、逆でも同じことが可能。
+		/// </summary>
+		/// <param name="ary">探索対象配列 ★ソート済みであること</param>
+		/// <param name="key">探索値 ※これ以上の値を持つ（IsOKがtrueを返す）最小のindexを返す</param>
+		public static int BinarySearch<T>(T[] ary, T key) where T : IComparable, IComparable<T> {
+			int left = -1;
+			int right = ary.Length;
+
+			while (1 < right - left) {
+				var mid = left + (right - left) / 2;
+
+				if (IsOK(ary, mid, key)) {
+					right = mid;
+				} else {
+					left = mid;
+				}
+			}
+
+			// left は条件を満たさない最大の値、right は条件を満たす最小の値になっている
+			return right;
+		}
+		public static bool IsOK<T>(T[] ary, int idx, T key) where T : IComparable, IComparable<T> {
+			// key <= ary[idx] と同じ意味
+			return key.CompareTo(ary[idx]) <= 0;
 		}
 	}
 
@@ -115,5 +216,4 @@ namespace KeyenceContest2019_D
 			Console.WriteLine(sb.ToString());
 		}
 	}
-
 }
