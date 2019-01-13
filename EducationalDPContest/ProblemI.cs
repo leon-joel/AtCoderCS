@@ -6,7 +6,7 @@ using System.Text;
 
 // Educational DP Contest
 // https://atcoder.jp/contests/dp/tasks
-namespace EducationalDPContestI
+namespace EducationalDPContest.I
 {
 	public static class Util
 	{

@@ -6,8 +6,65 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace EducationalDPContest.D
+namespace AISingContest2019_D
 {
+	public static class TestDataFactory
+	{
+		public static TestData[] Cases() {
+			return new TestData[] {
+				new TestData("Test1",
+@"1 3 2",
+@"1"),
+				new TestData("Test2",
+@"1 3 1",
+@"2"),
+				new TestData("Test3",
+@"2 3 3",
+@"1"),
+				new TestData("Test4",
+@"2 3 1",
+@"5"),
+				new TestData("Test5",
+@"7 1 1",
+@"1"),
+				new TestData("Test6",
+@"15 8 5",
+@"437760187"),
+				new TestData("Test7",
+@"1 2 1",
+@"1"),
+				new TestData("Test8",
+@"2 2 1",
+@"2"),
+//				new TestData("Test8-1",
+//@"1000000005
+//1",
+//@"1000000005"),
+//				new TestData("Test9",
+//@"1000000008
+//1",
+//@"1"),
+//				new TestData("Test9-1",
+//@"1000000009
+//1",
+//@"2"),
+
+//				new TestData("Test10",
+//@"2000000013
+//1",
+//@"1000000006"),
+//				new TestData("Test11",
+//@"2000000014
+//1",
+//@"0"),
+//				new TestData("Test12",
+//@"2000000015
+//1",
+//@"1"),
+			};
+		}
+	}
+
 	public class NunitSolver : Solver
 	{
 		readonly StringReader _reader;
@@ -22,7 +79,9 @@ namespace EducationalDPContest.D
 		override protected string[] ReadStringArray() => _reader.ReadLine().Split(' ');
 		override protected int[] ReadIntArray() => _reader.ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
 		override protected long[] ReadLongArray() => _reader.ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
+		override protected double[] ReadDoubleArray() => _reader.ReadLine().Split(' ').Select<string, double>(s => double.Parse(s)).ToArray();
 		override protected void WriteLine(string line) => _sb.AppendLine(line);
+		override protected void WriteLine(double d) => _sb.AppendLine($"{d:F9}");
 		override protected void WriteLine<T>(T value) => _sb.AppendLine(value.ToString());
 	}
 
@@ -53,44 +112,6 @@ namespace EducationalDPContest.D
 			Name = name;
 			Input = input;
 			Expected = expected.Replace("\r\n", "\n");
-		}
-	}
-
-	public static class TestDataFactory
-	{
-		public static TestData[] Cases() {
-			return new TestData[] {
-				new TestData("Test1",
-@"3 8
-3 30
-4 50
-5 60",
-@"90"),
-				new TestData("Test2",
-@"5 5
-1 1000000000
-1 1000000000
-1 1000000000
-1 1000000000
-1 1000000000",
-@"5000000000"),
-				new TestData("Test3",
-@"6 15
-6 5
-5 6
-6 4
-6 6
-3 5
-7 2",
-@"17"),
-//				new TestData("Test4",
-//@"10 4
-//40 10 20 70 80 10 20 70 80 60",
-//@"40"),
-//				new TestData("Test5",
-//@"4 19",
-//@"4"),
-			};
 		}
 	}
 }

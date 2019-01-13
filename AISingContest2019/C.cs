@@ -6,7 +6,7 @@ using System.Text;
 
 // AISingContest2019
 // https://atcoder.jp/contests/aising2019
-namespace AISingContest2019_C
+namespace AISingContest2019.C
 {
 	class Node
 	{

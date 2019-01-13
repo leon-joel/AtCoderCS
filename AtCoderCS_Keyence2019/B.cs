@@ -6,11 +6,31 @@ using System.Text;
 
 // AISingContest2019
 // https://atcoder.jp/contests/aising2019
-namespace AISingContest2019.D
+namespace AISingContest2019_B
 {
 	public class Solver : SolverBase
 	{
 		public void Run() {
+			var N = ReadInt();
+			var ary = ReadIntArray();
+			var A = ary[0];
+			var B = ary[1];
+			var Points = ReadIntArray();
+
+			// 区間ごとにカウントする
+			int cntA = 0;
+			int cntB = 0;
+			int cntC = 0;
+			foreach (var point in Points) {
+				if (point <= A)
+					++cntA;
+				else if (point <= B)
+					++cntB;
+				else
+					++cntC;
+			}
+			var ans = Util.Min(cntA, cntB, cntC);
+			WriteLine(ans);
 		}
 
 #if !MYHOME
@@ -54,6 +74,15 @@ namespace AISingContest2019.D
 				max = max.CompareTo(nums[i]) > 0 ? max : nums[i];
 			}
 			return max;
+		}
+		public static T Min<T>(params T[] nums) where T : IComparable {
+			if (nums.Length == 0) return default(T);
+
+			T min = nums[0];
+			for (int i = 1; i < nums.Length; i++) {
+				min = min.CompareTo(nums[i]) < 0 ? min : nums[i];
+			}
+			return min;
 		}
 	}
 
@@ -106,5 +135,4 @@ namespace AISingContest2019.D
 			Console.WriteLine(sb.ToString());
 		}
 	}
-
 }

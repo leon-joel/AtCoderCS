@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace EducationalDPContestY
+namespace EducationalDPContest.Y
 {
 	public class NunitSolver : Solver
 	{

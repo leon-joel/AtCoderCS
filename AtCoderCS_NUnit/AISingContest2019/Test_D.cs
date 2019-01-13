@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AISingContest2019_D
+namespace AISingContest2019.D
 {
 	public static class TestDataFactory
 	{

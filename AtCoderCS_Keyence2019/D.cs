@@ -6,7 +6,7 @@ using System.Text;
 
 // AISingContest2019
 // https://atcoder.jp/contests/aising2019
-namespace AISingContest2019.D
+namespace AISingContest2019_D
 {
 	public class Solver : SolverBase
 	{

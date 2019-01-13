@@ -6,11 +6,17 @@ using System.Text;
 
 // AISingContest2019
 // https://atcoder.jp/contests/aising2019
-namespace AISingContest2019.D
+namespace AISingContest2019_A
 {
 	public class Solver : SolverBase
 	{
 		public void Run() {
+			var N = ReadInt();
+			var H = ReadInt();
+			var W = ReadInt();
+
+			var ans = (N - H + 1) * (N - W + 1);
+			WriteLine(ans);
 		}
 
 #if !MYHOME
