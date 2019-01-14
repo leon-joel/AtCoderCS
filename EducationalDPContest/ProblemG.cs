@@ -10,31 +10,36 @@ namespace EducationalDPContest.G
 {
 	using static Util;
 
+	// メモ化再帰による解法
+	// https://qiita.com/drken/items/03c7db44ccd27820ea0d
+	// 『DP の更新順序が非自明』な場合にはメモ化再帰が大きなメリットを生むという一例
+	// ※明示的なトポロジカルソートが不要になる
 	public class Solver : SolverBase
 	{
 		int[] DP;
-		List<int>[] BRS;
+		List<int>[] Edges;
 		public void Run() {
 			var ary = ReadIntArray();
 			var N = ary[0];
 			var M = ary[1];
 
 			// Listの配列 に x -> y を格納していく
-			BRS = new List<int>[N];
+			Edges = new List<int>[N];
 			for (int i = 0; i < N; i++) {
-				BRS[i] = new List<int>();
+				Edges[i] = new List<int>();
 			}
 			for (int i = 0; i < M; i++) {
 				var xy = ReadIntArray();
 				var x = xy[0] - 1;
 				var y = xy[1] - 1;
 
-				BRS[x].Add(y);
+				Edges[x].Add(y);
 			}
 
 			DP = new int[N + 1];
 			InitArray(DP, -1);
 
+			// 全ノードをメモ化再帰で回して、最長を更新していく
 			int maxLen = 0;
 			for (int x = 0; x < N; x++) {
 				var len = Recurse(x);
@@ -43,16 +48,18 @@ namespace EducationalDPContest.G
 			WriteLine(maxLen);
 		}
 
+		// xからの最長経路長を返す
 		int Recurse(int x) {
 			if (DP[x] != -1) return DP[x];
 
-			// 移動先でループ再帰
+			// x->y の y でループ再帰
 			int maxLen = 0;
-			foreach (var y in BRS[x]) {
+			foreach (var y in Edges[x]) {
 				var len = Recurse(y) + 1;
 				if (maxLen < len) maxLen = len;
 			}
 
+			// メモしながら返す
 			return DP[x] = maxLen;
 		}
 
@@ -63,6 +70,72 @@ namespace EducationalDPContest.G
 #endif
 	}
 
+	// BFS 式にトポロジカルソートしながら DP
+	// https://qiita.com/drken/items/03c7db44ccd27820ea0d
+	public class Solver2 : SolverBase
+	{
+		public void Run() {
+			var ary = ReadIntArray();
+			var N = ary[0];
+			var M = ary[1];
+
+			// [y] = 当該頂点への入次数（頂点に入ってくる数）
+			int[] indegrees = new int[N];
+			// Listの配列 に x -> y を格納していく
+			List<int>[] Edges = new List<int>[N];
+			for (int i = 0; i < N; i++) {
+				Edges[i] = new List<int>();
+			}
+			for (int i = 0; i < M; i++) {
+				var xy = ReadIntArray();
+				var x = xy[0] - 1;
+				var y = xy[1] - 1;
+
+				Edges[x].Add(y);
+				indegrees[y]++;
+			}
+
+			// BFSの起点（入次数==0 の頂点９
+			Queue<int> que = new Queue<int>();
+			for (int i = 0; i < N; i++) {
+				if (indegrees[i] == 0)
+					que.Enqueue(i);
+			}
+
+			// 当該頂点までの最長パス長 ※初期値はすべて0
+			int[] DP = new int[N + 1];
+
+			// BFS
+			while (0 < que.Count) {
+				var x = que.Dequeue();
+
+				foreach (var y in Edges[x]) {
+					// 入次数を減らし
+					indegrees[y]--;
+
+					if (indegrees[y] == 0) {
+						// yへの入次数が0なら、yをqueueに入れる
+						que.Enqueue(y);
+
+						// yへの入次数が0になった＝yまでの最長距離が確定
+						DP[y] = DP[x] + 1;
+					}
+				}
+			}
+
+			int maxLen = 0;
+			for (int i = 0; i < N; i++) {
+				if (maxLen < DP[i]) maxLen = DP[i];
+			}
+			WriteLine(maxLen);
+		}
+
+#if !MYHOME
+		public static void Main(string[] args) {
+			new Solver().Run();
+		}
+#endif
+	}
 
 	public static class Util
 	{

@@ -115,6 +115,25 @@ namespace EducationalDPContest.G
 		override protected void WriteLine(double d) => _sb.AppendLine($"{d:F9}");
 		override protected void WriteLine<T>(T value) => _sb.AppendLine(value.ToString());
 	}
+	public class NunitSolver2 : Solver2
+	{
+		readonly StringReader _reader;
+		readonly StringBuilder _sb;
+		public NunitSolver2(string input, StringBuilder writer) {
+			_reader = new StringReader(input);
+			_sb = writer;
+		}
+		override protected string ReadLine() => _reader.ReadLine();
+		override protected int ReadInt() => int.Parse(_reader.ReadLine());
+		override protected long ReadLong() => long.Parse(_reader.ReadLine());
+		override protected string[] ReadStringArray() => _reader.ReadLine().Split(' ');
+		override protected int[] ReadIntArray() => _reader.ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
+		override protected long[] ReadLongArray() => _reader.ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
+		override protected double[] ReadDoubleArray() => _reader.ReadLine().Split(' ').Select<string, double>(s => double.Parse(s)).ToArray();
+		override protected void WriteLine(string line) => _sb.AppendLine(line);
+		override protected void WriteLine(double d) => _sb.AppendLine($"{d:F9}");
+		override protected void WriteLine<T>(T value) => _sb.AppendLine(value.ToString());
+	}
 
 	[TestFixture()]
 	public class SolverTest
@@ -123,6 +142,16 @@ namespace EducationalDPContest.G
 		public void TestCase(TestData data) {
 			var sb = new StringBuilder();
 			var solver = new NunitSolver(data.Input, sb);
+			var sw = Stopwatch.StartNew();
+			solver.Run();
+			sw.Stop();
+			Console.WriteLine($"Elapsed: {sw.Elapsed}");
+			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
+		}
+		[TestCaseSource(typeof(TestDataFactory), "Cases")]
+		public void TestCase2(TestData data) {
+			var sb = new StringBuilder();
+			var solver = new NunitSolver2(data.Input, sb);
 			var sw = Stopwatch.StartNew();
 			solver.Run();
 			sw.Stop();
