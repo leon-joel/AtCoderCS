@@ -59,6 +59,7 @@
     <Compile Include="AISingContest2019\D.cs" />
     <Compile Include="AISingContest2019\B.cs" />
     <Compile Include="AISingContest2019\C.cs" />
+    <Compile Include="EducationalDPContest\ProblemG.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Program_ChokudaiSpeed-J.cs" />

@@ -58,6 +58,7 @@
     <Compile Include="AISingContest2019\Test_D.cs" />
     <Compile Include="AISingContest2019\Test_B.cs" />
     <Compile Include="AISingContest2019\Test_C.cs" />
+    <Compile Include="EducationalDPContest\Test_ProblemG.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
