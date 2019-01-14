@@ -41,6 +41,12 @@
     <Compile Include="XY.cs" />
     <Compile Include="BinarySearch.cs" />
     <Compile Include="Tests\BinarySearch_Test.cs" />
+    <Compile Include="GcdLcm.cs" />
+    <Compile Include="Tests\GcdLcm_Test.cs" />
+    <Compile Include="Modulo.cs" />
+    <Compile Include="Tests\Modulo_Test.cs" />
+    <Compile Include="PriorityQueue.cs" />
+    <Compile Include="BalancedTree.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
