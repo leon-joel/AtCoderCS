@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C0E5C84C-6260-4383-A261-051BDBAE47D3}</ProjectGuid>
+    <ProjectGuid>{48D50E28-E869-42D4-8F00-6B6E00B49176}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>AtCoderCS_NUnit</RootNamespace>
-    <AssemblyName>AtCoderCS_NUnit</AssemblyName>
+    <RootNamespace>EducationalDPContest</RootNamespace>
+    <AssemblyName>EducationalDPContest</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -18,45 +17,45 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>Latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test_Mujin2018.cs" />
-    <Compile Include="TypicalDPContest\Test_TypicalDPContest.cs" />
-    <Compile Include="Paiza\Test_S024_Sea.cs" />
-    <Compile Include="Test_ABC087-D.cs" />
-    <Compile Include="Paiza\S024_Sea.cs" />
-    <Compile Include="TypicalDPContest\TypicalDPContest.cs" />
-    <Compile Include="Program_ABC087-D.cs" />
-    <Compile Include="Program_ARC061-C.cs" />
-    <Compile Include="Program_Mujin2018.cs" />
+    <Compile Include="ProblemA.cs" />
+    <Compile Include="ProblemB.cs" />
+    <Compile Include="ProblemC.cs" />
+    <Compile Include="ProblemD.cs" />
+    <Compile Include="ProblemE.cs" />
+    <Compile Include="ProblemF.cs" />
+    <Compile Include="ProblemG.cs" />
+    <Compile Include="ProblemH.cs" />
+    <Compile Include="ProblemI.cs" />
+    <Compile Include="ProblemS.cs" />
+    <Compile Include="ProblemY.cs" />
+    <Compile Include="Test_ProblemA.cs" />
+    <Compile Include="Test_ProblemB.cs" />
+    <Compile Include="Test_ProblemC.cs" />
+    <Compile Include="Test_ProblemD.cs" />
+    <Compile Include="Test_ProblemE.cs" />
+    <Compile Include="Test_ProblemF.cs" />
+    <Compile Include="Test_ProblemG.cs" />
+    <Compile Include="Test_ProblemH.cs" />
+    <Compile Include="Test_ProblemI.cs" />
+    <Compile Include="Test_ProblemS.cs" />
+    <Compile Include="Test_ProblemY.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Test_ChokudaiSpeed-J.cs" />
-    <None Include="Test_ARC061-C.cs" />
-    <None Include="Test_Dwango5-C.cs" />
-    <None Include="DataReaderWriter.cs" />
-    <None Include="Program_ChokudaiSpeed-J.cs" />
-    <None Include="Program_Dwango5-C.cs" />
-    <None Include="Solver_partial.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TypicalDPContest\" />
-    <Folder Include="Paiza\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

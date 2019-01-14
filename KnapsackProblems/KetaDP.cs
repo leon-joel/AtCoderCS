@@ -41,11 +41,9 @@ namespace KetaDP
 		virtual protected void WriteLine(double d) => Console.WriteLine($"{d:F9}");
 
 		[Conditional("DEBUG")]
-		protected void Dump(string s) => Console.WriteLine(s);
-		[Conditional("DEBUG")]
-		protected void Dump(char c) => Console.WriteLine(c);
-		[Conditional("DEBUG")]
 		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
+		[Conditional("DEBUG")]
+		protected void Dump<T>(T value) => Console.WriteLine(value);
 		[Conditional("DEBUG")]
 		protected void Dump<T>(IEnumerable<T> array) where T : IFormattable {
 			string s = Util.DumpToString(array);
@@ -53,6 +51,11 @@ namespace KetaDP
 			Console.WriteLine(s);
 			//_writer.WriteLine(s);
 		}
+		[Conditional("DEBUG")]
+		protected void DumpBit(int value) => Console.WriteLine(Convert.ToString(value, 2));
+		[Conditional("DEBUG")]
+		protected void DumpBit(long value) => Console.WriteLine(Convert.ToString(value, 2));
+
 		[Conditional("DEBUG")]
 		protected void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {
 			var sb = new StringBuilder();
@@ -228,6 +231,96 @@ namespace KetaDP
 #if !MYHOME
 		public static void Main(string[] args) {
 			new SolverABC029D().Run();
+		}
+#endif
+	}
+
+	// Code Festival 2014 予選A: D問題: 桁DPで解くこともできる問題
+	// https://code-festival-2014-quala.contest.atcoder.jp/tasks/code_festival_qualA_d
+	public class SolverCodeFes2014D : SolverBase {
+		string A;
+		long LA;
+		int K;
+		public void Run() {
+			var ary = ReadStringArray();
+			A = ary[0];
+			LA = long.Parse(A);
+			Dump(LA);
+			K = int.Parse(ary[1]);
+
+			// 何種類必要？
+			int bit = 0;
+			int cnt = 0;
+			for (int i = 0; i < A.Length; i++) {
+				var n = A[i] - '0';
+
+				// 1桁目=0, 2桁目=1, ...
+				if (0 < (bit & (1 << n))) {
+					bit |= 1 << n;
+					++cnt;
+				}
+			}
+			//Dump(A);
+			//DumpBit(bit);
+			//Dump(cnt);
+
+			// K種類以下しか使わなくていいなら即Return
+			if (cnt <= K) {
+				WriteLine(0);
+				return;
+			}
+
+			// K-1 使うまではAと同じ数字をトレース
+			// K種類目で
+			//   Aと同じ数字   : 以降は再帰的に調べる
+			//   Aと同じ数字-1 : 以降は最大数字を使用
+			//   Aと同じ数字+1 : 以降は最小数字を使用
+			// の3パターンを試していく
+		}
+
+		int FindMinNum(int bit) {
+			for (int i = 0; i < 10; i++) {
+				if (0 < (bit & (1 << i)))
+					return i;
+			}
+			Debug.Assert(false);
+			return 0;
+		}
+		long Recursive(string s, int bit) {
+			// s: これまでに確定した数字列
+			// bit: 使用できる数字
+
+			if (A.Length < s.Length) {
+				var ls = long.Parse(s);
+				return Math.Abs(ls - LA);
+			}
+			if (s.Length == A.Length) {
+				var ls = long.Parse(s);
+				if (LA <= ls) {
+					return ls - LA;
+				} else {
+					var d = LA - ls;
+					var minNum = FindMinNum(bit);
+					var ls10 = ls * 10 + minNum;
+					var d10 = Math.Abs(ls10 - LA);
+
+
+				}
+			}
+			return long.Parse(s);
+
+			//for (int i = 0; i < 10; i++) {
+			//	if (0 < (bit & (1 << i))) {
+			//		// bitが立っている＝使える数字
+
+			//	}
+
+			//}
+		}
+
+#if !MYHOME
+		public static void Main(string[] args) {
+			new SolverCodeFes2014D().Run();
 		}
 #endif
 	}
