@@ -4,11 +4,25 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-// Educational DP Contest
+// G問題の類題: 
+// AOJ2503: C: Project Management / プロジェクト管理
+// http://judge.u-aizu.ac.jp/onlinejudge/description.jsp?id=2503
+// https://qiita.com/drken/items/03c7db44ccd27820ea0d
 // https://atcoder.jp/contests/dp/tasks
-namespace EducationalDPContest.G
+namespace EducationalDPContest.G_AOJ2503
 {
 	using static Util;
+
+	struct Dest
+	{
+		public int Y;
+		public int Len;
+
+		public Dest(int y, int len) {
+			Y = y;
+			Len = len;
+		}
+	}
 
 	// メモ化再帰による解法
 	// https://qiita.com/drken/items/03c7db44ccd27820ea0d
@@ -17,23 +31,24 @@ namespace EducationalDPContest.G
 	public class Solver : SolverBase
 	{
 		int[] DP;
-		List<int>[] Edges;
+		List<Dest>[] Edges;
 		public void Run() {
 			var ary = ReadIntArray();
 			var N = ary[0];
 			var M = ary[1];
 
-			// Listの配列 に x -> y を格納していく
-			Edges = new List<int>[N];
+			// Listの配列 に x -> [y, len] を格納していく
+			Edges = new List<Dest>[N];
 			for (int i = 0; i < N; i++) {
-				Edges[i] = new List<int>();
+				Edges[i] = new List<Dest>();
 			}
 			for (int i = 0; i < M; i++) {
-				var xy = ReadIntArray();
-				var x = xy[0] - 1;
-				var y = xy[1] - 1;
+				var xyl = ReadIntArray();
+				var x = xyl[0];
+				var y = xyl[1];
+				var l = xyl[2];
 
-				Edges[x].Add(y);
+				Edges[x].Add(new Dest(y, l));
 			}
 
 			DP = new int[N + 1];
@@ -54,8 +69,8 @@ namespace EducationalDPContest.G
 
 			// x->y の y でループ再帰
 			int maxLen = 0;
-			foreach (var y in Edges[x]) {
-				var len = Recurse(y) + 1;
+			foreach (var dest in Edges[x]) {
+				var len = Recurse(dest.Y) + dest.Len;
 				if (maxLen < len) maxLen = len;
 			}
 
@@ -81,21 +96,22 @@ namespace EducationalDPContest.G
 
 			// [y] = 当該頂点への入次数（頂点に入ってくる数）
 			int[] indegrees = new int[N];
-			// Listの配列 に x -> y を格納していく
-			List<int>[] Edges = new List<int>[N];
+			// Listの配列 に x -> [y, len] を格納していく
+			List<Dest>[] Edges = new List<Dest>[N];
 			for (int i = 0; i < N; i++) {
-				Edges[i] = new List<int>();
+				Edges[i] = new List<Dest>();
 			}
 			for (int i = 0; i < M; i++) {
-				var xy = ReadIntArray();
-				var x = xy[0] - 1;
-				var y = xy[1] - 1;
+				var xyl = ReadIntArray();
+				var x = xyl[0];
+				var y = xyl[1];
+				var l = xyl[2];
 
-				Edges[x].Add(y);
+				Edges[x].Add(new Dest(y, l));
 				indegrees[y]++;
 			}
 
-			// BFSの起点（入次数==0 の頂点９
+			// BFSの起点（入次数==0 の頂点）
 			Queue<int> que = new Queue<int>();
 			for (int i = 0; i < N; i++) {
 				if (indegrees[i] == 0)
@@ -109,16 +125,18 @@ namespace EducationalDPContest.G
 			while (0 < que.Count) {
 				var x = que.Dequeue();
 
-				foreach (var y in Edges[x]) {
+				foreach (var dest in Edges[x]) {
 					// 入次数を減らし
+					var y = dest.Y;
 					indegrees[y]--;
+
+					// yまでの距離を更新
+					var len = DP[x] + dest.Len;
+					if (DP[y] < len) DP[y] = len;
 
 					if (indegrees[y] == 0) {
 						// yへの入次数が0なら、yをqueueに入れる
 						que.Enqueue(y);
-
-						// yへの入次数が0になった＝yまでの最長距離が確定
-						DP[y] = DP[x] + 1;
 					}
 				}
 			}

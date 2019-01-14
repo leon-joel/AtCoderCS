@@ -53,6 +53,8 @@
     <Compile Include="Test_ProblemI.cs" />
     <Compile Include="Test_ProblemS.cs" />
     <Compile Include="Test_ProblemY.cs" />
+    <Compile Include="ProblemG_AOJ2503.cs" />
+    <Compile Include="Test_ProblemG_AOJ2503.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
