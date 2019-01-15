@@ -1,0 +1,335 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+
+// G問題の類題: 
+// ABC037: D: 経路
+// https://abc037.contest.atcoder.jp/tasks/abc037_d
+// https://qiita.com/drken/items/03c7db44ccd27820ea0d
+// https://atcoder.jp/contests/dp/tasks
+namespace EducationalDPContest.G_ABC037D
+{
+	using static Util;
+
+	// メモ化再帰による解法
+	// https://qiita.com/drken/items/03c7db44ccd27820ea0d
+	// 『DP の更新順序が非自明』な場合にはメモ化再帰が大きなメリットを生むという一例
+	// ※明示的なトポロジカルソートが不要になる
+	public class Solver : SolverBase
+	{
+		struct Dest
+		{
+			public int Y;
+			public int Len;
+
+			public Dest(int y, int len) {
+				Y = y;
+				Len = len;
+			}
+		}
+
+		int[] DP;
+		List<Dest>[] Edges;
+		public void Run() {
+			var ary = ReadIntArray();
+			var N = ary[0];
+			var M = ary[1];
+
+			// Listの配列 に x -> [y, len] を格納していく
+			Edges = new List<Dest>[N];
+			for (int i = 0; i < N; i++) {
+				Edges[i] = new List<Dest>();
+			}
+			for (int i = 0; i < M; i++) {
+				var xyl = ReadIntArray();
+				var x = xyl[0];
+				var y = xyl[1];
+				var l = xyl[2];
+
+				Edges[x].Add(new Dest(y, l));
+			}
+
+			DP = new int[N + 1];
+			InitArray(DP, -1);
+
+			// 全ノードをメモ化再帰で回して、最長を更新していく
+			int maxLen = 0;
+			for (int x = 0; x < N; x++) {
+				var len = Recurse(x);
+				if (maxLen < len) maxLen = len;
+			}
+			WriteLine(maxLen);
+		}
+
+		// xからの最長経路長を返す
+		int Recurse(int x) {
+			if (DP[x] != -1) return DP[x];
+
+			// x->y の y でループ再帰
+			int maxLen = 0;
+			foreach (var dest in Edges[x]) {
+				var len = Recurse(dest.Y) + dest.Len;
+				if (maxLen < len) maxLen = len;
+			}
+
+			// メモしながら返す
+			return DP[x] = maxLen;
+		}
+
+#if !MYHOME
+		public static void Main(string[] args) {
+			new Solver().Run();
+		}
+#endif
+	}
+
+	// BFS 式にトポロジカルソートしながら DP
+	// https://qiita.com/drken/items/03c7db44ccd27820ea0d
+	public class Solver2 : SolverBase
+	{
+		public void Run() {
+			var ary = ReadIntArray();
+			var H = ary[0];
+			var W = ary[1];
+
+			// 実際に移動て切る方向（小->大）とは逆の方向に辺を張っていく。
+			// どこにも移動できない点から逆順に経路数を配っていくので。
+			// 以下、全て逆向きで実装している。
+
+			// でも、こんなことしなくても、実際の方向に経路数を配っていけば
+			// 答えは同じになった気がする…
+
+
+			// [y] = 当該頂点への入次数（頂点に入ってくる数）
+			int[] indegrees = new int[H * W];
+			// Listの配列 に x -> y を格納していく
+			List<int>[] Edges = new List<int>[H * W];
+			for (int i = 0; i < H * W; i++) {
+				Edges[i] = new List<int>();
+			}
+
+			int[] lastRow = null;
+			for (int i = 0; i < H; i++) {
+				var row = ReadIntArray();
+
+				// 左右の辺を調べる
+				for (int j = 0; j < W-1; j++) {
+					if (row[j] < row[j + 1]) {
+						// 左向き（本当は右向きだが逆に張っていく）
+						Edges[i * W + j + 1].Add(i * W + j);
+						indegrees[i * W + j]++;
+					} else if (row[j] > row[j + 1]) {
+						// 右向き
+						Edges[i * W + j].Add(i * W + j + 1);
+						indegrees[i * W + j + 1]++;
+					}
+				}
+				// 上下の辺を調べる
+				if (lastRow != null) {
+					for (int j = 0; j < W; j++) {
+						if (row[j] < lastRow[j]) {
+							// 下向き（本当は上向きだが逆に張っていく）
+							Edges[(i - 1) * W + j].Add(i * W + j);
+							indegrees[i * W + j]++;
+						} else if (row[j] > lastRow[j]) {
+							// 上向き
+							Edges[i * W + j].Add((i - 1) * W + j);
+							indegrees[(i - 1) * W + j]++;
+						}
+					}
+				}
+				lastRow = row;
+			}
+
+			// BFSの起点（入次数==0 の頂点）
+			Queue<int> que = new Queue<int>();
+			for (int i = 0; i < H * W ; i++) {
+				if (indegrees[i] == 0)
+					que.Enqueue(i);
+			}
+
+			// 当該頂点からの移動経路数
+			long[] DP = new long[H * W];
+			InitArray(DP, 1);	// 「動かない」経路の分は最初からセットしておく
+
+			// BFS
+			while (0 < que.Count) {
+				var x = que.Dequeue();
+
+				foreach (var y in Edges[x]) {
+					// 入次数を減らし
+					indegrees[y]--;
+
+					// y点の経路数に加算
+					DP[y] = (DP[y] + DP[x]) % MOD;
+
+					if (indegrees[y] == 0) {
+						// yへの入次数が0なら、yをqueueに入れる
+						que.Enqueue(y);
+					}
+				}
+			}
+
+			long ans = 0;
+			for (int i = 0; i < H * W; i++) {
+				ans = (ans + DP[i]) % MOD;
+			}
+			WriteLine(ans);
+		}
+
+#if !MYHOME
+		public static void Main(string[] args) {
+			new Solver2().Run();
+		}
+#endif
+	}
+
+	public static class Util
+	{
+		public readonly static long MOD = 1000000007;
+
+		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
+			var sb = new StringBuilder();
+			foreach (var item in array) {
+				sb.Append(item);
+				sb.Append(", ");
+			}
+			return sb.ToString();
+		}
+
+		public static void InitArray<T>(T[] ary, T value) {
+			for (int i = 0; i < ary.Length; i++) {
+				ary[i] = value;
+			}
+		}
+
+		public static void InitDP<T>(T[,] dp, T value) {
+			for (int i = 0; i < dp.GetLength(0); i++) {
+				for (int j = 0; j < dp.GetLength(1); j++) {
+					dp[i, j] = value;
+				}
+			}
+		}
+
+		public static T Max<T>(params T[] nums) where T : IComparable {
+			if (nums.Length == 0) return default(T);
+
+			T max = nums[0];
+			for (int i = 1; i < nums.Length; i++) {
+				max = max.CompareTo(nums[i]) > 0 ? max : nums[i];
+			}
+			return max;
+		}
+		public static T Min<T>(params T[] nums) where T : IComparable {
+			if (nums.Length == 0) return default(T);
+
+			T min = nums[0];
+			for (int i = 1; i < nums.Length; i++) {
+				min = min.CompareTo(nums[i]) < 0 ? min : nums[i];
+			}
+			return min;
+		}
+
+		/// <summary>
+		/// ソート済み配列 ary に同じ値の要素が含まれている？
+		/// ※ソート順は昇順/降順どちらでもよい
+		/// </summary>
+		public static bool HasDuplicateInSortedArray<T>(T[] ary) where T : IComparable, IComparable<T> {
+			if (ary.Length <= 1) return false;
+
+			var lastNum = ary[ary.Length - 1];
+
+			foreach (var n in ary) {
+				if (lastNum.CompareTo(n) == 0) {
+					return true;
+				} else {
+					lastNum = n;
+				}
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// 二分探索
+		/// ※条件を満たす最小のidxを返す
+		/// ※満たすものがない場合は ary.Length を返す
+		/// ※『aryの先頭側が条件を満たさない、末尾側が条件を満たす』という前提
+		/// ただし、IsOK(...)の戻り値を逆転させれば、逆でも同じことが可能。
+		/// </summary>
+		/// <param name="ary">探索対象配列 ★ソート済みであること</param>
+		/// <param name="key">探索値 ※これ以上の値を持つ（IsOKがtrueを返す）最小のindexを返す</param>
+		public static int BinarySearch<T>(T[] ary, T key) where T : IComparable, IComparable<T> {
+			int left = -1;
+			int right = ary.Length;
+
+			while (1 < right - left) {
+				var mid = left + (right - left) / 2;
+
+				if (IsOK(ary, mid, key)) {
+					right = mid;
+				} else {
+					left = mid;
+				}
+			}
+
+			// left は条件を満たさない最大の値、right は条件を満たす最小の値になっている
+			return right;
+		}
+		public static bool IsOK<T>(T[] ary, int idx, T key) where T : IComparable, IComparable<T> {
+			// key <= ary[idx] と同じ意味
+			return key.CompareTo(ary[idx]) <= 0;
+		}
+	}
+
+	public class SolverBase
+	{
+		virtual protected string ReadLine() => Console.ReadLine();
+		virtual protected int ReadInt() => int.Parse(ReadLine());
+		virtual protected long ReadLong() => long.Parse(ReadLine());
+		virtual protected string[] ReadStringArray() => ReadLine().Split(' ');
+		virtual protected int[] ReadIntArray() => ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
+		virtual protected long[] ReadLongArray() => ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
+		virtual protected double[] ReadDoubleArray() => ReadLine().Split(' ').Select<string, double>(s => double.Parse(s)).ToArray();
+		virtual protected void WriteLine(string line) => Console.WriteLine(line);
+		virtual protected void WriteLine(double d) => Console.WriteLine($"{d:F9}");
+		virtual protected void WriteLine<T>(T value) where T : IFormattable => Console.WriteLine(value);
+
+		[Conditional("DEBUG")]
+		protected void Dump(string s) => Console.WriteLine(s);
+		[Conditional("DEBUG")]
+		protected void Dump(char c) => Console.WriteLine(c);
+		[Conditional("DEBUG")]
+		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
+		[Conditional("DEBUG")]
+		protected void Dump<T>(IEnumerable<T> array) where T : IFormattable {
+			string s = Util.DumpToString(array);
+			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
+			Console.WriteLine(s);
+			//_writer.WriteLine(s);
+		}
+		[Conditional("DEBUG")]
+		protected void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {
+			var sb = new StringBuilder();
+			foreach (var a in arrayOfArray) {
+				sb.AppendLine(Util.DumpToString(a));
+			}
+			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
+			Console.WriteLine(sb.ToString());
+			//_writer.WriteLine(sb.ToString());
+		}
+		[Conditional("DEBUG")]
+		protected void DumpDP<T>(T[,] dp) where T : IFormattable {
+			var sb = new StringBuilder();
+			for (int i = 0; i < dp.GetLength(0); i++) {
+				for (int j = 0; j < dp.GetLength(1); j++) {
+					sb.Append(dp[i, j]);
+					sb.Append(", ");
+				}
+				sb.AppendLine();
+			}
+			Console.WriteLine(sb.ToString());
+		}
+	}
+}
