@@ -19,63 +19,71 @@ namespace EducationalDPContest.G_ABC037D
 	// ※明示的なトポロジカルソートが不要になる
 	public class Solver : SolverBase
 	{
-		struct Dest
-		{
-			public int Y;
-			public int Len;
-
-			public Dest(int y, int len) {
-				Y = y;
-				Len = len;
-			}
-		}
-
-		int[] DP;
-		List<Dest>[] Edges;
+		long[] DP;
+		List<int>[] Edges;
 		public void Run() {
 			var ary = ReadIntArray();
-			var N = ary[0];
-			var M = ary[1];
+			var H = ary[0];
+			var W = ary[1];
 
-			// Listの配列 に x -> [y, len] を格納していく
-			Edges = new List<Dest>[N];
-			for (int i = 0; i < N; i++) {
-				Edges[i] = new List<Dest>();
+			// Listの配列 に x -> y を格納していく
+			Edges = new List<int>[H * W];
+			for (int i = 0; i < H * W; i++) {
+				Edges[i] = new List<int>();
 			}
-			for (int i = 0; i < M; i++) {
-				var xyl = ReadIntArray();
-				var x = xyl[0];
-				var y = xyl[1];
-				var l = xyl[2];
+			int[] lastRow = null;
+			for (int i = 0; i < H; i++) {
+				var row = ReadIntArray();
 
-				Edges[x].Add(new Dest(y, l));
+				// 左右の辺を調べる
+				for (int j = 0; j < W - 1; j++) {
+					if (row[j] < row[j + 1]) {
+						// 右向き
+						Edges[i * W + j].Add(i * W + j + 1);
+					} else if (row[j] > row[j + 1]) {
+						// 左向き
+						Edges[i * W + j + 1].Add(i * W + j);
+					}
+				}
+				// 上下の辺を調べる
+				if (lastRow != null) {
+					for (int j = 0; j < W; j++) {
+						if (row[j] < lastRow[j]) {
+							// 上向き
+							Edges[i * W + j].Add((i - 1) * W + j);
+						} else if (row[j] > lastRow[j]) {
+							// 下向き
+							Edges[(i - 1) * W + j].Add(i * W + j);
+						}
+					}
+				}
+				lastRow = row;
 			}
 
-			DP = new int[N + 1];
+			// 当該頂点からの移動経路数
+			DP = new long[H * W];
 			InitArray(DP, -1);
 
-			// 全ノードをメモ化再帰で回して、最長を更新していく
-			int maxLen = 0;
-			for (int x = 0; x < N; x++) {
-				var len = Recurse(x);
-				if (maxLen < len) maxLen = len;
+			// 全ノードをメモ化再帰で回し、当該点を起点とする経路数を更新していく
+			long ans = 0;
+			for (int x = 0; x < H * W; x++) {
+				ans = (ans + Recurse(x)) % MOD;
 			}
-			WriteLine(maxLen);
+			WriteLine(ans);
 		}
 
-		// xからの最長経路長を返す
-		int Recurse(int x) {
+		// xを起点とする経路数を返す
+		long Recurse(int x) {
 			if (DP[x] != -1) return DP[x];
 
 			// x->y の y でループ再帰
-			int maxLen = 0;
-			foreach (var dest in Edges[x]) {
-				var len = Recurse(dest.Y) + dest.Len;
-				if (maxLen < len) maxLen = len;
+			long sum = 1;	// xにとどまる経路 1 を入れておく
+			foreach (var y in Edges[x]) {
+				sum = (sum + Recurse(y)) % MOD;
 			}
 
 			// メモしながら返す
-			return DP[x] = maxLen;
+			return DP[x] = sum;
 		}
 
 #if !MYHOME
@@ -94,14 +102,6 @@ namespace EducationalDPContest.G_ABC037D
 			var H = ary[0];
 			var W = ary[1];
 
-			// 実際に移動て切る方向（小->大）とは逆の方向に辺を張っていく。
-			// どこにも移動できない点から逆順に経路数を配っていくので。
-			// 以下、全て逆向きで実装している。
-
-			// でも、こんなことしなくても、実際の方向に経路数を配っていけば
-			// 答えは同じになった気がする…
-
-
 			// [y] = 当該頂点への入次数（頂点に入ってくる数）
 			int[] indegrees = new int[H * W];
 			// Listの配列 に x -> y を格納していく
@@ -117,26 +117,26 @@ namespace EducationalDPContest.G_ABC037D
 				// 左右の辺を調べる
 				for (int j = 0; j < W-1; j++) {
 					if (row[j] < row[j + 1]) {
-						// 左向き（本当は右向きだが逆に張っていく）
-						Edges[i * W + j + 1].Add(i * W + j);
-						indegrees[i * W + j]++;
-					} else if (row[j] > row[j + 1]) {
 						// 右向き
 						Edges[i * W + j].Add(i * W + j + 1);
 						indegrees[i * W + j + 1]++;
+					} else if (row[j] > row[j + 1]) {
+						// 左向き
+						Edges[i * W + j + 1].Add(i * W + j);
+						indegrees[i * W + j]++;
 					}
 				}
 				// 上下の辺を調べる
 				if (lastRow != null) {
 					for (int j = 0; j < W; j++) {
 						if (row[j] < lastRow[j]) {
-							// 下向き（本当は上向きだが逆に張っていく）
-							Edges[(i - 1) * W + j].Add(i * W + j);
-							indegrees[i * W + j]++;
-						} else if (row[j] > lastRow[j]) {
 							// 上向き
 							Edges[i * W + j].Add((i - 1) * W + j);
 							indegrees[(i - 1) * W + j]++;
+						} else if (row[j] > lastRow[j]) {
+							// 下向き
+							Edges[(i - 1) * W + j].Add(i * W + j);
+							indegrees[i * W + j]++;
 						}
 					}
 				}
