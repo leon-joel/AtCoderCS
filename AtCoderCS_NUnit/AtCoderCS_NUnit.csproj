@@ -43,6 +43,8 @@
     <Compile Include="Program_ABC087-D.cs" />
     <Compile Include="Program_ARC061-C.cs" />
     <Compile Include="Program_Mujin2018.cs" />
+    <Compile Include="misc\TypicalContest001_A.cs" />
+    <Compile Include="misc\TypicalContest001_A_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -57,6 +59,7 @@
   <ItemGroup>
     <Folder Include="TypicalDPContest\" />
     <Folder Include="Paiza\" />
+    <Folder Include="misc\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
