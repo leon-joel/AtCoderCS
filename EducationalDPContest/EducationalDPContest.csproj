@@ -57,6 +57,8 @@
     <Compile Include="Test_ProblemG_AOJ2503.cs" />
     <Compile Include="ProblemG_ABC037D.cs" />
     <Compile Include="Test_ProblemG_ABC037D.cs" />
+    <Compile Include="ProblemJ.cs" />
+    <Compile Include="ProblemJ_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

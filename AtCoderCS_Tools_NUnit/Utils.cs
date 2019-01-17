@@ -22,11 +22,19 @@ namespace AtCoderCS_Tools
 				ary[i] = value;
 			}
 		}
-
-		public static void InitDP<T>(T[,] dp, T value) {
+		public static void InitDP2<T>(T[,] dp, T value) {
 			for (int i = 0; i < dp.GetLength(0); i++) {
 				for (int j = 0; j < dp.GetLength(1); j++) {
 					dp[i, j] = value;
+				}
+			}
+		}
+		public static void InitDP3<T>(T[,,] dp, T value) {
+			for (int i = 0; i < dp.GetLength(0); i++) {
+				for (int j = 0; j < dp.GetLength(1); j++) {
+					for (int k = 0; k < dp.GetLength(2); k++) {
+						dp[i, j, k] = value;
+					}
 				}
 			}
 		}
