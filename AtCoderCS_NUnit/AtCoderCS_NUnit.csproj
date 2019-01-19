@@ -45,6 +45,8 @@
     <Compile Include="Program_Mujin2018.cs" />
     <Compile Include="misc\TypicalContest001_A.cs" />
     <Compile Include="misc\TypicalContest001_A_Test.cs" />
+    <Compile Include="ABC095_ARC096-D.cs" />
+    <Compile Include="ABC095_ARC096-D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
