@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AISingContest2019", "AISing
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnapsackProblems", "KnapsackProblems\KnapsackProblems.csproj", "{F53C580A-4C38-4E66-8D64-B606885E57B1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderContests", "AtCoderConteests\AtCoderContests.csproj", "{29F20985-3A08-4E6B-AC51-860D954B5427}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -43,6 +45,10 @@ Global
 		{F53C580A-4C38-4E66-8D64-B606885E57B1}.Debug|x86.Build.0 = Debug|Any CPU
 		{F53C580A-4C38-4E66-8D64-B606885E57B1}.Release|x86.ActiveCfg = Release|Any CPU
 		{F53C580A-4C38-4E66-8D64-B606885E57B1}.Release|x86.Build.0 = Release|Any CPU
+		{29F20985-3A08-4E6B-AC51-860D954B5427}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{29F20985-3A08-4E6B-AC51-860D954B5427}.Debug|x86.Build.0 = Debug|Any CPU
+		{29F20985-3A08-4E6B-AC51-860D954B5427}.Release|x86.ActiveCfg = Release|Any CPU
+		{29F20985-3A08-4E6B-AC51-860D954B5427}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
