@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnapsackProblems", "Knapsac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderContests", "AtCoderConteests\AtCoderContests.csproj", "{29F20985-3A08-4E6B-AC51-860D954B5427}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NikkeiContest", "NikkeiContest\NikkeiContest.csproj", "{3B21ECB0-70CB-4904-80B6-D9483B0C7D39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -49,6 +51,10 @@ Global
 		{29F20985-3A08-4E6B-AC51-860D954B5427}.Debug|x86.Build.0 = Debug|Any CPU
 		{29F20985-3A08-4E6B-AC51-860D954B5427}.Release|x86.ActiveCfg = Release|Any CPU
 		{29F20985-3A08-4E6B-AC51-860D954B5427}.Release|x86.Build.0 = Release|Any CPU
+		{3B21ECB0-70CB-4904-80B6-D9483B0C7D39}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3B21ECB0-70CB-4904-80B6-D9483B0C7D39}.Debug|x86.Build.0 = Debug|Any CPU
+		{3B21ECB0-70CB-4904-80B6-D9483B0C7D39}.Release|x86.ActiveCfg = Release|Any CPU
+		{3B21ECB0-70CB-4904-80B6-D9483B0C7D39}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0
