@@ -15,6 +15,7 @@ namespace AtCoderCS_Tools
 		}
 
 		/// <summary>(aのm乗) % M</summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
 		public static int Pow(int a, int m) {
 			switch (m) {
 				case 0:
@@ -29,9 +30,10 @@ namespace AtCoderCS_Tools
 		}
 
 		/// <summary>
-		/// ★これよくわかってない！
 		/// (a / b) % M
+		/// ※フェルマーの小定理による
 		/// </summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
 		public static int Div(int a, int b) {
 			return Mul(a, Pow(b, M - 2));
 		}
@@ -56,6 +58,7 @@ namespace AtCoderCS_Tools
 		/// <summary>
 		/// 組み合わせ nCr % M
 		/// </summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
 		public int Ncr(int n, int r) {
 			if (n < r) { return 0; }
 			if (n == r) { return 1; }

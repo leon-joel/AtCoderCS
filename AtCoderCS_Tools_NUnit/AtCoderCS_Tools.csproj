@@ -29,6 +29,7 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tests\BinaryIndexedTree_Test.cs" />
@@ -47,6 +48,7 @@
     <Compile Include="Tests\Modulo_Test.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="BalancedTree.cs" />
+    <Compile Include="PrimeNumbers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
