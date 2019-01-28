@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Numerics;
 
 namespace NikkeiContest.D
 {
@@ -15,51 +16,53 @@ namespace NikkeiContest.D
 			var N = ary[0];
 			var M = ary[1];
 
+			// [i] = 当該頂点への入次数（頂点に入ってくる数）
+			int[] indegrees = new int[N+1];
 			// tree[i] = 子供のList
 			var tree = new List<int>[N+1];
-			// aryP[i] = 頂点i の 親番号
-			var aryP = new int[N + 1];
-
 			for (int i = 0; i < N + M - 1; i++) {
 				var a = ReadIntArray();
 				var p = a[0];
 				var c = a[1];
 
+				indegrees[c]++;
+
 				var l = tree[p];
 				if (l == null) tree[p] = l = new List<int>();
 				l.Add(c);
-
-				aryP[c] = p;
 			}
 
-			// root親を探す
+			// root親を探す ※入次数=0 がroot
 			int root = -1;
 			for (int i = 1; i <= N; i++) {
-				if (aryP[i] == 0) {
+				if (indegrees[i] == 0) {
 					root = i;
 				}
 			}
-			InitArray(aryP, 0);
+
+			// aryP[i] = 頂点i の 親番号
+			var aryP = new int[N + 1];
 
 			// BFSで子供をたどる
-			var list = new List<int>();
-			list.Add(root);
+			var que = new Queue<int>();
+			que.Enqueue(root);
 
-			// BFS
-			while (0 < list.Count) {
-				var nextList = new List<int>();
+			// BFSでトポロジカルソートしながら、親を確定していく
+			while (0 < que.Count) {
+				var p = que.Dequeue();
+				if (tree[p] == null) continue;
 
-				foreach (var p in list) {
-					if (tree[p] == null) continue;
+				foreach (int c in tree[p]) {
+					// 子でループ
+					// 子の入次数をへらす
+					indegrees[c]--;
 
-					foreach (int c in tree[p]) {
-						if (aryP[c] != p) {
-							aryP[c] = p;
-							nextList.Add(c);
-						}
+					// 子の入次数が0 ＝ この時点で親が確定
+					if (indegrees[c] == 0) {
+						que.Enqueue(c);
+						aryP[c] = p;
 					}
 				}
-				list = nextList;
 			}
 			for (int i = 1; i < N + 1; i++) {
 				WriteLine(aryP[i]);
