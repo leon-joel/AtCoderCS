@@ -4,53 +4,44 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC116.C
+namespace ABC110.D
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
-		public void Run_Shakutori() {
-			var N = ReadInt();
-			var nums = ReadIntArray();
+		public void Run() {
+			var ary = ReadIntArray();
+			int N = ary[0];
+			int M = ary[1];
 
-			// 先頭が目標に届くまで水撒きするが、その際に最大範囲で撒いていく
-			// 先頭が目標に届いたら、その次の目標未達成花から始める
-			// 尺取り的な動きになる
-			long ans = 0;
-			for (int l = 0; l < N; l++) {
-				while (0 < nums[l]) {
-					if (nums[l] == 0) continue;
-					
-					--nums[l];
-					int r;
-					for (r = l+1; r < N; r++) {
-						// 0を探しに行く
-						if (nums[r] == 0) break;
-						--nums[r];
-					}
-					// [l, r) に撒いた
-					++ans;
+			var modulo = new Modulo(200000);
+
+			// Mを素因数分解
+			int ans = 1;
+			for (int i = 2; i * i <= M; i++) {
+				if (M % i != 0) continue;
+
+				// 因数発見 ➟ 割り続けて何回割れるかをカウント
+				int cnt = 0;
+				while (M % i == 0){
+					M /= i;
+					++cnt;
 				}
+
+				// 各素数の乗数をN個の箱に入れるパターン数 nCr を求める
+				// cnt+n-1 C n-1
+				var ncr = modulo.Ncr(cnt + N - 1, N - 1);
+
+				// ans = 全 nCr の積
+				ans = Modulo.Mul(ans, ncr);
+			}
+			// 素数が1個残っていた場合 ※上のループでは【素数1個】が残ることがある点に注意
+			if (1 < M) {
+				var ncr = modulo.Ncr(N, 1);
+				ans = Modulo.Mul(ans, ncr);
 			}
 			WriteLine(ans);
-		}
-		public void Run() {
-			var N = ReadInt();
-			var nums = ReadIntArray();
-
-			// sunukeさんの解説放送解説
-			// 頂点の数 - 辺の数 = 撒くべき回数
-			// 頂点の数: numsの合計
-			var cntE = nums.Sum();
-			// i-1番目とi番目の間の辺の数: nums[i-1], nums[i]
-
-			int cntV = 0;
-			for (int i = 1; i < N; i++) {
-				cntV += Math.Min(nums[i - 1], nums[i]);
-			}
-
-			WriteLine(cntE - cntV);
 		}
 
 #if !MYHOME
@@ -58,6 +49,73 @@ namespace ABC116.C
 			new Solver().Run();
 		}
 #endif
+	}
+	/// <summary>
+	/// Ｍを法とする除算、累乗、階乗、nCr
+	/// http://kumikomiya.com/competitive-programming-with-c-sharp/
+	/// </summary>
+	public class Modulo
+	{
+		private readonly static int M = 1000000007;
+
+		/// <summary>(a * b) % M</summary>
+		public static int Mul(int a, int b) {
+			return (int)(Math.BigMul(a, b) % M);
+		}
+
+		/// <summary>(aのm乗) % M</summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public static int Pow(int a, int m) {
+			switch (m) {
+				case 0:
+					return 1;
+				case 1:
+					return a % M;
+				default:
+					int p1 = Pow(a, m / 2);
+					int p2 = Mul(p1, p1);
+					return ((m % 2) == 0) ? p2 : Mul(p2, a);
+			}
+		}
+
+		/// <summary>
+		/// (a / b) % M
+		/// ※フェルマーの小定理による
+		/// </summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public static int Div(int a, int b) {
+			return Mul(a, Pow(b, M - 2));
+		}
+
+		/// <summary>
+		/// コンストラクタ ※n! % M および nCr % M を使用する場合には必要
+		/// </summary>
+		private readonly int[] m_facs;
+		public Modulo(int n) {
+			// x が n までの、x! % M の結果を配列に保持する
+			m_facs = new int[n + 1];
+			m_facs[0] = 1;
+			for (int i = 1; i <= n; ++i) {
+				m_facs[i] = Mul(m_facs[i - 1], i);
+			}
+		}
+
+		/// <summary>n! % M</summary>
+		public int Fac(int n) {
+			return m_facs[n];
+		}
+		/// <summary>
+		/// 組み合わせ nCr % M
+		/// </summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public int Ncr(int n, int r) {
+			if (n < r) { return 0; }
+			if (n == r) { return 1; }
+			int res = Fac(n);
+			res = Div(res, Fac(r));
+			res = Div(res, Fac(n - r));
+			return res;
+		}
 	}
 
 	public static class Util
@@ -112,56 +170,6 @@ namespace ABC116.C
 				min = min.CompareTo(nums[i]) < 0 ? min : nums[i];
 			}
 			return min;
-		}
-
-		/// <summary>
-		/// ソート済み配列 ary に同じ値の要素が含まれている？
-		/// ※ソート順は昇順/降順どちらでもよい
-		/// </summary>
-		public static bool HasDuplicateInSortedArray<T>(T[] ary) where T : IComparable, IComparable<T> {
-			if (ary.Length <= 1) return false;
-
-			var lastNum = ary[ary.Length - 1];
-
-			foreach (var n in ary) {
-				if (lastNum.CompareTo(n) == 0) {
-					return true;
-				} else {
-					lastNum = n;
-				}
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// 二分探索
-		/// ※条件を満たす最小のidxを返す
-		/// ※満たすものがない場合は ary.Length を返す
-		/// ※『aryの先頭側が条件を満たさない、末尾側が条件を満たす』という前提
-		/// ただし、IsOK(...)の戻り値を逆転させれば、逆でも同じことが可能。
-		/// </summary>
-		/// <param name="ary">探索対象配列 ★ソート済みであること</param>
-		/// <param name="key">探索値 ※これ以上の値を持つ（IsOKがtrueを返す）最小のindexを返す</param>
-		public static int BinarySearch<T>(T[] ary, T key) where T : IComparable, IComparable<T> {
-			int left = -1;
-			int right = ary.Length;
-
-			while (1 < right - left) {
-				var mid = left + (right - left) / 2;
-
-				if (IsOK(ary, mid, key)) {
-					right = mid;
-				} else {
-					left = mid;
-				}
-			}
-
-			// left は条件を満たさない最大の値、right は条件を満たす最小の値になっている
-			return right;
-		}
-		public static bool IsOK<T>(T[] ary, int idx, T key) where T : IComparable, IComparable<T> {
-			// key <= ary[idx] と同じ意味
-			return key.CompareTo(ary[idx]) <= 0;
 		}
 	}
 
