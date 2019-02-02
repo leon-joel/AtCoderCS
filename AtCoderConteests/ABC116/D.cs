@@ -12,12 +12,12 @@ namespace ABC116.D
 	{
 		struct Sushi
 		{
-			public int T;
-			public int D;
+			public int D;	// 美味しさ
+			public int P;	// 1: 各種類の1番手（もっとも美味しいもの） 0:各種類2番手以下
 
-			public Sushi(int t, int d) {
-				T = t;
+			public Sushi(int d, int p) {
 				D = d;
+				P = p;
 			}
 		}
 
@@ -26,42 +26,72 @@ namespace ABC116.D
 			int N = ary[0];
 			int K = ary[1];
 
-			var ss = new Sushi[N];
-
-			var kh = new HashSet<int>();
+			// kh[ネタ] = 美味しさ配列
+			var kh = new Dictionary<int, List<int>>();
 			for (int i = 0; i < N; i++) {
 				var a = ReadIntArray();
-				ss[i] = new Sushi(a[0], a[1]);
-				kh.Add(a[0]);
+				var t = a[0];
+				var d = a[1];
+				List<int> dary;
+				if (!kh.TryGetValue(t, out dary)) {
+					kh[t] = dary = new List<int>();
+				}
+				dary.Add(d);
 			}
-			// 全体[おいしさ,種類]Array ※おいしさ逆順ソート済
-			Array.Sort(ss, (s0, s1) => {
-				return -s0.D.CompareTo(s1.D);
-			});
 
-			// K個とる
-			var kd = new Dictionary<int, int>();
-			// 捨ててもいい寿司（種類別2番手以下）昇順ソート済み
-			var da = new List<int>();
-			long curD = 0;
-			for (int i = 0; i < K; i++) {
-				curD += ss[i].D;
-				if (kd.ContainsKey(ss[i].T)) {
-					da.Add(ss[i].D);
-				} else {
-					kd[ss[i].T] = 1;
+			// 各種類美味しさ配列を降順ソートして、
+			// 1番手と2番手以下を区別しながら(＝Sushiをnewして)、全体美味しさ配列を作る
+			var ss = new Sushi[N];
+			var cnt = 0;
+			foreach (var kv in kh) {
+				kv.Value.Sort();
+				kv.Value.Reverse();
+
+				for (int i = 0; i < kv.Value.Count; i++) {
+					if (i == 0) {
+						ss[cnt] = new Sushi(kv.Value[i], 1);
+					} else {
+						ss[cnt] = new Sushi(kv.Value[i], 0);
+					}
+					++cnt;
 				}
 			}
-			da.Sort();
-			da.Reverse();
+			// 全体美味しさ 降順ソート
+			Array.Sort(ss, (s0, s1) => -s0.D.CompareTo(s1.D));
 
-			// 使っていない種類別Max美味しさ
-			long maxD = curD;
-			var kdiff = kh.Count - kd.Count;
-			for (int i = 0; i < kdiff; i++) {
-				curD -= da[i];
-
+			// 美味しさ順にK個取る
+			// ※種類数をカウントしながら。各種類2番手以下の個数=K-種類数
+			//  これにより増やせる種類数も分かる。
+			// ※2番手以下だけの美味しさ降順配列も作っておく
+			var ss2 = new List<int>();
+			long sumD = 0;
+			long sumP = 0;
+			for (int i = 0; i < K; i++) {
+				sumD += ss[i].D;
+				sumP += ss[i].P;
+				if (ss[i].P == 0) ss2.Add(ss[i].D);
 			}
+			// 満足度(=ans)を計算 ※これがターゲットとなる
+			long ans = sumD + sumP * sumP;
+
+			// 増やせる種類数（＝2番手以下を取った数）
+			long dK = K - sumP;
+			Debug.Assert(dK == ss2.Count);
+
+			// 取らなかったものの中から、1番手のものだけをとる
+			for (int i = K; 0 < dK && i < N; i++) {
+				if (ss[i].P == 0) continue;
+
+				// 1番手の美味しさを加算して、最初に取った2番手以下の一番まずいのを減らす
+				sumD += ss[i].D - ss2[(int)dK - 1];
+				sumP++;
+				--dK;
+
+				// 最大満足度(ans)を更新
+				ans = Math.Max(ans, sumD + sumP * sumP);
+			}
+
+			WriteLine(ans);
 		}
 
 #if !MYHOME
