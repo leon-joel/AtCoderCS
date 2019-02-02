@@ -36,9 +36,7 @@
   <ItemGroup>
     <Compile Include="Test_Mujin2018.cs" />
     <Compile Include="TypicalDPContest\Test_TypicalDPContest.cs" />
-    <Compile Include="Paiza\Test_S024_Sea.cs" />
     <Compile Include="Test_ABC087-D.cs" />
-    <Compile Include="Paiza\S024_Sea.cs" />
     <Compile Include="TypicalDPContest\TypicalDPContest.cs" />
     <Compile Include="Program_ABC087-D.cs" />
     <Compile Include="Program_ARC061-C.cs" />
@@ -64,7 +62,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TypicalDPContest\" />
-    <Folder Include="Paiza\" />
     <Folder Include="misc\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
