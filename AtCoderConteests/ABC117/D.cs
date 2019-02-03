@@ -23,7 +23,7 @@ namespace ABC117.D
 		}
 		// nのd桁目（2進 0〜）のBitが立っている？
 		int GetBinaryDigit(long n, int d) {
-			if (0 == (n & (1 << d)))
+			if (0 == (n & (1L << d)))
 				return 0;
 			else
 				return 1;
