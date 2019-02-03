@@ -8,19 +8,9 @@ namespace ABC117.D
 {
 	using static Util;
 
+	// シンプルな桁DP
 	public class Solver : SolverBase
 	{
-		int CountBinaryDigits(long n) {
-			int i = 0;
-			while (true) {
-				if (n < (1L << i)) 
-					return i;
-				else if (n == (1L << i))
-					return i + 1;
-
-				++i;
-			}
-		}
 		// nのd桁目（2進 0〜）のBitが立っている？
 		int GetBinaryDigit(long n, int d) {
 			if (0 == (n & (1L << d)))
@@ -34,16 +24,11 @@ namespace ABC117.D
 			var ary = ReadLongArray();
 			N = (int)ary[0];
 			K = ary[1];
-			// Kは2進数で何桁？
-			int KDigit = CountBinaryDigits(K);
 
 			long[] Nums = ReadLongArray();
 			Array.Sort(Nums);
 
-			// 最大のNは2進数で何桁？
-			int NDigit = CountBinaryDigits(Nums[Nums.Length - 1]);
-		
-			var dpLen = Math.Max(NDigit, KDigit) + 1;
+			var dpLen = 41;	// 10^12 < 2^40 なので、起点1つ余計に入れて
 
 			// i桁目(0-)のbitONの総数をカウント
 			var dnums = new int[dpLen];
