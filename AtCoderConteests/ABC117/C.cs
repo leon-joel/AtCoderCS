@@ -10,47 +10,34 @@ namespace ABC117.C
 
 	public class Solver : SolverBase
 	{
-		public void Run_Shakutori() {
-			var N = ReadInt();
-			var nums = ReadIntArray();
-
-			// 先頭が目標に届くまで水撒きするが、その際に最大範囲で撒いていく
-			// 先頭が目標に届いたら、その次の目標未達成花から始める
-			// 尺取り的な動きになる
-			long ans = 0;
-			for (int l = 0; l < N; l++) {
-				while (0 < nums[l]) {
-					if (nums[l] == 0) continue;
-					
-					--nums[l];
-					int r;
-					for (r = l+1; r < N; r++) {
-						// 0を探しに行く
-						if (nums[r] == 0) break;
-						--nums[r];
-					}
-					// [l, r) に撒いた
-					++ans;
-				}
-			}
-			WriteLine(ans);
-		}
 		public void Run() {
-			var N = ReadInt();
-			var nums = ReadIntArray();
+			var ary = ReadIntArray();
+			var N = ary[0];
+			var M = ary[1];
 
-			// sunukeさんの解説放送解説
-			// 頂点の数 - 辺の数 = 撒くべき回数
-			// 頂点の数: numsの合計
-			var cntE = nums.Sum();
-			// i-1番目とi番目の間の辺の数: nums[i-1], nums[i]
+			var Nums = ReadIntArray();
+			// 位置でソート
+			Array.Sort(Nums);
 
-			int cntV = 0;
-			for (int i = 1; i < N; i++) {
-				cntV += Math.Min(nums[i - 1], nums[i]);
+			// 間隔を配列化して、ソート
+			var gaps = new int[M - 1];
+			for (int i = 0; i < M-1; i++) {
+				// i番目とi+1番目の間隔を格納していく
+				gaps[i] = Nums[i + 1] - Nums[i];
+			}
+			Array.Sort(gaps);
+
+			// N個にグループ分け
+			// つまり、N-1個の仕切りを入れる。
+			// つまり、N-1個分の間隔分だけ移動距離が減る
+			// 間隔の場所は関係ない。とにかく、距離の長い間隔を仕切るのが最適。
+			// 間隔を昇順ソートし、末尾N−1 個の間隔はPickしない。
+			int ans = 0;
+			for (int i = 0; i < M-1-(N-1); i++) {
+				ans += gaps[i];
 			}
 
-			WriteLine(cntE - cntV);
+			WriteLine(ans);
 		}
 
 #if !MYHOME
