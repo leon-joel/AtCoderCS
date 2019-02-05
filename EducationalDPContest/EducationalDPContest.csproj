@@ -42,7 +42,7 @@
     <Compile Include="ProblemI.cs" />
     <Compile Include="ProblemS.cs" />
     <Compile Include="ProblemY.cs" />
-    <Compile Include="Test_ProblemA.cs" />
+    <Compile Include="ProblemA_Test.cs" />
     <Compile Include="Test_ProblemB.cs" />
     <Compile Include="Test_ProblemC.cs" />
     <Compile Include="Test_ProblemD.cs" />
@@ -59,6 +59,8 @@
     <Compile Include="Test_ProblemG_ABC037D.cs" />
     <Compile Include="ProblemJ.cs" />
     <Compile Include="ProblemJ_Test.cs" />
+    <Compile Include="ProblemA-ABC040C.cs" />
+    <Compile Include="ProblemA-ABC040C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
