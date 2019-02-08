@@ -63,6 +63,8 @@
     <Compile Include="ProblemA-ABC040C_Test.cs" />
     <Compile Include="ProblemA-AOJ0168.cs" />
     <Compile Include="ProblemA-AOJ0168_Test.cs" />
+    <Compile Include="ProblemD-AOJ0557.cs" />
+    <Compile Include="ProblemD-AOJ0557_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
