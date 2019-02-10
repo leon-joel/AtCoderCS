@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AISingContest2019", "AISing
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnapsackProblems", "KnapsackProblems\KnapsackProblems.csproj", "{F53C580A-4C38-4E66-8D64-B606885E57B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderContests", "AtCoderConteests\AtCoderContests.csproj", "{29F20985-3A08-4E6B-AC51-860D954B5427}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderContests", "AtCoderContests\AtCoderContests.csproj", "{29F20985-3A08-4E6B-AC51-860D954B5427}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NikkeiContest", "NikkeiContest\NikkeiContest.csproj", "{3B21ECB0-70CB-4904-80B6-D9483B0C7D39}"
 EndProject

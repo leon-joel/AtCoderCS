@@ -8,79 +8,68 @@ namespace MinnaProCon.D
 {
 	using static Util;
 
-	// シンプルな桁DP
+	// DP
 	public class Solver : SolverBase
 	{
-		// nのd桁目（2進 0〜）のBitが立っている？
-		int GetBinaryDigit(long n, int d) {
-			if (0 == (n & (1L << d)))
-				return 0;
-			else
-				return 1;
-		}
-		int N;
-		long K;
 		public void Run() {
-			var ary = ReadLongArray();
-			N = (int)ary[0];
-			K = ary[1];
+			var L = ReadInt();
 
-			long[] Nums = ReadLongArray();
-			Array.Sort(Nums);
-
-			var dpLen = 41;	// 10^12 < 2^40 なので、起点1つ余計に入れて
-
-			// i桁目(0-)のbitONの総数をカウント
-			var dnums = new int[dpLen];
-			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < dpLen; j++) {
-					if (0 < (Nums[i] & (1L << j))) {
-						dnums[j] += 1;
-					}
-				}
+			// 1-indexedにする
+			var Nums = new int[L+1];
+			for (int i = 1; i <= L; i++) {
+				Nums[i] = ReadInt();
 			}
 
-			// DP[i桁目(2進数)][制約有無] = i桁目までの最大f(x)
-			long[,] DP = new long[dpLen, 2];
-			InitDP2(DP, -1);
-			DP[dpLen - 1, 1] = 0;
+			// 開始点(S)〜終了点(E)、左端(L)〜右端(R) とした場合の石の個数
+			//     L       S     E    R
+			// 0 0 偶 偶 偶 奇 奇 奇 偶 偶 0 0 0
+			// ~~~ ~~~~~~~ ~~~~~~~ ~~~~ ~~~~~
+			// t0  t1      t2      t3   t4
+			// それぞれの範囲を t0, t1, t2, t3, t4 とする。
 
-			// 配るDP（配列の後ろから敷き詰めていく）
-			for (int i = dpLen-2; 0 <= i; i--) {
-				// 制約有無 0:制約なし 1:制約あり
-				for (int r = 0; r <= 1; r++) {
-					if (DP[i+1, r] == -1) continue;
+			// DP[i][t] = i番目(1-)が範囲tの場合、そこまでの最小操作回数
+			var DP = new long[L+1, 5];
 
-					if (r == 0) {
-						// 制約なし
-						// 上からi桁目は0 or 1 どちらか良い方を選択
-						// DP[i, 0] = DP[i+1, 0] + i桁ベター選択
-						DP[i, 0] = DP[i+1, 0] + Math.Max(N - dnums[i], dnums[i]) * (1L << i);
+			for (int i = 1; i <= L; i++) {
+				// t:0
+				DP[i, 0] = DP[i - 1, 0] + Nums[i];
 
-					} else {
-						// 制約あり
-						if (1 == GetBinaryDigit(K, i)) {
-							// Kの上からi桁目が1の場合:
-							// 0を選択した場合は制約なし格納 ※既存の値と比べて大きい方を格納
-							// DP[i, 0] = DP[i + 1, 1] + 0選択
-							var res = DP[i + 1, 1] + dnums[i] * (1L << i);
-							DP[i, 0] = Math.Max(res, DP[i, 0]);
-
-							// 1を選択した場合は制約ありに格納
-							// DP[i, 1] = DP[i + 1, 1] + 1選択
-							DP[i, 1] = DP[i + 1, 1] + (N - dnums[i]) * (1L << i);
-
-						} else {
-							// Kの上からi桁目が0の場合: 
-							// 0を選択し、制約ありに格納
-							// DP[i, 1] = DP[i + 1, 1] + 0選択
-							DP[i, 1] = DP[i + 1, 1] + dnums[i] * (1L << i);
-						}
-					}
+				// t:1
+				var lastMin = Math.Min(DP[i - 1, 0], DP[i - 1, 1]);
+				if (Nums[i] == 0) {
+					DP[i, 1] = lastMin + 2;
+				} else if (Nums[i] % 2 == 1) {
+					DP[i, 1] = lastMin + 1;
+				} else if (Nums[i] % 2 == 0) {
+					DP[i, 1] = lastMin;
 				}
+
+				// t:2
+				lastMin = Math.Min(lastMin, DP[i - 1, 2]);
+				if (Nums[i] == 0) {
+					DP[i, 2] = lastMin + 1;
+				} else if (Nums[i] % 2 == 1) {
+					DP[i, 2] = lastMin;
+				} else if (Nums[i] % 2 == 0) {
+					DP[i, 2] = lastMin + 1;
+				}
+
+				// t:3
+				lastMin = Math.Min(lastMin, DP[i - 1, 3]);
+				if (Nums[i] == 0) {
+					DP[i, 3] = lastMin + 2;
+				} else if (Nums[i] % 2 == 1) {
+					DP[i, 3] = lastMin + 1;
+				} else if (Nums[i] % 2 == 0) {
+					DP[i, 3] = lastMin;
+				}
+
+				// t:4
+				lastMin = Math.Min(lastMin, DP[i - 1, 4]);
+				DP[i, 4] = lastMin + Nums[i];
 			}
 
-			WriteLine(Math.Max(DP[0, 0], DP[0, 1]));
+			WriteLine(Min(DP[L, 0], DP[L, 1], DP[L, 2], DP[L, 3], DP[L, 4]));
 		}
 
 #if !MYHOME

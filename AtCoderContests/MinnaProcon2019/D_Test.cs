@@ -44,46 +44,46 @@ namespace MinnaProCon.D
 ",
 @"1"),
 				new TestData("Test4",
-@"3 10
-8 1 2
+@"1
+0
 ",
-@"26"),
+@"0"),
 				new TestData("Test5",
-@"3 4
-4 0 0
+@"1
+3
 ",
-@"13"),
+@"0"),
 				new TestData("Test6",
-@"1 1
-1000000000000
+@"1
+4
 ",
-@"1000000000001"),
-				new TestData("Test7",
-@"3 10
-8 7 6
-",
-@"30"),
-				new TestData("Test8",
-@"3 4
-1 2 4
-",
-@"11"),
-				new TestData("Test9",
-@"3 4
-1 1 4",
-@"12"),
-				new TestData("Test10",
-@"1 4
-1",
-@"5"),
-				new TestData("Test11",
-@"1 7
-1",
-@"7"),
-				new TestData("Test12",
-@"5 2
-0 0 0 2 2",
-@"9"),
+@"0"),
+//				new TestData("Test7",
+//@"3 10
+//8 7 6
+//",
+//@"30"),
+//				new TestData("Test8",
+//@"3 4
+//1 2 4
+//",
+//@"11"),
+//				new TestData("Test9",
+//@"3 4
+//1 1 4",
+//@"12"),
+//				new TestData("Test10",
+//@"1 4
+//1",
+//@"5"),
+//				new TestData("Test11",
+//@"1 7
+//1",
+//@"7"),
+//				new TestData("Test12",
+//@"5 2
+//0 0 0 2 2",
+//@"9"),
 			};
 		}
 	}
