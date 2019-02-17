@@ -55,6 +55,14 @@
     <Compile Include="MinnaProcon2019\C_Test.cs" />
     <Compile Include="MinnaProcon2019\D.cs" />
     <Compile Include="MinnaProcon2019\D_Test.cs" />
+    <Compile Include="ABC118\A.cs" />
+    <Compile Include="ABC118\A_Test.cs" />
+    <Compile Include="ABC118\B.cs" />
+    <Compile Include="ABC118\B_Test.cs" />
+    <Compile Include="ABC118\C.cs" />
+    <Compile Include="ABC118\C_Test.cs" />
+    <Compile Include="ABC118\D.cs" />
+    <Compile Include="ABC118\D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -63,6 +71,7 @@
     <Folder Include="ABC116\" />
     <Folder Include="ABC117\" />
     <Folder Include="MinnaProcon2019\" />
+    <Folder Include="ABC118\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
