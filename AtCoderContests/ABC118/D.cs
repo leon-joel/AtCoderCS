@@ -24,13 +24,16 @@ namespace ABC118.D
 
 			// DP[i本使用] = 生成できる最大数
 			string[] DP = new string[dpLen];
-			for (int i = 0; i < M; i++) {
-				var x = Nums[i];	// 数字x を採用
-				DP[MS[x]] = x.ToString();
-			}
+			//for (int i = 0; i < M; i++) {
+			//	var x = Nums[i];	// 数字x を採用
+			//	DP[MS[x]] = x.ToString();
+			//}
+			// ↑ これダメ！後勝ちで上書きしているので、同本数で小さい数字が後ろにあったらアウト！
+			// ↓ 0本の場合は最大数なし に初期化して、そこを起点にする
+			DP[0] = "";
 
 			// 配るDP
-			for (int i = 1; i < N; i++) {
+			for (int i = 0; i < N; i++) {
 				if (DP[i] != null) {
 					var x = DP[i];
 
