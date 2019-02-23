@@ -18,6 +18,18 @@ namespace AtCoderCS_Tools
 			}
 			return a;
 		}
+		public static int Gcd(params int[] nums) {
+			if (nums == null || nums.Length < 1)
+				throw new ArgumentException(nameof(nums));
+			if (nums.Length == 1)
+				return nums[0];
+
+			var g = Gcd(nums[0], nums[1]);
+			for (int i = 2; i < nums.Length; i++) {
+				g = Gcd(g, nums[i]);
+			}
+			return g;
+		}
 
 		/// <summary>
 		/// 最小公倍数
