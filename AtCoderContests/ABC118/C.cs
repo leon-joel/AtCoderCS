@@ -11,33 +11,10 @@ namespace ABC118.C
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			var N = ary[0];
-			var M = ary[1];
-
+			var N = ReadInt();
 			var Nums = ReadIntArray();
-			// 位置でソート
-			Array.Sort(Nums);
 
-			// 間隔を配列化して、ソート
-			var gaps = new int[M - 1];
-			for (int i = 0; i < M-1; i++) {
-				// i番目とi+1番目の間隔を格納していく
-				gaps[i] = Nums[i + 1] - Nums[i];
-			}
-			Array.Sort(gaps);
-
-			// N個にグループ分け
-			// つまり、N-1個の仕切りを入れる。
-			// つまり、N-1個分の間隔分だけ移動距離が減る
-			// 間隔の場所は関係ない。とにかく、距離の長い間隔を仕切るのが最適。
-			// 間隔を昇順ソートし、末尾N−1 個の間隔はPickしない。
-			int ans = 0;
-			for (int i = 0; i < M-1-(N-1); i++) {
-				ans += gaps[i];
-			}
-
-			WriteLine(ans);
+			WriteLine(Gcd(Nums));
 		}
 
 #if !MYHOME
@@ -49,6 +26,34 @@ namespace ABC118.C
 
 	public static class Util
 	{
+		/// <summary>
+		/// 最大公約数 ※ユークリッドの互除法 
+		/// ※a,bどちらかが0の場合は0じゃない方を、両方0の場合は0を返す。
+		/// </summary>
+		public static int Gcd(int a, int b) {
+			if (a < b)
+				// 引数を入替えて自分を呼び出す
+				return Gcd(b, a);
+			while (b != 0) {
+				var remainder = a % b;
+				a = b;
+				b = remainder;
+			}
+			return a;
+		}
+		public static int Gcd(params int[] nums) {
+			if (nums == null || nums.Length < 1)
+				throw new ArgumentException(nameof(nums));
+			if (nums.Length == 1)
+				return nums[0];
+
+			var g = Gcd(nums[0], nums[1]);
+			for (int i = 2; i < nums.Length; i++) {
+				g = Gcd(g, nums[i]);
+			}
+			return g;
+		}
+
 		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
