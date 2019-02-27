@@ -10,11 +10,65 @@ namespace ABC119.C
 
 	public class Solver : SolverBase
 	{
+		int N;
+		int[] BAry;
+		int[] Targets = new int[3];
 		public void Run() {
-			var N = ReadInt();
-			var Nums = ReadIntArray();
+			var ary = ReadIntArray();
+			N = ary[0];
+			Targets[0] = ary[1];
+			Targets[1] = ary[2];
+			Targets[2] = ary[3];
+			BAry = new int[N];
+			for (int i = 0; i < N; i++) {
+				BAry[i] = ReadInt();
+			}
 
-			WriteLine(Gcd(Nums));
+			// 再帰で全探索
+			var ans = Recurse(new List<int>());
+			WriteLine(ans);
+		}
+
+		// MP消費の最小値を返す
+		// uses: List<int>
+		//   0:A 1:B 2:C 4:使わない
+		int Recurse(IList<int> uses) {
+			if (uses.Count == N) return CalcMP(uses);
+
+			int minMP = int.MaxValue;
+			for (int i = 0; i < 4; i++) {
+				var u2 = new List<int>(uses);
+				u2.Add(i);
+				var mp = Recurse(u2);
+
+				if (mp < minMP) minMP = mp;
+			}
+			return minMP;
+		}
+
+		int CalcMP(IList<int> uses) {
+			var blen = new int[3];
+			var mp = new int[3];
+			for (int i = 0; i < N; i++) {
+				var u = uses[i];
+				if (u == 3) continue;
+
+				// 結合する場合はこの時点でMPを消費
+				if (0 != blen[u]) mp[u] += 10;
+
+				// 長さを加算していく
+				blen[u] += BAry[i];
+			}
+
+			for (int i = 0; i < 3; i++) {
+				// 1本も割り当てられていないのはNG -> INT_MAXを返す
+				if (blen[i] == 0) return int.MaxValue;
+
+				// 過不足分だけMPを加算
+				mp[i] += Math.Abs(blen[i] - Targets[i]);
+			}
+
+			return mp.Sum();
 		}
 
 #if !MYHOME
