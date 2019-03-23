@@ -79,6 +79,14 @@
     <Compile Include="ABC120\C_Test.cs" />
     <Compile Include="ABC120\D.cs" />
     <Compile Include="ABC120\D_Test.cs" />
+    <Compile Include="ABC121\A.cs" />
+    <Compile Include="ABC121\A_Test.cs" />
+    <Compile Include="ABC121\B.cs" />
+    <Compile Include="ABC121\B_Test.cs" />
+    <Compile Include="ABC121\C.cs" />
+    <Compile Include="ABC121\C_Test.cs" />
+    <Compile Include="ABC121\D.cs" />
+    <Compile Include="ABC121\D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -90,6 +98,7 @@
     <Folder Include="ABC118\" />
     <Folder Include="ABC119\" />
     <Folder Include="ABC120\" />
+    <Folder Include="ABC121\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
