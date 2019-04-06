@@ -95,6 +95,22 @@
     <Compile Include="ABC122\C_Test.cs" />
     <Compile Include="ABC122\D.cs" />
     <Compile Include="ABC122\D_Test.cs" />
+    <Compile Include="Exawizards2019\A.cs" />
+    <Compile Include="Exawizards2019\A_Test.cs" />
+    <Compile Include="Exawizards2019\B.cs" />
+    <Compile Include="Exawizards2019\B_Test.cs" />
+    <Compile Include="Exawizards2019\C.cs" />
+    <Compile Include="Exawizards2019\C_Test.cs" />
+    <Compile Include="Exawizards2019\D.cs" />
+    <Compile Include="Exawizards2019\D_Test.cs" />
+    <Compile Include="ABC123\A.cs" />
+    <Compile Include="ABC123\A_Test.cs" />
+    <Compile Include="ABC123\B.cs" />
+    <Compile Include="ABC123\B_Test.cs" />
+    <Compile Include="ABC123\C.cs" />
+    <Compile Include="ABC123\C_Test.cs" />
+    <Compile Include="ABC123\D.cs" />
+    <Compile Include="ABC123\D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -108,6 +124,8 @@
     <Folder Include="ABC120\" />
     <Folder Include="ABC121\" />
     <Folder Include="ABC122\" />
+    <Folder Include="Exawizards2019\" />
+    <Folder Include="ABC123\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
