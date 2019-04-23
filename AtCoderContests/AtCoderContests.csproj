@@ -113,6 +113,14 @@
     <Compile Include="s8pc\D_Test.cs" />
     <Compile Include="Tenka1Contest2019\A.cs" />
     <Compile Include="Tenka1Contest2019\A_Test.cs" />
+    <Compile Include="ABC124\A.cs" />
+    <Compile Include="ABC124\A_Test.cs" />
+    <Compile Include="ABC124\B.cs" />
+    <Compile Include="ABC124\B_Test.cs" />
+    <Compile Include="ABC124\C.cs" />
+    <Compile Include="ABC124\C_Test.cs" />
+    <Compile Include="ABC124\D.cs" />
+    <Compile Include="ABC124\D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -129,6 +137,7 @@
     <Folder Include="ABC123\" />
     <Folder Include="s8pc\" />
     <Folder Include="Tenka1Contest2019\" />
+    <Folder Include="ABC124\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
