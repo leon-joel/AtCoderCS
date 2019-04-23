@@ -4,31 +4,25 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Exawizards2019.B
+namespace S8pc.A
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var S = ReadLine();
+			var ary = ReadIntArray();
+			var N = ary[0];
+			var T = ary[1];
 
-			int longest = 0;
-			int curLen = 0;
-			for (int i = 0; i < S.Length; i++) {
-				if (IsACGT(S[i])) {
-					++curLen;
-					if (longest < curLen)
-						longest = curLen;
-				} else {
-					curLen = 0;
-				}
+			var TAry = ReadIntArray();
+
+			int ans = 0;
+			foreach (var a in TAry) {
+				ans += (a + T - 1) / T;
 			}
 
-			WriteLine(longest);
-		}
-		bool IsACGT(char c) {
-			return (c == 'A' || c == 'C' || c == 'G' || c == 'T');
+			WriteLine(ans);
 		}
 
 #if !MYHOME
@@ -40,17 +34,6 @@ namespace Exawizards2019.B
 
 	public static class Util
 	{
-		public static int Gcd(int a, int b) {
-			if (a < b)
-				// 引数を入替えて自分を呼び出す
-				return Gcd(b, a);
-			while (b != 0) {
-				var remainder = a % b;
-				a = b;
-				b = remainder;
-			}
-			return a;
-		}
 		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
@@ -176,8 +159,6 @@ namespace Exawizards2019.B
 		protected void Dump(string s) => Console.WriteLine(s);
 		[Conditional("DEBUG")]
 		protected void Dump(char c) => Console.WriteLine(c);
-		[Conditional("DEBUG")]
-		protected void Dump(int x) => Console.WriteLine(x);
 		[Conditional("DEBUG")]
 		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
 		[Conditional("DEBUG")]

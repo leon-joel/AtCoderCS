@@ -6,32 +6,59 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Exawizards2019.B
+namespace S8pc.B
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"ATCODER
+@"3
+5 7
+2 6
+8 10
 ",
-@"3"),
+@"18"),
 				new TestData("Test2",
-@"HATAGAYA
+@"5
+1 71
+43 64
+13 35
+14 54
+79 85
 ",
-@"5"),
+@"334"),
 				new TestData("Test3",
-@"SHINJUKU
+@"11
+15004200 341668840
+277786703 825590503
+85505967 410375631
+797368845 930277710
+90107929 763195990
+104844373 888031128
+338351523 715240891
+458782074 493862093
+189601059 534714600
+299073643 971113974
+98291394 443377420
 ",
-@"0"),
-				new TestData("Test4",
-@"S
-",
-@"0"),
-				new TestData("Test5",
-@"A
-",
-@"1"),
+@"8494550716"),
+//				new TestData("Test4",
+//@"1
+//1
+//1
+//1
+//1
+//",
+//@"41"),
+//				new TestData("Test5",
+//@"10
+//10
+//10
+//10
+//10
+//",
+//@"50"),
 //				new TestData("Test6",
 //@"1 2
 //2

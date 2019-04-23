@@ -6,51 +6,41 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Exawizards2019.C
+namespace Tenka1Contest2019.A
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"8 3
-ACACTACG
-3 7
-2 3
-1 8
+@"3
+#.#
+",
+@"1"),
+				new TestData("Test2",
+@"5
+#.##.
 ",
 @"2
-0
-3"),
-				new TestData("Test2",
-@"2 1
-AA
-1 2
+"),
+				new TestData("Test3",
+@"9
+.........
 ",
 @"0"),
-				new TestData("Test3",
-@"2 1
-AC
-1 2",
-@"1"),
-//				new TestData("Test4",
-//@"2 100000
-//1000000000 100000
-//999999999 99999
-//",
-//@"99999999900001"),
+				new TestData("Test4",
+@"9
+#########
+",
+@"0"),
 //				new TestData("Test5",
-//@"2 5
-//1 4
-//1 4
+//@"2018/12/23
 //",
-//@"5"),
+//@"Heisei"),
 //				new TestData("Test6",
-//@"1 2
-//2
-//2 1
+//@"2020/01/01
 //",
-//@"1"),
+//@"TBD"),
 //				new TestData("Test7",
 //@"3 1
 //3 2 1

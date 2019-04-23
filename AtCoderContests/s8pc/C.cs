@@ -4,20 +4,49 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Exawizards2019.A
+namespace S8pc.C
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadInt();
-			WriteLine(N);
-			for (int i = 0; i < N; i++) {
-				WriteLine(1);
+			var ary = ReadIntArray();
+			var H = ary[0];
+			var W = ary[1];
+
+			var grid = new byte[H, W];
+
+			for (int i = 0; i < H; i++) {
+				var s = ReadLine();
+
+				for (int j = 0; j < W; j++) {
+					if (s[j] == '.')
+						grid[i, j] = 0;
+					else {
+						grid[i, j] = 1;
+					}
+				}
 			}
+
+			// どこかに障害物のない行がある？
+			for (int i = 0; i < H; i++) {
+				if (!FoundObstacle(grid, i)) {
+					WriteLine("Yay!");
+					return;
+				}
+			}
+
+			WriteLine(":(");
 		}
 
+		bool FoundObstacle(byte[,] grid, int line) {
+			for (int j = 0; j < grid.GetLength(1); j++) {
+				if (grid[line, j] == 1)
+					return true;
+			}
+			return false;
+		}
 #if !MYHOME
 		public static void Main(string[] args) {
 			new Solver().Run();
@@ -33,6 +62,14 @@ namespace Exawizards2019.A
 			var sb = new StringBuilder();
 			foreach (var item in array) {
 				sb.Append(item);
+				sb.Append(", ");
+			}
+			return sb.ToString();
+		}
+		public static string DumpToString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dic) {
+			var sb = new StringBuilder();
+			foreach (var kv in dic) {
+				sb.Append($"({kv.Key}, {kv.Value})");
 				sb.Append(", ");
 			}
 			return sb.ToString();
@@ -160,6 +197,11 @@ namespace Exawizards2019.A
 			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
 			Console.WriteLine(s);
 			//_writer.WriteLine(s);
+		}
+		[Conditional("DEBUG")]
+		protected void Dump<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dic) { 
+			string s = Util.DumpToString(dic);
+			Console.WriteLine(s);
 		}
 		[Conditional("DEBUG")]
 		protected void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {

@@ -6,26 +6,24 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Exawizards2019.A
+namespace S8pc.A
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"5
+@"2 1
+3
 ",
-@"5
-1
-1
-1
-1
-1"),
+@"3
+"),
 				new TestData("Test2",
-@"1
+@"3 4
+5 6
 ",
-@"1
-1"),
+@"3
+"),
 //				new TestData("Test3",
 //@"2 4
 //2 4
@@ -113,7 +111,7 @@ namespace Exawizards2019.A
 			sw.Stop();
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			// 文字列比較
-			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
+			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
 			// 浮動小数比較
 			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}

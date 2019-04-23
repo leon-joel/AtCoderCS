@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Exawizards2019.D
+namespace S8pc.B
 {
 	using static Util;
 
@@ -12,64 +12,45 @@ namespace Exawizards2019.D
 	{
 		public void Run() {
 			var N = ReadInt();
+			ulong dSum = 0;
+			ulong[] AAry = new ulong[N];
+			ulong[] BAry = new ulong[N];
+			for (int i = 0; i < N; i++) {
+				var ary = ReadLongArray();
+				var A = ary[0];
+				var B = ary[1];
 
-			var DP = new ulong[N + 10, 16, 2];
-			//0: AA <- AA + CA + GA + TA x
-			//1: CA <- AC + CC + GC + TC x
-			//2: GA <- AG + CG + GG + TG x
-			//3: TA <- AT + CT + GT + TT x
-
-			//4: AC <- AA + CA +[GA]+ TA x
-			//5: CC <- AC + CC + GC + TC x
-			//6: GC <-[AG]+ CG + GG◯ + TG◯ x
-			//7: TC <- AT + CT + GT◯ + TT x
-
-			//8: AG <- AA + CA + GA + TA x
-			//9: CG <-[AC]+ CC + GC + TC x
-			//10:GG <- CG + GG + TG
-			//      <- AG
-			//11:TG <- CT + GT + TT
-			//      <- AT
-
-			//12:AT <- AA + CA + GA + TA x
-			//13:CT <- AC + CC + GC + TC x
-			//14:GT <- CG + GG + TG 
-			//      <- AG
-			//15:TT <- AT + CT + GT + TT x
-
-			// 貰うDP
-			for (int j = 0; j < 16; j++) {
-				DP[2, j, 0] = 1;
-			}
-			for (int i = 3; i < N+1; i++) {
-				DP[i, 0, 0] = DP[i, 8, 0] = DP[i, 12, 0] = (DP[i - 1, 0, 0] + DP[i - 1, 1, 0] + DP[i - 1, 2, 0] + DP[i - 1, 3, 0]) % MOD;
-				DP[i, 1, 0] = DP[i, 5, 0] = DP[i, 13, 0] = (DP[i - 1, 4, 0] + DP[i - 1, 5, 0] + DP[i - 1, 6, 0] + DP[i - 1, 7, 0]) % MOD;
-
-				DP[i, 2, 0] = (DP[i - 1, 8, 0] + DP[i - 1, 9, 0] + DP[i - 1, 10, 0] + DP[i - 1, 10, 1] + DP[i - 1, 11, 0] + DP[i - 1, 11, 1]) % MOD;
-				DP[i, 10, 0] = DP[i, 14, 0] = (DP[i - 1, 9, 0] + DP[i - 1, 10, 0] + DP[i - 1, 10, 1] + DP[i - 1, 11, 0] + DP[i - 1, 11, 1]) % MOD;
-				DP[i, 10, 1] = DP[i, 14, 1] = DP[i - 1, 8, 0] % MOD;
-
-				DP[i, 3, 0] = DP[i, 15, 0] = (DP[i - 1, 12, 0] + DP[i - 1, 13, 0] + DP[i - 1, 14, 0] + DP[i - 1, 14, 1] + DP[i - 1, 15, 0]) % MOD;
-				DP[i, 7, 0] = (DP[i - 1, 12, 0] + DP[i - 1, 13, 0] + DP[i - 1, 14, 0] + DP[i - 1, 15, 0]) % MOD;
-				DP[i, 11, 0] = (DP[i - 1, 13, 0] + DP[i - 1, 14, 0] + DP[i - 1, 14, 1] + DP[i - 1, 15, 0]) % MOD;
-				DP[i, 11, 1] = DP[i - 1, 12, 0] % MOD;
-
-
-				DP[i, 4, 0] = (DP[i - 1, 0, 0] + DP[i - 1, 1, 0] + DP[i - 1, 3, 0]) % MOD;
-				DP[i, 6, 0] = (DP[i - 1, 9, 0] + DP[i - 1, 10, 0] + DP[i - 1, 11, 0]) % MOD;
-				DP[i, 9, 0] = (DP[i - 1, 5, 0] + DP[i - 1, 6, 0] + DP[i - 1, 7, 0]) % MOD;
+				dSum += (ulong)Math.Abs(A - B);
+				AAry[i] = (ulong)A;
+				BAry[i] = (ulong)B;
 			}
 
-			// 合計
-			ulong ans = 0;
-			for (int j = 0; j < 16; j++) {
-				ans = (ans + DP[N, j, 0] + DP[N, j, 1]) % MOD;
+			var ansS = FindMinSum(AAry); 
+			var ansE = FindMinSum(BAry);
+			WriteLine(ansS + dSum + ansE);
+		}
+
+		ulong FindMinSum(ulong[] ary) {
+			ulong minSum = uint.MaxValue;
+
+			for (ulong i = 1; i <= 100; i++) {
+				if (1 <= i && i <= 1000000000) {
+					minSum = Math.Min(CalcSum(i, ary), minSum);
+				}
 			}
-			WriteLine(ans);
+
+			return minSum;
+		}
+		ulong CalcSum(ulong c, ulong[] ary) {
+			ulong sum = 0;
+			foreach (var p in ary) {
+				sum += (ulong)Math.Abs((decimal)c - (decimal)p);
+			}
+			return sum;
 		}
 
 #if !MYHOME
-		public static void Main(string[] args) {
+		static void Main(string[] args) {
 			new Solver().Run();
 		}
 #endif
@@ -77,7 +58,18 @@ namespace Exawizards2019.D
 
 	public static class Util
 	{
-		public readonly static ulong MOD = 1000000007;
+		public static int Gcd(int a, int b) {
+			if (a < b)
+				// 引数を入替えて自分を呼び出す
+				return Gcd(b, a);
+			while (b != 0) {
+				var remainder = a % b;
+				a = b;
+				b = remainder;
+			}
+			return a;
+		}
+		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
 			var sb = new StringBuilder();
@@ -202,6 +194,8 @@ namespace Exawizards2019.D
 		protected void Dump(string s) => Console.WriteLine(s);
 		[Conditional("DEBUG")]
 		protected void Dump(char c) => Console.WriteLine(c);
+		[Conditional("DEBUG")]
+		protected void Dump(int x) => Console.WriteLine(x);
 		[Conditional("DEBUG")]
 		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
 		[Conditional("DEBUG")]
