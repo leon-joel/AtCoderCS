@@ -35,30 +35,26 @@ namespace ABC124.D
 			if (nums.Count % 2 == 0) nums.Add(0);
 			//Dump(nums);
 
-			//■しゃくとり法
+			//■累積和を使った実装
+
+			// 累積和を計算
+			// nums  0 1 2 3 4 5
+			// accm 0 1 2 3 4 5 6
+			// ex) nums [1, 3) ※半開区間
+			//     の合計は accm[3] - accm[1]
+			int[] accm = new int[nums.Count + 1];
+			for (int i = 0; i < nums.Count; i++) {
+				accm[i + 1] = accm[i] + nums[i]; 
+			}
 
 			// 逆立ち~普通~...~逆立ち
 			// （K * 2 + 1）グループの人数をカウント
-			int l = 0;
-			int r = 0;
-			int sum = 0;
-
 			int ans = 0;
 			for (int i = 0; i < nums.Count; i+=2) {
-				int nextL = i;
-				int nextR = Math.Min(nextL + K * 2 + 1, nums.Count);  // [l, r) ※半開区間
+				int l = i;
+				int r = Math.Min(l + K * 2 + 1, nums.Count);  // [l, r) ※半開区間
 
-				// 左端を移動
-				while (l < nextL) {
-					sum -= nums[l];
-					++l;
-				}
-				// 右端を移動
-				while (r < nextR) {
-					sum += nums[r];
-					++r;
-				}
-
+				int sum = accm[r] - accm[l]; 
 				ans = Math.Max(ans, sum);
 			}
 
