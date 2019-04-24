@@ -12,41 +12,44 @@ namespace ABC124.D
 	{
 		public void Run() {
 			var ary = ReadIntArray();
-			var X = ary[0];
-			var Y = ary[1];
-			var Z = ary[2];
-			var K = ary[3];
+			var N = ary[0];
+			var K = ary[1];
+			var S = ReadLine();
 
-			var XA = ReadLongArray();
-			var YA = ReadLongArray();
-			var ZA = ReadLongArray();
-
-			var l = new long[X * Y];
-			for (int i = 0; i < X; i++) {
-				for (int j = 0; j < Y; j++) {
-					l[i * Y + j] = XA[i] + YA[j];
+			List<int> nums = new List<int>();
+			char[] ZO = { '0', '1' };
+			int curIdx = 1;	// 今見ている数のidx ★逆立ち＝1からスタートするのがポイント
+			int cnt = 0;	// 今見ている数がいくつ並んでいるか
+			for (int i = 0; i < N; i++) {
+				if (S[i] == ZO[curIdx]) {
+					++cnt;
+				} else {
+					nums.Add(cnt);
+					curIdx = 1 - curIdx;	// 見ている数を入れ替え
+					cnt = 1;				// 新しい数をカウントアップ
 				}
 			}
+			// 最後のグループ分を追加
+			if (0 < cnt) nums.Add(cnt);     
+			// 末尾も逆立ちグループで終わるようにする
+			if (nums.Count % 2 == 0) nums.Add(0);
+			//Dump(nums);
 
-			Array.Sort(l);
-			Array.Reverse(l);
+			int ans = 0;
+			for (int i = 0; i < nums.Count; i+=2) {
+				// 逆立ち~普通~...~逆立ち
+				// （K * 2 + 1）グループの人数をカウント
+				int l = i;
+				int r = Math.Min(i + K * 2 + 1, nums.Count);  // [l, r) ※半開区間
+				int sum = 0;
 
-			// 上位K件以下を対象に
-			var minK = Math.Min(K, X * Y);
-
-			var l2 = new long[minK * Z];
-			for (int i = 0; i < minK; i++) {
-				for (int j = 0; j < Z; j++) {
-					l2[i * Z + j] = l[i] + ZA[j];
+				for (int j = l; j < r; j++) {
+					sum += nums[j];
 				}
+				ans = Math.Max(ans, sum);
 			}
 
-			Array.Sort(l2);
-			Array.Reverse(l2);
-
-			for (int k = 0; k < K; k++) {
-				WriteLine(l2[k]);
-			}
+			WriteLine(ans);
 		}
 
 #if !MYHOME
