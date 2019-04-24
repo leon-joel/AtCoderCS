@@ -35,17 +35,30 @@ namespace ABC124.D
 			if (nums.Count % 2 == 0) nums.Add(0);
 			//Dump(nums);
 
+			//■しゃくとり法
+
+			// 逆立ち~普通~...~逆立ち
+			// （K * 2 + 1）グループの人数をカウント
+			int l = 0;
+			int r = 0;
+			int sum = 0;
+
 			int ans = 0;
 			for (int i = 0; i < nums.Count; i+=2) {
-				// 逆立ち~普通~...~逆立ち
-				// （K * 2 + 1）グループの人数をカウント
-				int l = i;
-				int r = Math.Min(i + K * 2 + 1, nums.Count);  // [l, r) ※半開区間
-				int sum = 0;
+				int nextL = i;
+				int nextR = Math.Min(nextL + K * 2 + 1, nums.Count);  // [l, r) ※半開区間
 
-				for (int j = l; j < r; j++) {
-					sum += nums[j];
+				// 左端を移動
+				while (l < nextL) {
+					sum -= nums[l];
+					++l;
 				}
+				// 右端を移動
+				while (r < nextR) {
+					sum += nums[r];
+					++r;
+				}
+
 				ans = Math.Max(ans, sum);
 			}
 
