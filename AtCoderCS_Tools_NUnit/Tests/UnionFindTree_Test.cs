@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
-namespace AtCoderCS_Tools
+namespace Tools
 {
 	[TestFixture()]
 	public class UnionFindTreeTest

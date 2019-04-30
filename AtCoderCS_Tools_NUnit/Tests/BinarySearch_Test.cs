@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
-namespace AtCoderCS_Tools
+namespace Tools
 {
 	[TestFixture()]
 	public class BinarySearchTest
@@ -13,14 +13,14 @@ namespace AtCoderCS_Tools
 			}
 
 			// 第2引数で与えた数字よりも大きい値が格納されている最小のindexを返す
-			Assert.AreEqual(0, Utils.BinarySearch(ary, -1));
-			Assert.AreEqual(0, Utils.BinarySearch(ary, 0));
-			Assert.AreEqual(5, Utils.BinarySearch(ary, 5));
-			Assert.AreEqual(9, Utils.BinarySearch(ary, 9));
+			Assert.AreEqual(0, Util.BinarySearch(ary, -1));
+			Assert.AreEqual(0, Util.BinarySearch(ary, 0));
+			Assert.AreEqual(5, Util.BinarySearch(ary, 5));
+			Assert.AreEqual(9, Util.BinarySearch(ary, 9));
 
 			// 該当なしの場合（全部falseの場合）は ary.Length を返す
-			Assert.AreEqual(10, Utils.BinarySearch(ary, 10));
-			Assert.AreEqual(10, Utils.BinarySearch(ary, 100));
+			Assert.AreEqual(10, Util.BinarySearch(ary, 10));
+			Assert.AreEqual(10, Util.BinarySearch(ary, 100));
 		}
 	}
 }

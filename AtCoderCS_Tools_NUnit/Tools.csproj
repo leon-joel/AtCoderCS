@@ -37,7 +37,7 @@
     <Compile Include="Tests\WeightedUnionFindTree_Test.cs" />
     <Compile Include="BinaryIndexedTree.cs" />
     <Compile Include="UnionFindTree.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="WeightedUnionFindTree.cs" />
     <Compile Include="XY.cs" />
     <Compile Include="BinarySearch.cs" />
@@ -49,9 +49,12 @@
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="BalancedTree.cs" />
     <Compile Include="PrimeNumbers.cs" />
+    <Compile Include="Tests\PrimeNumbers_Test.cs" />
+    <Compile Include="Tests\Utils_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="PrimeNumberList.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\" />

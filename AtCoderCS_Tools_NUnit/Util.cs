@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
-namespace AtCoderCS_Tools
+namespace Tools
 {
-	public static partial class Utils
-	{
+	public static partial class Util {
 		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
@@ -15,6 +15,41 @@ namespace AtCoderCS_Tools
 				sb.Append(", ");
 			}
 			return sb.ToString();
+		}
+		[Conditional("DEBUG")]
+		public static void Dump(string s) => Console.WriteLine(s);
+		[Conditional("DEBUG")]
+		public static void Dump(char c) => Console.WriteLine(c);
+		[Conditional("DEBUG")]
+		public static void Dump(double d) => Console.WriteLine($"{d:F9}");
+		[Conditional("DEBUG")]
+		public static void Dump<T>(IEnumerable<T> array) where T : IFormattable {
+			string s = Util.DumpToString(array);
+			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
+			Console.WriteLine(s);
+			//_writer.WriteLine(s);
+		}
+		[Conditional("DEBUG")]
+		public static void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {
+			var sb = new StringBuilder();
+			foreach (var a in arrayOfArray) {
+				sb.AppendLine(Util.DumpToString(a));
+			}
+			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
+			Console.WriteLine(sb.ToString());
+			//_writer.WriteLine(sb.ToString());
+		}
+		[Conditional("DEBUG")]
+		public static void DumpDP<T>(T[,] dp) where T : IFormattable {
+			var sb = new StringBuilder();
+			for (int i = 0; i < dp.GetLength(0); i++) {
+				for (int j = 0; j < dp.GetLength(1); j++) {
+					sb.Append(dp[i, j]);
+					sb.Append(", ");
+				}
+				sb.AppendLine();
+			}
+			Console.WriteLine(sb.ToString());
 		}
 
 		public static void InitArray<T>(T[] ary, T value) {
@@ -39,6 +74,12 @@ namespace AtCoderCS_Tools
 			}
 		}
 
+		public static void ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
+			if (r.CompareTo(v) < 0) r = v;
+		}
+		public static void ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
+			if (0 < r.CompareTo(v)) r = v;
+		}
 		public static T Max<T>(params T[] nums) where T : IComparable {
 			if (nums.Length == 0) return default(T);
 

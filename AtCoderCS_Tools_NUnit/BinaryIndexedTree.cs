@@ -1,5 +1,5 @@
 ﻿using System;
-namespace AtCoderCS_Tools
+namespace Tools
 {
 	public class BinaryIndexedTree
 	{

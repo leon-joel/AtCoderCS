@@ -1,5 +1,5 @@
 ﻿using System;
-namespace AtCoderCS_Tools
+namespace Tools
 {
 	/// <summary>
 	/// Ｍを法とする除算、累乗、階乗、nCr

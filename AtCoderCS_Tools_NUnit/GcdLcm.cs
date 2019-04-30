@@ -1,7 +1,7 @@
 ﻿using System;
-namespace AtCoderCS_Tools
+namespace Tools
 {
-	public static partial class Utils
+	public static partial class Util
 	{
 		/// <summary>
 		/// 最大公約数 ※ユークリッドの互除法 

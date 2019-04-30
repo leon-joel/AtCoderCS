@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AtCoderCS_Tools
+namespace Tools
 {
 	public class XY : IComparable<XY>, IFormattable {
 		public readonly int X;

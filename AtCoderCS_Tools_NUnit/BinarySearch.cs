@@ -1,7 +1,7 @@
 ﻿using System;
-namespace AtCoderCS_Tools
+namespace Tools
 {
-	public static partial class Utils {
+	public static partial class Util {
 		/// <summary>
 		/// 二分探索
 		/// ※条件を満たす最小のidxを返す

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderCS_NUnit", "AtCoderCS_NUnit\AtCoderCS_NUnit.csproj", "{C0E5C84C-6260-4383-A261-051BDBAE47D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderCS_Tools", "AtCoderCS_Tools_NUnit\AtCoderCS_Tools.csproj", "{45A18005-FABB-4C73-B58F-2CF2AB997B9B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tools", "AtCoderCS_Tools_NUnit\Tools.csproj", "{45A18005-FABB-4C73-B58F-2CF2AB997B9B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AtCoderCS_Keyence2019", "AtCoderCS_Keyence2019\AtCoderCS_Keyence2019.csproj", "{7847B923-466F-4669-A561-8FEB27E3910C}"
 EndProject

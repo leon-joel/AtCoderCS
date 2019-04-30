@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
 using System;
-namespace AtCoderCS_Tools
+namespace Tools
 {
-	using static Utils;
+	using static Util;
 
 	[TestFixture()]
 	public class GcdLcmTests

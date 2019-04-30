@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace AtCoderCS_Tools
+namespace Tools
 {
 	public static class PrimeNumber
 	{
@@ -37,6 +38,54 @@ namespace AtCoderCS_Tools
 				return false;
 
 			return (num < 2000000) ? IsPrimeBruteforce(num) : IsPrimeMillarRrabin(num);
+		}
+
+		/// <summary>
+		/// 素因数分解
+		/// </summary>
+		public static IEnumerable<long> Factoring(long n) {
+			while (1 < n) {
+				long factor = GetFactor(n);
+				yield return factor;
+				n /= factor;
+			}
+		}
+		private static long GetFactor(long n, int seed = 1) {
+			if (n % 2 == 0)
+				return 2;
+			if (IsPrime(n))
+				return n;
+			long x = 2;
+			long y = 2;
+			long d = 1;
+			long count = 0;
+			while (d == 1) {
+				count++;
+				x = f(x, n, seed);
+				y = f(f(y, n, seed), n, seed);
+				d = Gcd(Math.Abs(x - y), n);
+			}
+			if (d == n)
+				// 見つからなかった、乱数発生のシードを変えて再挑戦。
+				return GetFactor(n, seed + 1);
+			// 素数でない可能性もあるので、再度呼び出す
+			return GetFactor(d);
+		}
+		private static long f(long x, long n, int seed) {
+			return (seedPrimes[seed % 6] * x + seed) % n;
+		}
+		private static long Gcd(long a, long b) {
+			if (a < b)
+				return Gcd(b, a);  // 引数を入替えて自分を呼び出す
+			if (b == 0)
+				return a;
+			long d = 0;
+			do {
+				d = a % b;
+				a = b;
+				b = d;
+			} while (d != 0);
+			return a;
 		}
 
 		private static bool IsPrimeBruteforce(long num) {

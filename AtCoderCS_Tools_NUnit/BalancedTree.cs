@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace AtCoderCS_Tools
+namespace Tools
 {
 	/// <summary>
 	/// 平衡二分木
