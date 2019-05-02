@@ -11,30 +11,40 @@ namespace ABC125.C
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var S = ReadLine();
+			var N = ReadInt();
 
-			// 奇数枚目と偶数枚目の 0 の数を数える
-			int o0 = 0;
-			int e0 = 0;
-			for (int i = 0; i < S.Length; i++) {
-				if (S[i] != '0') continue;
+			var A = ReadIntArray();
 
-				if (i % 2 == 0)
-					++e0;
-				else
-					++o0;
+			// iまで の最大公約数
+			int g = 0;
+			int[] l = new int[N];
+			for (int i = 0; i < N; i++) {
+				l[i] = g = Gcd(g, A[i]);
+			}
+			// i- の最大公約数
+			g = 0;
+			int[] r = new int[N];
+			for (int i = N-1; 0 <= i; i--) {
+				r[i] = g = Gcd(g, A[i]);
+			}
+			//Dump(r);
+
+			// i番目を除外した場合のgcd = Gcd(l[i-1], r[i+1])
+			// gcd最大値を更新していく
+			int maxGcd = 0;
+			for (int i = 0; i < N; i++) {
+				if (i == 0) {
+					g = r[1];
+				} else if (i == N - 1) {
+					g = l[i - 1];
+				} else {
+					g = Gcd(l[i - 1], r[i + 1]);
+				}
+
+				ReplaceIfBigger(ref maxGcd, g);
 			}
 
-			int oTotal = S.Length / 2;
-			int eTotal = S.Length - oTotal;
-
-			// e0 o1 にする場合
-			var ans01 = eTotal - e0 + o0;
-			// e1 o0 にする場合
-			var ans10 = e0 + oTotal - o0;
-
-			var ans = Math.Min(ans01, ans10);
-			WriteLine(ans);
+			WriteLine(maxGcd);
 		}
 
 #if !MYHOME
@@ -151,6 +161,13 @@ namespace ABC125.C
 				}
 			}
 			return false;
+		}
+
+		public static void ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
+			if (r.CompareTo(v) < 0) r = v;
+		}
+		public static void ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
+			if (0 < r.CompareTo(v)) r = v;
 		}
 
 		/// <summary>
