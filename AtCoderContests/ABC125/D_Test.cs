@@ -6,49 +6,47 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC124.B
+namespace ABC125.D
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"4
-6 5 6 8
+@"3
+-10 5 -4
 ",
-@"3"),
+@"19"),
 				new TestData("Test2",
 @"5
-4 5 3 5 4
+10 -4 -8 -11 3
 ",
-@"3"),
+@"30"),
 				new TestData("Test3",
-@"5
-9 5 6 8 4
+@"11
+-1000000000 1000000000 -1000000000 1000000000 -1000000000 0 1000000000 -1000000000 1000000000 -1000000000 1000000000
 ",
-@"1"),
-				new TestData("Test4",
-@"1
-1
-",
-@"1"),
-				new TestData("Test5",
-@"3
-3 3 3
-",
-@"3"),
-//				new TestData("Test6",
-//@"1 2
-//2
-//2 1
+@"10000000000"),
+//				new TestData("Test4",
+//@"3 2
+//000
 //",
-//@"1"),
-//				new TestData("Test7",
+//@"3"),
+//				new TestData("Test5",
 //@"3 1
-//3 2 1
-//3
+//111
 //",
-//@"1"),
+//@"3"),
+//				new TestData("Test6",
+//@"3 2
+//101
+//",
+//@"3"),
+//				new TestData("Test7",
+//@"19 2
+//0000111010101100110
+//",
+//@"9"),
 //				new TestData("Test8",
 //@"3 3
 //1 2 3
@@ -114,7 +112,7 @@ namespace ABC124.B
 			sw.Stop();
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			// 文字列比較
-			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
+			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
 			// 浮動小数比較
 			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}

@@ -6,35 +6,30 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC124.B
+namespace ABC125.C
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"4
-6 5 6 8
+@"000
 ",
-@"3"),
+@"1"),
 				new TestData("Test2",
-@"5
-4 5 3 5 4
+@"10010010
 ",
 @"3"),
 				new TestData("Test3",
-@"5
-9 5 6 8 4
+@"0
 ",
-@"1"),
+@"0"),
 				new TestData("Test4",
 @"1
-1
 ",
-@"1"),
+@"0"),
 				new TestData("Test5",
-@"3
-3 3 3
+@"100100101
 ",
 @"3"),
 //				new TestData("Test6",
@@ -114,7 +109,7 @@ namespace ABC124.B
 			sw.Stop();
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			// 文字列比較
-			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
+			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
 			// 浮動小数比較
 			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}

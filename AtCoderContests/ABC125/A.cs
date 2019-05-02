@@ -4,37 +4,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC124.C
+namespace ABC125.A
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var S = ReadLine();
+			var ary = ReadIntArray();
+			var A = ary[0];
+			var B = ary[1];
+			var T = ary[2];
 
-			// 奇数枚目と偶数枚目の 0 の数を数える
-			int o0 = 0;
-			int e0 = 0;
-			for (int i = 0; i < S.Length; i++) {
-				if (S[i] != '0') continue;
-
-				if (i % 2 == 0)
-					++e0;
-				else
-					++o0;
-			}
-
-			int oTotal = S.Length / 2;
-			int eTotal = S.Length - oTotal;
-
-			// e0 o1 にする場合
-			var ans01 = eTotal - e0 + o0;
-			// e1 o0 にする場合
-			var ans10 = e0 + oTotal - o0;
-
-			var ans = Math.Min(ans01, ans10);
-			WriteLine(ans);
+			var n = T / A;
+			WriteLine(B * n);
 		}
 
 #if !MYHOME
@@ -46,48 +29,12 @@ namespace ABC124.C
 
 	public static class Util
 	{
-		/// <summary>
-		/// 最大公約数 ※ユークリッドの互除法 
-		/// ※a,bどちらかが0の場合は0じゃない方を、両方0の場合は0を返す。
-		/// </summary>
-		public static int Gcd(int a, int b) {
-			if (a < b)
-				// 引数を入替えて自分を呼び出す
-				return Gcd(b, a);
-			while (b != 0) {
-				var remainder = a % b;
-				a = b;
-				b = remainder;
-			}
-			return a;
-		}
-		public static int Gcd(params int[] nums) {
-			if (nums == null || nums.Length < 1)
-				throw new ArgumentException(nameof(nums));
-			if (nums.Length == 1)
-				return nums[0];
-
-			var g = Gcd(nums[0], nums[1]);
-			for (int i = 2; i < nums.Length; i++) {
-				g = Gcd(g, nums[i]);
-			}
-			return g;
-		}
-
 		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
 			var sb = new StringBuilder();
 			foreach (var item in array) {
 				sb.Append(item);
-				sb.Append(", ");
-			}
-			return sb.ToString();
-		}
-		public static string DumpToString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dic) {
-			var sb = new StringBuilder();
-			foreach (var kv in dic) {
-				sb.Append($"({kv.Key}, {kv.Value})");
 				sb.Append(", ");
 			}
 			return sb.ToString();
@@ -215,11 +162,6 @@ namespace ABC124.C
 			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
 			Console.WriteLine(s);
 			//_writer.WriteLine(s);
-		}
-		[Conditional("DEBUG")]
-		protected void Dump<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dic) { 
-			string s = Util.DumpToString(dic);
-			Console.WriteLine(s);
 		}
 		[Conditional("DEBUG")]
 		protected void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {

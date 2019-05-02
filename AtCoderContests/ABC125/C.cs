@@ -4,60 +4,36 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC124.D
+namespace ABC125.C
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			var N = ary[0];
-			var K = ary[1];
 			var S = ReadLine();
 
-			List<int> nums = new List<int>();
-			char[] ZO = { '0', '1' };
-			int curIdx = 1;	// 今見ている数のidx ★逆立ち＝1からスタートするのがポイント
-			int cnt = 0;	// 今見ている数がいくつ並んでいるか
-			for (int i = 0; i < N; i++) {
-				if (S[i] == ZO[curIdx]) {
-					++cnt;
-				} else {
-					nums.Add(cnt);
-					curIdx = 1 - curIdx;	// 見ている数を入れ替え
-					cnt = 1;				// 新しい数をカウントアップ
-				}
-			}
-			// 最後のグループ分を追加
-			if (0 < cnt) nums.Add(cnt);     
-			// 末尾も逆立ちグループで終わるようにする
-			if (nums.Count % 2 == 0) nums.Add(0);
-			//Dump(nums);
+			// 奇数枚目と偶数枚目の 0 の数を数える
+			int o0 = 0;
+			int e0 = 0;
+			for (int i = 0; i < S.Length; i++) {
+				if (S[i] != '0') continue;
 
-			//■累積和を使った実装
-
-			// 累積和を計算
-			// nums  0 1 2 3 4 5
-			// accm 0 1 2 3 4 5 6
-			// ex) nums [1, 3) ※半開区間
-			//     の合計は accm[3] - accm[1]
-			int[] accm = new int[nums.Count + 1];
-			for (int i = 0; i < nums.Count; i++) {
-				accm[i + 1] = accm[i] + nums[i]; 
+				if (i % 2 == 0)
+					++e0;
+				else
+					++o0;
 			}
 
-			// 逆立ち~普通~...~逆立ち
-			// （K * 2 + 1）グループの人数をカウント
-			int ans = 0;
-			for (int i = 0; i < nums.Count; i+=2) {
-				int l = i;
-				int r = Math.Min(l + K * 2 + 1, nums.Count);  // [l, r) ※半開区間
+			int oTotal = S.Length / 2;
+			int eTotal = S.Length - oTotal;
 
-				int sum = accm[r] - accm[l]; 
-				ans = Math.Max(ans, sum);
-			}
+			// e0 o1 にする場合
+			var ans01 = eTotal - e0 + o0;
+			// e1 o0 にする場合
+			var ans10 = e0 + oTotal - o0;
 
+			var ans = Math.Min(ans01, ans10);
 			WriteLine(ans);
 		}
 
@@ -70,12 +46,48 @@ namespace ABC124.D
 
 	public static class Util
 	{
-		public readonly static ulong MOD = 1000000007;
+		/// <summary>
+		/// 最大公約数 ※ユークリッドの互除法 
+		/// ※a,bどちらかが0の場合は0じゃない方を、両方0の場合は0を返す。
+		/// </summary>
+		public static int Gcd(int a, int b) {
+			if (a < b)
+				// 引数を入替えて自分を呼び出す
+				return Gcd(b, a);
+			while (b != 0) {
+				var remainder = a % b;
+				a = b;
+				b = remainder;
+			}
+			return a;
+		}
+		public static int Gcd(params int[] nums) {
+			if (nums == null || nums.Length < 1)
+				throw new ArgumentException(nameof(nums));
+			if (nums.Length == 1)
+				return nums[0];
+
+			var g = Gcd(nums[0], nums[1]);
+			for (int i = 2; i < nums.Length; i++) {
+				g = Gcd(g, nums[i]);
+			}
+			return g;
+		}
+
+		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
 			var sb = new StringBuilder();
 			foreach (var item in array) {
 				sb.Append(item);
+				sb.Append(", ");
+			}
+			return sb.ToString();
+		}
+		public static string DumpToString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dic) {
+			var sb = new StringBuilder();
+			foreach (var kv in dic) {
+				sb.Append($"({kv.Key}, {kv.Value})");
 				sb.Append(", ");
 			}
 			return sb.ToString();
@@ -203,6 +215,11 @@ namespace ABC124.D
 			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
 			Console.WriteLine(s);
 			//_writer.WriteLine(s);
+		}
+		[Conditional("DEBUG")]
+		protected void Dump<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dic) { 
+			string s = Util.DumpToString(dic);
+			Console.WriteLine(s);
 		}
 		[Conditional("DEBUG")]
 		protected void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {

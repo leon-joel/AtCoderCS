@@ -6,38 +6,37 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC124.C
+namespace ABC125.A
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"000
+@"3 5 7
 ",
-@"1"),
+@"10
+"),
 				new TestData("Test2",
-@"10010010
+@"3 2 9
 ",
-@"3"),
+@"6
+"),
 				new TestData("Test3",
-@"0
+@"20 20 19
 ",
 @"0"),
-				new TestData("Test4",
-@"1
-",
-@"0"),
-				new TestData("Test5",
-@"100100101
-",
-@"3"),
-//				new TestData("Test6",
-//@"1 2
-//2
-//2 1
+//				new TestData("Test4",
+//@"2019/05/01",
+//@"TBD"),
+//				new TestData("Test5",
+//@"2018/12/23
 //",
-//@"1"),
+//@"Heisei"),
+//				new TestData("Test6",
+//@"2020/01/01
+//",
+//@"TBD"),
 //				new TestData("Test7",
 //@"3 1
 //3 2 1

@@ -4,65 +4,28 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC124.D
+namespace ABC125.B
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			var N = ary[0];
-			var K = ary[1];
-			var S = ReadLine();
+			var N = ReadInt();
+			var VAry = ReadIntArray();
+			var CAry = ReadIntArray();
 
-			List<int> nums = new List<int>();
-			char[] ZO = { '0', '1' };
-			int curIdx = 1;	// 今見ている数のidx ★逆立ち＝1からスタートするのがポイント
-			int cnt = 0;	// 今見ている数がいくつ並んでいるか
-			for (int i = 0; i < N; i++) {
-				if (S[i] == ZO[curIdx]) {
-					++cnt;
-				} else {
-					nums.Add(cnt);
-					curIdx = 1 - curIdx;	// 見ている数を入れ替え
-					cnt = 1;				// 新しい数をカウントアップ
-				}
-			}
-			// 最後のグループ分を追加
-			if (0 < cnt) nums.Add(cnt);     
-			// 末尾も逆立ちグループで終わるようにする
-			if (nums.Count % 2 == 0) nums.Add(0);
-			//Dump(nums);
-
-			//■累積和を使った実装
-
-			// 累積和を計算
-			// nums  0 1 2 3 4 5
-			// accm 0 1 2 3 4 5 6
-			// ex) nums [1, 3) ※半開区間
-			//     の合計は accm[3] - accm[1]
-			int[] accm = new int[nums.Count + 1];
-			for (int i = 0; i < nums.Count; i++) {
-				accm[i + 1] = accm[i] + nums[i]; 
-			}
-
-			// 逆立ち~普通~...~逆立ち
-			// （K * 2 + 1）グループの人数をカウント
 			int ans = 0;
-			for (int i = 0; i < nums.Count; i+=2) {
-				int l = i;
-				int r = Math.Min(l + K * 2 + 1, nums.Count);  // [l, r) ※半開区間
-
-				int sum = accm[r] - accm[l]; 
-				ans = Math.Max(ans, sum);
+			for (int i = 0; i < N; i++) {
+				var d = VAry[i] - CAry[i];
+				if (0 < d) ans += d;
 			}
 
 			WriteLine(ans);
-		}
 
+		}
 #if !MYHOME
-		public static void Main(string[] args) {
+		static void Main(string[] args) {
 			new Solver().Run();
 		}
 #endif
@@ -70,7 +33,18 @@ namespace ABC124.D
 
 	public static class Util
 	{
-		public readonly static ulong MOD = 1000000007;
+		public static int Gcd(int a, int b) {
+			if (a < b)
+				// 引数を入替えて自分を呼び出す
+				return Gcd(b, a);
+			while (b != 0) {
+				var remainder = a % b;
+				a = b;
+				b = remainder;
+			}
+			return a;
+		}
+		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
 			var sb = new StringBuilder();
@@ -195,6 +169,8 @@ namespace ABC124.D
 		protected void Dump(string s) => Console.WriteLine(s);
 		[Conditional("DEBUG")]
 		protected void Dump(char c) => Console.WriteLine(c);
+		[Conditional("DEBUG")]
+		protected void Dump(int x) => Console.WriteLine(x);
 		[Conditional("DEBUG")]
 		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
 		[Conditional("DEBUG")]

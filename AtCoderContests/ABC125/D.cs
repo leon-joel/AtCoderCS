@@ -4,37 +4,37 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC124.C
+namespace ABC125.D
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var S = ReadLine();
+			var N = ReadInt();
+			var AAry = ReadLongArray();
 
-			// 奇数枚目と偶数枚目の 0 の数を数える
-			int o0 = 0;
-			int e0 = 0;
-			for (int i = 0; i < S.Length; i++) {
-				if (S[i] != '0') continue;
+			// 負の数の数
+			int negaCnt = 0;
+			// 絶対値の総和
+			ulong absSum = 0;
+			// 絶対値が最小の数（正の数として）
+			long minAbs = long.MaxValue;
 
-				if (i % 2 == 0)
-					++e0;
-				else
-					++o0;
+			foreach (var a in AAry) {
+				if (a < 0) negaCnt++;
+				var absV = Math.Abs(a);
+
+				ReplaceIfSmaller(ref minAbs, absV);
+
+				absSum += (ulong)absV;
 			}
 
-			int oTotal = S.Length / 2;
-			int eTotal = S.Length - oTotal;
-
-			// e0 o1 にする場合
-			var ans01 = eTotal - e0 + o0;
-			// e1 o0 にする場合
-			var ans10 = e0 + oTotal - o0;
-
-			var ans = Math.Min(ans01, ans10);
-			WriteLine(ans);
+			if (negaCnt % 2 == 0) {
+				WriteLine(absSum);
+			} else {
+				WriteLine(absSum - (ulong)minAbs * 2);
+			}
 		}
 
 #if !MYHOME
@@ -44,36 +44,8 @@ namespace ABC124.C
 #endif
 	}
 
-	public static class Util
+	public static partial class Util
 	{
-		/// <summary>
-		/// 最大公約数 ※ユークリッドの互除法 
-		/// ※a,bどちらかが0の場合は0じゃない方を、両方0の場合は0を返す。
-		/// </summary>
-		public static int Gcd(int a, int b) {
-			if (a < b)
-				// 引数を入替えて自分を呼び出す
-				return Gcd(b, a);
-			while (b != 0) {
-				var remainder = a % b;
-				a = b;
-				b = remainder;
-			}
-			return a;
-		}
-		public static int Gcd(params int[] nums) {
-			if (nums == null || nums.Length < 1)
-				throw new ArgumentException(nameof(nums));
-			if (nums.Length == 1)
-				return nums[0];
-
-			var g = Gcd(nums[0], nums[1]);
-			for (int i = 2; i < nums.Length; i++) {
-				g = Gcd(g, nums[i]);
-			}
-			return g;
-		}
-
 		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
@@ -84,13 +56,40 @@ namespace ABC124.C
 			}
 			return sb.ToString();
 		}
-		public static string DumpToString<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dic) {
+		[Conditional("DEBUG")]
+		public static void Dump(string s) => Console.WriteLine(s);
+		[Conditional("DEBUG")]
+		public static void Dump(char c) => Console.WriteLine(c);
+		[Conditional("DEBUG")]
+		public static void Dump(double d) => Console.WriteLine($"{d:F9}");
+		[Conditional("DEBUG")]
+		public static void Dump<T>(IEnumerable<T> array) where T : IFormattable {
+			string s = Util.DumpToString(array);
+			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
+			Console.WriteLine(s);
+			//_writer.WriteLine(s);
+		}
+		[Conditional("DEBUG")]
+		public static void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {
 			var sb = new StringBuilder();
-			foreach (var kv in dic) {
-				sb.Append($"({kv.Key}, {kv.Value})");
-				sb.Append(", ");
+			foreach (var a in arrayOfArray) {
+				sb.AppendLine(Util.DumpToString(a));
 			}
-			return sb.ToString();
+			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
+			Console.WriteLine(sb.ToString());
+			//_writer.WriteLine(sb.ToString());
+		}
+		[Conditional("DEBUG")]
+		public static void DumpDP<T>(T[,] dp) where T : IFormattable {
+			var sb = new StringBuilder();
+			for (int i = 0; i < dp.GetLength(0); i++) {
+				for (int j = 0; j < dp.GetLength(1); j++) {
+					sb.Append(dp[i, j]);
+					sb.Append(", ");
+				}
+				sb.AppendLine();
+			}
+			Console.WriteLine(sb.ToString());
 		}
 
 		public static void InitArray<T>(T[] ary, T value) {
@@ -115,6 +114,12 @@ namespace ABC124.C
 			}
 		}
 
+		public static void ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
+			if (r.CompareTo(v) < 0) r = v;
+		}
+		public static void ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
+			if (0 < r.CompareTo(v)) r = v;
+		}
 		public static T Max<T>(params T[] nums) where T : IComparable {
 			if (nums.Length == 0) return default(T);
 
@@ -152,37 +157,6 @@ namespace ABC124.C
 			}
 			return false;
 		}
-
-		/// <summary>
-		/// 二分探索
-		/// ※条件を満たす最小のidxを返す
-		/// ※満たすものがない場合は ary.Length を返す
-		/// ※『aryの先頭側が条件を満たさない、末尾側が条件を満たす』という前提
-		/// ただし、IsOK(...)の戻り値を逆転させれば、逆でも同じことが可能。
-		/// </summary>
-		/// <param name="ary">探索対象配列 ★ソート済みであること</param>
-		/// <param name="key">探索値 ※これ以上の値を持つ（IsOKがtrueを返す）最小のindexを返す</param>
-		public static int BinarySearch<T>(T[] ary, T key) where T : IComparable, IComparable<T> {
-			int left = -1;
-			int right = ary.Length;
-
-			while (1 < right - left) {
-				var mid = left + (right - left) / 2;
-
-				if (IsOK(ary, mid, key)) {
-					right = mid;
-				} else {
-					left = mid;
-				}
-			}
-
-			// left は条件を満たさない最大の値、right は条件を満たす最小の値になっている
-			return right;
-		}
-		public static bool IsOK<T>(T[] ary, int idx, T key) where T : IComparable, IComparable<T> {
-			// key <= ary[idx] と同じ意味
-			return key.CompareTo(ary[idx]) <= 0;
-		}
 	}
 
 	public class SolverBase
@@ -215,11 +189,6 @@ namespace ABC124.C
 			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
 			Console.WriteLine(s);
 			//_writer.WriteLine(s);
-		}
-		[Conditional("DEBUG")]
-		protected void Dump<TKey, TValue>(IEnumerable<KeyValuePair<TKey, TValue>> dic) { 
-			string s = Util.DumpToString(dic);
-			Console.WriteLine(s);
 		}
 		[Conditional("DEBUG")]
 		protected void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {
