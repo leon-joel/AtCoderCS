@@ -53,6 +53,8 @@
     <Compile Include="ABC114-C_Test.cs" />
     <Compile Include="ABC100-D.cs" />
     <Compile Include="ABC100-D_Test.cs" />
+    <Compile Include="ABC099-D.cs" />
+    <Compile Include="ABC099-D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
