@@ -11,59 +11,22 @@ namespace ABC094.D
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			int N = ary[0];
-			int C = ary[1];
+			var N = ReadInt();
+			var AAry = ReadIntArray();
 
-			List<int[]> dGrid = new List<int[]>(C);
-			for (int i = 0; i < C; i++) {
-				var da = ReadIntArray();
-				dGrid.Add(da);
+			Array.Sort(AAry);
+			var cn = AAry[N - 1];
+
+			double m = (double)cn / 2;
+			int cr = int.MaxValue;
+			for (int i = 0; i < N-1; i++) {
+				double di = Math.Abs(m - AAry[i]);
+				double dr = Math.Abs(m - cr);
+
+				if (di < dr)
+					cr = AAry[i];
 			}
-
-			// ライン＆色 ごとの数
-			int[,] cGrid = new int[3, C];
-			for (int i = 0; i < N; i++) {
-				var ca = ReadIntArray();
-				for (int j = 0; j < N; j++) {
-					var mod = (i + j) % 3;
-					var v = --ca[j];
-					++cGrid[mod, v];
-				}
-			}
-			//DumpDP(cGrid);
-
-			// ライン＆変換後の色 ごとの違和感合計
-			ulong[,] dSums = new ulong[3, C];
-			for (int i = 0; i < 3; i++) {
-				for (int t = 0; t < C; t++) {
-					ulong sum = 0;
-					for (int f = 0; f < C; f++) {
-
-						// すべての色を t にした場合の違和感合計
-						sum += (ulong)cGrid[i, f] * (ulong)dGrid[f][t];
-					}
-					dSums[i, t] = sum;
-				}
-			}
-
-			var ans = MinD(dSums);
-			WriteLine(ans);
-		}
-		ulong MinD(ulong[,] dSums) {
-			ulong minD = ulong.MaxValue;
-			var C = dSums.GetLength(1);
-			for (int i = 0; i < C; i++) {
-				for (int j = 0; j < C; j++) {
-					if (i == j) continue;
-					for (int k = 0; k < C; k++) {
-						if (i == k || j == k) continue;
-						var sum = dSums[0, i] + dSums[1, j] + dSums[2, k];
-						ReplaceIfSmaller(ref minD, sum);
-					}
-				}
-			}
-			return minD;
+			WriteLine($"{cn} {cr}");
 		}
 
 #if !MYHOME

@@ -13,25 +13,15 @@ namespace ABC094.D
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"2 3
-0 1 1
-1 0 1
-1 4 0
-1 2
-3 3
+@"5
+6 9 4 2 11
 ",
-@"3"),
+@"11 6"),
 				new TestData("Test2",
-@"4 3
-0 12 71
-81 0 53
-14 92 0
-1 1 2 1
-2 1 1 2
-2 2 1 3
-1 1 2 2
+@"2
+100 0
 ",
-@"428"),
+@"100 0"),
 //				new TestData("Test3",
 //@"10 5
 //10 -80 21
@@ -132,7 +122,7 @@ namespace ABC094.D
 			sw.Stop();
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			// 文字列比較
-			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
+			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
 			// 浮動小数比較
 			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}
