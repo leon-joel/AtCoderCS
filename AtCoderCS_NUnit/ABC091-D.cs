@@ -11,34 +11,46 @@ namespace ABC091.D
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadInt();
+			var N = ReadLong();
 
-			var As = ReadIntArray();
-			var Bs = ReadIntArray();
+			var AAry = ReadIntArray();
+			var BAry = ReadIntArray();
+
+			// maskedな値を格納する配列
+			// ※AAryだけで実装することも可能だが、
+			// inplace に AAry[i] &= mask とやるよりも何倍も高速
+			var As = new int[N];
+			var Bs = new int[N];
 
 			uint ans = 0;
 
 			// 最上位ビットから調べる
-			for (int k = 29; k >= 0; k--) {
-				var t = (int)Math.Pow(2, k);
-				var t2 = t * 2;
+			for (int k = 28; k >= 0; k--) {
+				var mask = (1 << k + 1) - 1;
 				for (int i = 0; i < N; i++) {
-					Bs[i] %= t2;
+					As[i] = AAry[i] & mask;
+					Bs[i] = BAry[i] & mask;
 				}
-				//Array.Sort(As);
+				Array.Sort(As);
+				//Array.Reverse(As);
 				Array.Sort(Bs);
 				//Dump(As);
 				//Dump(Bs);
 
 				// Aごとに +B との和が
 				//   T以上、2T以上、3T以上
-				// となる Bの範囲 を2分探索で調べる
-				int dnum = 0;
-				for (int i = 0; i < N; i++) {
-					var a = As[i] % t2;
-					var b1 = BinarySearch(Bs, t - a);
-					var b2 = BinarySearch(Bs, b1 - 1, N, t2 - a);
-					var b3 = BinarySearch(Bs, b2 - 1, N, t * 3 - a);
+				// となる Bの範囲 をしゃくとり的に調べる
+				var t = 1 << k;
+				long dnum = 0;
+				int b1 = 0, b2 = 0, b3 = 0;
+				for (int i = (int)N - 1; i >= 0; i--) {
+					var a = As[i];
+					b1 = Incr(Bs, b1, t - a);
+					//ReplaceIfBigger(ref b2, b1);
+					b2 = Incr(Bs, b2, t * 2 - a);
+					//ReplaceIfBigger(ref b3, b2);
+					b3 = Incr(Bs, b3, t * 3 - a);
+
 					//dnum += (N - b3) + (N - b1) - (N - b2);
 					dnum += N - b3 - b1 + b2;
 				}
@@ -50,6 +62,10 @@ namespace ABC091.D
 			WriteLine(ans);
 		}
 
+		int Incr<T>(IList<T> list, int i, T v) where T : IComparable<T> {
+			while (i < list.Count && list[i].CompareTo(v) < 0) ++i;
+			return i;
+		}
 #if !MYHOME
 		public static void Main(string[] args) {
 			new Solver().Run();
