@@ -11,61 +11,26 @@ namespace ABC090.D
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadLong();
+			var ary = ReadIntArray();
+			var N = ary[0];
+			var K = ary[1];
 
-			var AAry = ReadIntArray();
-			var BAry = ReadIntArray();
-
-			// maskedな値を格納する配列
-			// ※AAryだけで実装することも可能だが、
-			// inplace に AAry[i] &= mask とやるよりも何倍も高速
-			var As = new int[N];
-			var Bs = new int[N];
-
-			uint ans = 0;
-
-			// 最上位ビットから調べる
-			for (int k = 28; k >= 0; k--) {
-				var mask = (1 << k + 1) - 1;
-				for (int i = 0; i < N; i++) {
-					As[i] = AAry[i] & mask;
-					Bs[i] = BAry[i] & mask;
-				}
-				Array.Sort(As);
-				//Array.Reverse(As);
-				Array.Sort(Bs);
-				//Dump(As);
-				//Dump(Bs);
-
-				// Aごとに +B との和が
-				//   T以上、2T以上、3T以上
-				// となる Bの範囲 をしゃくとり的に調べる
-				var t = 1 << k;
-				long dnum = 0;
-				int b1 = 0, b2 = 0, b3 = 0;
-				for (int i = (int)N - 1; i >= 0; i--) {
-					var a = As[i];
-					b1 = Incr(Bs, b1, t - a);
-					//ReplaceIfBigger(ref b2, b1);
-					b2 = Incr(Bs, b2, t * 2 - a);
-					//ReplaceIfBigger(ref b3, b2);
-					b3 = Incr(Bs, b3, t * 3 - a);
-
-					//dnum += (N - b3) + (N - b1) - (N - b2);
-					dnum += N - b3 - b1 + b2;
-				}
-
-				if (dnum % 2 == 1) {
-					ans |= (1U << k);
-				}
+			if (K == 0) {
+				WriteLine((long)N * N);
+				return;
 			}
+
+			long ans = 0;
+			for (int d = K+1; d <= N; d++) {
+				int r;
+				int m = Math.DivRem(N, d, out r);
+
+				ans += (d - K) * m + Math.Max(0, r - K + 1);
+			}
+
 			WriteLine(ans);
 		}
 
-		int Incr<T>(IList<T> list, int i, T v) where T : IComparable<T> {
-			while (i < list.Count && list[i].CompareTo(v) < 0) ++i;
-			return i;
-		}
 #if !MYHOME
 		public static void Main(string[] args) {
 			new Solver().Run();
@@ -76,45 +41,6 @@ namespace ABC090.D
 	public static class Util
 	{
 		public readonly static long MOD = 1000000007;
-
-		public static bool IsOK<T>(IList<T> ary, int idx, T key) where T : IComparable, IComparable<T> {
-			// key <= ary[idx] と同じ意味
-			return key.CompareTo(ary[idx]) <= 0;
-		}
-		/// <summary>
-		/// 二分探索
-		/// ※条件を満たす最小のidxを返す
-		/// ※満たすものがない場合は ary.Length を返す
-		/// ※『aryの先頭側が条件を満たさない、末尾側が条件を満たす』という前提
-		/// ただし、IsOK(...)の戻り値を逆転させれば、逆でも同じことが可能。
-		/// </summary>
-		/// <param name="ary">探索対象配列 ★ソート済みであること</param>
-		/// <param name="key">探索値 ※これ以上の値を持つ（IsOKがtrueを返す）最小のindexを返す</param>
-		public static int BinarySearch<T>(IList<T> ary, T key) where T : IComparable, IComparable<T> {
-			return BinarySearch(ary, -1, ary.Count, key);
-		}
-		/// <summary>
-		/// 範囲付き二分探索
-		/// ※条件を満たす最小のidxを返す
-		/// 例) 0 1 2 3 4 5 6 7 8 9
-		/// [3, 4] からの探索の場合、l=2, r=5 を与える
-		/// すべてが条件を満たす場合は l+1 が返される
-		/// 条件を満たすものがない場合は r が返される
-		/// </summary>
-		public static int BinarySearch<T>(IList<T> ary, int left, int right, T key) where T : IComparable, IComparable<T> {
-			while (1 < right - left) {
-				var mid = left + (right - left) / 2;
-
-				if (IsOK(ary, mid, key)) {
-					right = mid;
-				} else {
-					left = mid;
-				}
-			}
-
-			// left は条件を満たさない最大の値、right は条件を満たす最小の値になっている
-			return right;
-		}
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
 			var sb = new StringBuilder();

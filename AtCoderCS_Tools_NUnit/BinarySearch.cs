@@ -42,5 +42,14 @@ namespace Tools
 			// left は条件を満たさない最大の値、right は条件を満たす最小の値になっている
 			return right;
 		}
+
+		/// <summary>
+		/// listのi番目以降で初めて list[i]がv以上 となる i を返す
+		/// ※BinarySearchではなく、シーケンシャルサーチしている
+		/// </summary>
+		public static int Incr<T>(IList<T> list, int i, T v) where T : IComparable<T> {
+			while (i < list.Count && list[i].CompareTo(v) < 0) ++i;
+			return i;
+		}
 	}
 }
