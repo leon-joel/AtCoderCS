@@ -6,52 +6,39 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC089.C
+namespace ABC088.C
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"5
-MASHIKE
-RUMOI
-OBIRA
-HABORO
-HOROKANAI
+@"1 0 1
+2 1 2
+1 0 1
 ",
-@"2
+@"Yes
 "),
 				new TestData("Test2",
-@"4
-ZZ
-ZZZ
-Z
-ZZZZZZZZZZ
+@"2 2 2
+2 1 2
+2 2 2
 ",
-@"0
+@"No
 "),
 				new TestData("Test3",
-@"5
-CHOKUDAI
-RNG
-MAKOTO
-AOKI
-RINGO
+@"0 8 8
+0 8 8
+0 8 8
 ",
-@"7
+@"Yes
 "),
 				new TestData("Test4",
-@"7
-MA
-MB
-AA
-AB
-AC
-RA
-CA
+@"1 8 6
+2 9 7
+0 7 7
 ",
-@"17
+@"No
 "),
 //				new TestData("Test5",
 //@"1 2

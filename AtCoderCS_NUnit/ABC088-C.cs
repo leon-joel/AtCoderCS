@@ -4,78 +4,48 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC089.C
+namespace ABC088.C
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadInt();
-			// M, A, R, C, H
-			int[] Ns = new int[5];
-			for (int i = 0; i < N; i++) {
-				var s = ReadLine();
-				if (s[0] == 'M') ++Ns[0];
-				else if (s[0] == 'A') ++Ns[1];
-				else if (s[0] == 'R') ++Ns[2];
-				else if (s[0] == 'C') ++Ns[3];
-				else if (s[0] == 'H') ++Ns[4];
+			int[,] grid = new int[3, 3];
+			for (int i = 0; i < 3; i++) {
+				var row = ReadIntArray();
+				for (int j = 0; j < 3; j++) {
+					grid[i, j] = row[j];
+				}
 			}
 
-			int c = 0;
-			for (int i = 0; i < 5; i++) {
-				if (0 < Ns[i])
-					++c;
+			var d1 = grid[0, 1] - grid[0, 0];
+			var d2 = grid[0, 2] - grid[0, 1];
+			for (int i = 1; i < 3; i++) {
+				if (grid[i, 1] - grid[i, 0] != d1) {
+					WriteLine("No");
+					return;
+				}
+				if (grid[i, 2] - grid[i, 1] != d2) {
+					WriteLine("No");
+					return;
+				}
 			}
-			if (c < 3) {
-				WriteLine(0);
-				return;
 
-			} else if (c == 3) {
-				long ans = 1;
-				for (int i = 0; i < 5; i++) {
-					if (0 < Ns[i])
-						ans *= Ns[i];
+			var e1 = grid[1, 0] - grid[0, 0];
+			var e2 = grid[2, 0] - grid[1, 0];
+			for (int j = 1; j < 3; j++) {
+				if (grid[1, j] - grid[0, j] != e1) {
+					WriteLine("No");
+					return;
 				}
-				WriteLine(ans);
-				return;
-
-			}else if (c == 4) {
-				long ans = 1;
-				List<long> ps = new List<long>();
-				for (int i = 0; i < 5; i++) {
-					if (0 < Ns[i])
-						ps.Add(Ns[i]);
+				if (grid[2, j] - grid[1, j] != e2) {
+					WriteLine("No");
+					return;
 				}
-				ans = ps[0] * ps[1] * ps[2] +
-					ps[0] * ps[1] * ps[3] +
-					ps[0] * ps[2] * ps[3] +
-					ps[1] * ps[2] * ps[3];
-				WriteLine(ans);
-				return;
-
-			}else if (c == 5) {
-				long ans = 1;
-				List<long> ps = new List<long>();
-				for (int i = 0; i < 5; i++) {
-					if (0 < Ns[i])
-						ps.Add(Ns[i]);
-				}
-				ans =
-					ps[0] * ps[1] * ps[2] +
-					ps[0] * ps[1] * ps[3] +
-					ps[0] * ps[1] * ps[4] +
-					ps[0] * ps[2] * ps[3] +
-					ps[0] * ps[2] * ps[4] +
-					ps[0] * ps[3] * ps[4] +
-					ps[1] * ps[2] * ps[3] +
-					ps[1] * ps[2] * ps[4] +
-					ps[1] * ps[3] * ps[4] +
-					ps[2] * ps[3] * ps[4];
-				WriteLine(ans);
-				return;
 			}
+
+			WriteLine("Yes");
 		}
 
 #if !MYHOME
