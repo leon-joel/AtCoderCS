@@ -40,5 +40,9 @@ namespace Tools
 		public string ToString(string format, IFormatProvider formatProvider) {
 			return $"({X}, {Y})";
 		}
+
+		public int Dist(XY other) {
+			return Math.Abs(X - other.X) + Math.Abs(Y - other.Y);
+		}
 	}
 }

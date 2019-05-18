@@ -51,6 +51,7 @@
     <Compile Include="PrimeNumbers.cs" />
     <Compile Include="Tests\PrimeNumbers_Test.cs" />
     <Compile Include="Tests\Utils_Test.cs" />
+    <Compile Include="Tests\XY_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
