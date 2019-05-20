@@ -133,6 +133,16 @@
     <Compile Include="AGC033\A_Test.cs" />
     <Compile Include="AGC033\B.cs" />
     <Compile Include="AGC033\B_Test.cs" />
+    <Compile Include="ABC126\A.cs" />
+    <Compile Include="ABC126\A_Test.cs" />
+    <Compile Include="ABC126\B.cs" />
+    <Compile Include="ABC126\B_Test.cs" />
+    <Compile Include="ABC126\C.cs" />
+    <Compile Include="ABC126\C_Test.cs" />
+    <Compile Include="ABC126\D.cs" />
+    <Compile Include="ABC126\D_Test.cs" />
+    <Compile Include="ABC126\E.cs" />
+    <Compile Include="ABC126\E_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -152,6 +162,7 @@
     <Folder Include="ABC124\" />
     <Folder Include="ABC125\" />
     <Folder Include="AGC033\" />
+    <Folder Include="ABC126\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
