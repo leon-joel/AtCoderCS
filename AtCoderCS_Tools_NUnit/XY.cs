@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Tools
 {
@@ -43,6 +44,13 @@ namespace Tools
 
 		public int Dist(XY other) {
 			return Math.Abs(X - other.X) + Math.Abs(Y - other.Y);
+		}
+
+		public IEnumerable<XY> Neighbors() {
+			yield return new XY(X - 1, Y);	// 上
+			yield return new XY(X, Y + 1);  // 右
+			yield return new XY(X + 1, Y);  // 下
+			yield return new XY(X, Y - 1);	// 左
 		}
 	}
 }
