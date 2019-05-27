@@ -29,10 +29,10 @@ namespace AGC023.A
 			}
 
 			// 2以上出現する数に関して nC2 を求める
-			int ans = 0;
+			long ans = 0;
 			foreach (var kv in nums) {
 				if (2 <= kv.Value) {
-					var ncr = kv.Value * (kv.Value - 1) / 2;
+					long ncr = (long)kv.Value * (kv.Value - 1) / 2;
 					ans += ncr;
 				}
 			}

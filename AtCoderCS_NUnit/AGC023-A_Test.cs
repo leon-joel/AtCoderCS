@@ -29,17 +29,21 @@ namespace AGC023.A
 1 -2 3 -4 5
 ",
 @"0"),
-//				new TestData("Test4",
-//@"2019/05/01",
-//@"TBD"),
-//				new TestData("Test5",
-//@"2018/12/23
-//",
-//@"Heisei"),
-//				new TestData("Test6",
-//@"2020/01/01
-//",
-//@"TBD"),
+				new TestData("Test4",
+@"1
+1
+",
+@"0"),
+				new TestData("Test5",
+@"1
+0
+",
+@"1"),
+				new TestData("Test6",
+@"2
+0 0
+",
+@"3"),
 //				new TestData("Test7",
 //@"3 1
 //3 2 1
