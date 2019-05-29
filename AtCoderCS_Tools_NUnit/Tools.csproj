@@ -52,6 +52,8 @@
     <Compile Include="Tests\PrimeNumbers_Test.cs" />
     <Compile Include="Tests\Utils_Test.cs" />
     <Compile Include="Tests\XY_Test.cs" />
+    <Compile Include="MinimumSpanningTree.cs" />
+    <Compile Include="Tests\MST_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
