@@ -85,6 +85,8 @@
     <Compile Include="ABC086-D_Test.cs" />
     <Compile Include="AGC023-A.cs" />
     <Compile Include="AGC023-A_Test.cs" />
+    <Compile Include="ABC065-D.cs" />
+    <Compile Include="ABC065-D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

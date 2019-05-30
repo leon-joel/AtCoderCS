@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Tools
 {
-	public class Edge : IComparable<Edge>
+	public class Edge : IComparable<Edge>, IFormattable
 	{
 		public int V0;
 		public int V1;
@@ -17,6 +17,13 @@ namespace Tools
 
 		public int CompareTo(Edge other) {
 			return Cost.CompareTo(other.Cost);
+		}
+
+		public override string ToString() {
+			return ToString(null, null);
+		}
+		public string ToString(string format, IFormatProvider formatProvider) {
+			return $"({V0}-{V1}: {Cost})";
 		}
 	}
 	/// <summary>
@@ -62,12 +69,12 @@ namespace Tools
 		/// クラスカル法
 		/// </summary>
 		/// <returns>最小全域木のコスト合計</returns>
-		public int CalcMinCostByKruskal() {
+		public long CalcMinCostByKruskal() {
 			Edges.Sort();
 
 			var uft = new UnionFindTree(NumOfV);
 
-			int minCost = 0;
+			long minCost = 0;
 
 			foreach (var e in Edges) {
 				if (!uft.IsSame(e.V0, e.V1)) {
