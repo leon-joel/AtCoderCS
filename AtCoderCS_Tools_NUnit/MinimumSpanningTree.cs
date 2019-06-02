@@ -9,6 +9,14 @@ namespace Tools
 		public int V1;
 		public int Cost;
 
+		/// <summary>
+		/// aryには [頂点0, 頂点1, Cost]
+		/// </summary>
+		public Edge(int[] ary) {
+			V0 = ary[0];
+			V1 = ary[1];
+			Cost = ary[2];
+		}
 		public Edge(int v0, int v1, int cost) {
 			V0 = v0;
 			V1 = v1;
@@ -26,6 +34,9 @@ namespace Tools
 			return $"({V0}-{V1}: {Cost})";
 		}
 	}
+
+	// ★ UnionFindTree が必要
+
 	/// <summary>
 	/// 無向グラフにおける最小全域木アルゴリズム
 	/// ★ UnionFindTree が必要
@@ -61,6 +72,12 @@ namespace Tools
 			Edges = edges;
 		}
 
+		/// <summary>
+		/// aryには [頂点0, 頂点1, Cost]
+		/// </summary>
+		public void Add(int[] ary) {
+			Edges.Add(new Edge(ary));
+		}
 		public void Add(int v0, int v1, int cost) {
 			Edges.Add(new Edge(v0, v1, cost));
 		}
