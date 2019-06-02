@@ -4,52 +4,39 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace AGC033.B
+namespace AGC034.B
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			var H = ary[0];
-			var W = ary[1];
-			var N = ary[2];
-			ary = ReadIntArray();
-			var Sr = ary[0];
-			var Sc = ary[1];
 			var S = ReadLine();
-			var T = ReadLine();
+			var SA = S + "A";
+			int cntA = 0;
+			long point = 0;
 
-			// 左右生存限界 ※grid内を 1 ~ W とする
-			int limR = W;
-			int limL = 1;
-			int limU = 1;
-			int limD = H;
-			for (int i = N - 1; i >= 0; i--) {
-				// T側
-				var c = T[i];
-				if (c == 'R') limL = Math.Max(limL - 1, 1);
-				else if (c == 'L') limR = Math.Min(limR + 1, W);
-				else if (c == 'U') limD = Math.Min(limD + 1, H);
-				else if (c == 'D') limU = Math.Max(limU - 1, 1);
+			for (int i = 0; i < S.Length; i++) {
+				var c = SA[i];
+				if (c == 'A') {
+					++cntA;
+				} else if (c == 'B') {
+					var d = SA[i+1];
+					if (d == 'C') {
+						++i;
+						point += cntA;
+					} else {
+						// ここでリセット
+						cntA = 0;
+					}
 
-				// S側
-				c = S[i];
-				if (c == 'R') limR--;
-				else if (c == 'L') limL++;
-				else if (c == 'U') limU++;
-				else if (c == 'D') limD--;
-
-				// 生存限界が左右/上下逆転（＝どこにいても落とされる）していたらアウト
-				if (limR < limL || limD < limU) {
-					WriteLine("NO");
-					return;
+				} else {
+					// ここでリセット
+					cntA = 0;
 				}
 			}
-			// 開始地点が生存範囲に入っている？
-			var ret = (limL <= Sc && Sc <= limR && limU <= Sr && Sr <= limD);
-			WriteLine(ret ? "YES" : "NO");
+
+			WriteLine(point);
 		}
 #if !MYHOME
 		static void Main(string[] args) {

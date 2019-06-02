@@ -4,128 +4,60 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace AGC033.A
+namespace AGC034.A
 {
 	using static Util;
-
-	public class XY : IComparable<XY>, IFormattable
-	{
-		public readonly int X;
-		public readonly int Y;
-
-		public XY() { }
-		public XY(int x, int y) {
-			X = x;
-			Y = y;
-		}
-		public XY(int[] ary) {
-			X = ary[0];
-			Y = ary[1];
-		}
-
-		public int CompareTo(XY other) {
-			var dx = this.X - other.X;
-			if (0 < dx)
-				return 1;
-			else if (dx < 0)
-				return -1;
-			else {
-				var dy = this.Y - other.Y;
-				if (0 < dy)
-					return 1;
-				else if (dy < 0)
-					return -1;
-				else
-					return 0;
-			}
-		}
-
-		public override string ToString() {
-			return ToString(null, null);
-		}
-		// format等の引数は一切無視
-		public string ToString(string format, IFormatProvider formatProvider) {
-			return $"({X}, {Y})";
-		}
-	}
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
 			var ary = ReadIntArray();
-			var H = ary[0];
-			var W = ary[1];
+			var N = ary[0];
+			var A = ary[1] - 1;	// 0-indexed
+			var B = ary[2] - 1;
+			var C = ary[3] - 1;
+			var D = ary[4] - 1;
 
-			List<XY> bs = new List<XY>(1000000);
-			List<XY> cs = new List<XY>(1000000);
-			var grid = new bool[H + 2, W + 2];
-			for (int i = 0; i < H + 2; i++) {
-				grid[i, 0] = true;
-				grid[i, W + 1] = true;
-			}
-			for (int j = 0; j < W + 2; j++) {
-				grid[0, j] = true;
-				grid[H + 1, j] = true;
-			}
-			
-			for (int i = 0; i < H; i++) {
-				var s = ReadLine();
+			var S = ReadLine();
 
-				for (int j = 0; j < s.Length; j++) {
-					if (s[j] == '#') {
-						grid[i + 1, j + 1] = true;
-						bs.Add(new XY(i + 1, j + 1));
-					}
-				}
-			}
-			//DumpDP(grid);
+			var start = Math.Min(A, B);
+			var end = Math.Max(C, D);
 
-			var cur = bs;
-			var nex = cs;
-			int ans = 0;
-			while (true) { 
-				nex.Clear();
-				// 黒マスでループ
-				foreach (var xy in cur) {
-					// 上
-					var cx = xy.X - 1;
-					var cy = xy.Y;
-					if (!grid[cx, cy]) {
-						grid[cx, cy] = true;
-						nex.Add(new XY(cx, cy));
+			bool preB = false;
+			int wCnt = 0;
+			bool foundW3 = false;
+			for (int i = start; i <= end; i++) {
+				if (S[i] == '#') {
+					if (preB) {
+						// 連続黒マスはアウト！
+						WriteLine("No");
+						return;
+					} else {
+						preB = true;
 					}
-					// 下
-					cx = xy.X + 1;
-					if (!grid[cx, cy]) {
-						grid[cx, cy] = true;
-						nex.Add(new XY(cx, cy));
-					}
-					// 左
-					cx = xy.X;
-					cy = xy.Y - 1;
-					if (!grid[cx, cy]) {
-						grid[cx, cy] = true;
-						nex.Add(new XY(cx, cy));
-					}
-					// 右
-					cy = xy.Y + 1;
-					if (!grid[cx, cy]) {
-						grid[cx, cy] = true;
-						nex.Add(new XY(cx, cy));
-					}
-				}
-
-				if (0 < nex.Count) {
-					ans++;
-					var tmp = nex;
-					nex = cur;
-					cur = tmp;
 				} else {
-					break;
+					preB = false;
 				}
+
+				// [Bの左ます, Dマス+1] で3連続白マスあり？
+				if (B - 1 <= i && i <= D + 1) {
+					if (S[i] == '.') {
+						++wCnt;
+						if (3 <= wCnt)
+							foundW3 = true;
+					} else {
+						wCnt = 0;
+					}
+				} 
 			}
 
-			WriteLine(ans);
+			if (C < D) {
+				WriteLine("Yes");
+			}else if (foundW3) {
+				WriteLine("Yes");
+			} else {
+				WriteLine("No");
+			}
 		}
 
 #if !MYHOME

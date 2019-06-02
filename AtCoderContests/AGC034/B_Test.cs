@@ -6,69 +6,52 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AGC033.B
+namespace AGC034.B
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"2 3 3
-2 2
-RRL
-LUD
+@"ABCABC
 ",
-@"YES"),
+@"3"),
 				new TestData("Test2",
-@"4 3 5
-2 2
-UDRRR
-LLDUD
+@"C
 ",
-@"NO"),
+@"0"),
 				new TestData("Test3",
-@"5 6 11
-2 1
-RLDRRUDDLRL
-URRDRLLDLRD
+@"ABCACCBABCBCAABCB
 ",
-@"NO"),
-//				new TestData("Test4",
-//@"1
-//50
-//1
-//",
-//@"49"),
-//				new TestData("Test5",
-//@"3
-//3 3 3
-//",
-//@"3"),
-//				new TestData("Test6",
-//@"1 2
-//2
-//2 1
-//",
-//@"1"),
-//				new TestData("Test7",
-//@"3 1
-//3 2 1
-//3
-//",
-//@"1"),
-//				new TestData("Test8",
-//@"3 3
-//1 2 3
-//1 2 3",
-//@"0"),
-//				new TestData("Test8-1",
-//@"1000000005
-//1",
-//@"1000000005"),
-//				new TestData("Test9",
-//@"1000000008
-//1",
-//@"1"),
+@"6"),
+				new TestData("Test4",
+@"ABC
+",
+@"1"),
+				new TestData("Test5",
+@"AABC
+",
+@"2"),
+				new TestData("Test6",
+@"A
+",
+@"0"),
+				new TestData("Test7",
+@"B
+",
+@"0"),
+				new TestData("Test8",
+@"AA
+",
+@"0"),
+				new TestData("Test8-1",
+@"ABCBC
+",
+@"2"),
+				new TestData("Test9",
+@"AABCBC
+",
+@"4"),
 //				new TestData("Test9-1",
 //@"1000000009
 //1",

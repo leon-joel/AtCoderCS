@@ -6,43 +6,39 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace AGC033.A
+namespace AGC034.A
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"3 3
-...
-.#.
-...
+@"7 1 3 6 7
+.#..#..
 ",
-@"2
+@"Yes
 "),
 				new TestData("Test2",
-@"6 6
-..#..#
-......
-#..#..
-......
-.#....
-....#.
+@"7 1 3 7 6
+.#..#..
 ",
-@"3
+@"No
 "),
 				new TestData("Test3",
-@"1 1
-#
+@"15 1 3 15 13
+...#.#...#.#...
 ",
-@"0"),
-//				new TestData("Test4",
-//@"2019/05/01",
-//@"TBD"),
-//				new TestData("Test5",
-//@"2018/12/23
-//",
-//@"Heisei"),
+@"Yes"),
+				new TestData("Test4",
+@"4 1 2 4 3
+....
+",
+@"Yes"),
+				new TestData("Test5",
+@"6 1 2 6 4
+..#...
+",
+@"No"),
 //				new TestData("Test6",
 //@"2020/01/01
 //",
