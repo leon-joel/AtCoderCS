@@ -89,6 +89,8 @@
     <Compile Include="ABC065-D_Test.cs" />
     <Compile Include="AOJ-GRL_2_A.cs" />
     <Compile Include="AOJ-GRL_2_A_Test.cs" />
+    <Compile Include="ABC086-C.cs" />
+    <Compile Include="ABC086-C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
