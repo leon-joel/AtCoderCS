@@ -12,23 +12,33 @@ namespace ABC129.C
 	{
 		public void Run() {
 			var ary = ReadIntArray();
-			var N = ary[0];	// カード数
-			var M = ary[1]; // ゲート数
+			var N = ary[0];	// 段数
+			var M = ary[1];
 
-			int maxLower = 0;
-			int minUpper = N;
+			// DPテーブル ※壊れている段は -1 をセットしておく
+			var DP = new int[N+1];
 			for (int i = 0; i < M; i++) {
-				var a = ReadIntArray();
-				ReplaceIfBigger(ref maxLower, a[0]);
-				ReplaceIfSmaller(ref minUpper, a[1]);
+				var destroyed = ReadInt();
+				DP[destroyed] = -1;
 			}
 
-			var ans = minUpper - maxLower + 1;
-			if (0 < ans) {
-				WriteLine(ans);
-			} else {
-				WriteLine(0);
+			// ループ内をシンプルにするため先頭を先に処理
+			DP[0] = 1;
+			if (DP[1] == -1) DP[1] = 0;
+			else DP[1] = 1;
+
+			// 貰うDP
+			for (int i = 2; i < N+1; i++) {
+				if (DP[i] == -1) {
+					// 壊れている段は 0 にして次に進む
+					DP[i] = 0;
+					continue;
+				}
+
+				DP[i] = (int)((DP[i - 1] + DP[i - 2]) % MOD);
 			}
+
+			WriteLine(DP[N]);
 		}
 
 #if !MYHOME

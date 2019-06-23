@@ -13,25 +13,27 @@ namespace ABC129.C
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"4 2
-1 3
-2 4
+@"6 1
+3
 ",
-@"2
+@"4
 "),
 				new TestData("Test2",
-@"10 3
-3 6
-5 7
-6 9
+@"10 2
+4
+5
 ",
-@"1
+@"0
 "),
 				new TestData("Test3",
-@"100000 1
-1 100000
+@"100 5
+1
+23
+45
+67
+89
 ",
-@"100000
+@"608200469
 "),
 //				new TestData("Test4",
 //@"2019/05/01",
