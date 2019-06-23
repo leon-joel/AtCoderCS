@@ -167,6 +167,26 @@
     <Compile Include="ABC127\D_Test.cs" />
     <Compile Include="ABC127\E.cs" />
     <Compile Include="ABC127\E_Test.cs" />
+    <Compile Include="ABC129\A.cs" />
+    <Compile Include="ABC129\A_Test.cs" />
+    <Compile Include="ABC129\B.cs" />
+    <Compile Include="ABC129\B_Test.cs" />
+    <Compile Include="ABC129\C.cs" />
+    <Compile Include="ABC129\C_Test.cs" />
+    <Compile Include="ABC129\D.cs" />
+    <Compile Include="ABC129\D_Test.cs" />
+    <Compile Include="ABC129\E.cs" />
+    <Compile Include="ABC129\E_Test.cs" />
+    <Compile Include="Diverta2019\A.cs" />
+    <Compile Include="Diverta2019\A_Test.cs" />
+    <Compile Include="Diverta2019\B.cs" />
+    <Compile Include="Diverta2019\B_Test.cs" />
+    <Compile Include="Diverta2019\C.cs" />
+    <Compile Include="Diverta2019\C_Test.cs" />
+    <Compile Include="Diverta2019\D.cs" />
+    <Compile Include="Diverta2019\D_Test.cs" />
+    <Compile Include="Diverta2019\E.cs" />
+    <Compile Include="Diverta2019\E_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -190,6 +210,8 @@
     <Folder Include="ABC128\" />
     <Folder Include="AGC034\" />
     <Folder Include="ABC127\" />
+    <Folder Include="ABC129\" />
+    <Folder Include="Diverta2019\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
