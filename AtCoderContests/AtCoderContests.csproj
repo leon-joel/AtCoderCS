@@ -187,6 +187,16 @@
     <Compile Include="Diverta2019\D_Test.cs" />
     <Compile Include="Diverta2019\E.cs" />
     <Compile Include="Diverta2019\E_Test.cs" />
+    <Compile Include="ABC130\A.cs" />
+    <Compile Include="ABC130\A_Test.cs" />
+    <Compile Include="ABC130\B.cs" />
+    <Compile Include="ABC130\B_Test.cs" />
+    <Compile Include="ABC130\C.cs" />
+    <Compile Include="ABC130\C_Test.cs" />
+    <Compile Include="ABC130\D.cs" />
+    <Compile Include="ABC130\D_Test.cs" />
+    <Compile Include="ABC130\E.cs" />
+    <Compile Include="ABC130\E_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -212,6 +222,7 @@
     <Folder Include="ABC127\" />
     <Folder Include="ABC129\" />
     <Folder Include="Diverta2019\" />
+    <Folder Include="ABC130\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
