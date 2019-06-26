@@ -12,33 +12,15 @@ namespace ABC130.C
 	{
 		public void Run() {
 			var ary = ReadIntArray();
-			var N = ary[0];	// 段数
-			var M = ary[1];
+			var W = ary[0];
+			var H = ary[1];
+			var X = ary[2];
+			var Y = ary[3];
 
-			// DPテーブル ※壊れている段は -1 をセットしておく
-			var DP = new int[N+1];
-			for (int i = 0; i < M; i++) {
-				var destroyed = ReadInt();
-				DP[destroyed] = -1;
-			}
+			var ans1 = (double)W * (double)H / 2.0;
+			var ans2 = (X * 2 == W && Y * 2 == H) ? 1 : 0;
 
-			// ループ内をシンプルにするため先頭を先に処理
-			DP[0] = 1;
-			if (DP[1] == -1) DP[1] = 0;
-			else DP[1] = 1;
-
-			// 貰うDP
-			for (int i = 2; i < N+1; i++) {
-				if (DP[i] == -1) {
-					// 壊れている段は 0 にして次に進む
-					DP[i] = 0;
-					continue;
-				}
-
-				DP[i] = (int)((DP[i - 1] + DP[i - 2]) % MOD);
-			}
-
-			WriteLine(DP[N]);
+			WriteLine($"{ans1:F9} {ans2}");
 		}
 
 #if !MYHOME
