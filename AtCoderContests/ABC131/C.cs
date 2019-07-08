@@ -10,17 +10,65 @@ namespace ABC131.C
 
 	public class Solver : SolverBase
 	{
+		/// <summary>
+		/// 最大公約数 ※ユークリッドの互除法 
+		/// ※a,bどちらかが0の場合は0じゃない方を、両方0の場合は0を返す。
+		/// </summary>
+		public static long LGcd(long a, long b) {
+			if (a < b)
+				// 引数を入替えて自分を呼び出す
+				return LGcd(b, a);
+			while (b != 0) {
+				var remainder = a % b;
+				a = b;
+				b = remainder;
+			}
+			return a;
+		}
+		public static long LGcd(params long[] nums) {
+			if (nums == null || nums.Length < 1)
+				throw new ArgumentException(nameof(nums));
+			if (nums.Length == 1)
+				return nums[0];
+
+			var g = LGcd(nums[0], nums[1]);
+			for (int i = 2; i < nums.Length; i++) {
+				g = LGcd(g, nums[i]);
+			}
+			return g;
+		}
+
+		/// <summary>
+		/// 最小公倍数
+		/// ※a,bどちらかが0の場合は0を返す。
+		/// ※両方0の場合はDivideByZeroExceptionがthrowされる。
+		/// </summary>
+		public static long LLcm(long a, long b) {
+			return a * b / LGcd(a, b);
+		}
+
 		public void Run() {
-			var ary = ReadIntArray();
-			var W = ary[0];
-			var H = ary[1];
-			var X = ary[2];
-			var Y = ary[3];
+			var ary = ReadLongArray();
+			var A = ary[0];
+			var B = ary[1];
+			var C = ary[2];
+			var D = ary[3];
 
-			var ans1 = (double)W * (double)H / 2.0;
-			var ans2 = (X * 2 == W && Y * 2 == H) ? 1 : 0;
+			// (B - A + 1) - AB間のCの倍数 - AB間のDの倍数 + AB間のCDの公倍数 
 
-			WriteLine($"{ans1:F9} {ans2}");
+			var cntC = CountDNums(A, B, C);
+			var cntD = CountDNums(A, B, D);
+			var lcmCD = LLcm(C, D);
+			var cntLcmCD = CountDNums(A, B, lcmCD);
+
+			WriteLine((B - A + 1) - cntC - cntD + cntLcmCD);
+		}
+
+		private long CountDNums(long from, long to, long d) {
+			var cntF = (from - 1) / d;
+			var cntT = to / d;
+
+			return cntT - cntF;
 		}
 
 #if !MYHOME
