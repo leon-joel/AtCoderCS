@@ -13,27 +13,33 @@ namespace ABC132.C
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"2 3 1 2
+@"6
+9 1 4 4 6 7
 ",
-@"3.000000 0
+@"2
 "),
 				new TestData("Test2",
-@"2 2 1 1
+@"8
+9 1 14 5 5 4 4 14
 ",
-@"2.000000 1
+@"0
 "),
 				new TestData("Test3",
-@"3 5 1 1
+@"14
+99592 10342 29105 78532 83018 11639 92015 77204 30914 21912 34519 80835 100000 1
 ",
-@"7.5 0
+@"42685
 "),
 				new TestData("Test4",
-@"1 1 0 0",
-@"0.5 0"),
-//				new TestData("Test5",
-//@"2018/12/23
-//",
-//@"Heisei"),
+@"2
+1 2
+",
+@"1"),
+				new TestData("Test5",
+@"2
+1 1
+",
+@"0"),
 //				new TestData("Test6",
 //@"2020/01/01
 //",

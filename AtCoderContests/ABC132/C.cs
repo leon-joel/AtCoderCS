@@ -11,16 +11,16 @@ namespace ABC132.C
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			var W = ary[0];
-			var H = ary[1];
-			var X = ary[2];
-			var Y = ary[3];
+			var N = ReadInt();
+			var Ds = ReadIntArray();
 
-			var ans1 = (double)W * (double)H / 2.0;
-			var ans2 = (X * 2 == W && Y * 2 == H) ? 1 : 0;
+			Array.Sort(Ds);
 
-			WriteLine($"{ans1:F9} {ans2}");
+			var m0 = Ds[N / 2 - 1];
+			var m1 = Ds[N / 2];
+
+			var d = m1 - m0;
+			WriteLine(d);
 		}
 
 #if !MYHOME
