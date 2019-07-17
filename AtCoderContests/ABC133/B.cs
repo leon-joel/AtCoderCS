@@ -13,23 +13,44 @@ namespace ABC133.B
 		public void Run() {
 			var ary = ReadIntArray();
 			var N = ary[0];
-			var L = ary[1];
+			var D = ary[1];
 
-			// 味の最小・最大を求める
-			int e;
-			if (0 < L) {
-				e = L;
-			}else if (L + N - 1 < 0) {
-				e = L + N - 1;
-			}else {
-				e = 0;
+			var Xs = new List<int[]>(N);
+			for (int i = 0; i < N; i++) {
+				Xs.Add(ReadIntArray());
 			}
+			//DumpGrid(Xs);
 
-			var sum = (L + (L + N - 1)) * N / 2;
-			var ans = sum - e;
+			int ans = 0;
+			for (int i = 0; i < N-1; i++) {
+				for (int j = i+1; j < N; j++) {
+					var x0 = Xs[i];
+					var x1 = Xs[j];
+					long s2 = 0;
+					for (int d = 0; d < D; d++) {
+						s2 += (x0[d] - x1[d]) * (x0[d] - x1[d]);
+					}
+
+					if (IsSqrNum(s2))
+						++ans;
+				}
+			}
 
 			WriteLine(ans);
 		}
+		bool IsSqrNum(long s) {
+			long i = 0;
+			while (true) {
+				long i2 = i * i;
+				if (s == i2)
+					return true;
+				else if (s < i2)
+					return false;
+				else
+					++i;
+			}
+		}
+
 #if !MYHOME
 		static void Main(string[] args) {
 			new Solver().Run();

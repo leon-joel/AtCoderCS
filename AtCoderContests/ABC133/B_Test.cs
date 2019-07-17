@@ -13,19 +13,30 @@ namespace ABC133.B
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"5 2
+@"3 2
+1 2
+5 5
+-2 8
 ",
-@"18
+@"1
 "),
 				new TestData("Test2",
-@"3 -1
+@"3 4
+-3 7 8 2
+-12 1 10 2
+-2 8 9 3
 ",
-@"0
+@"2
 "),
 				new TestData("Test3",
-@"30 -50
+@"5 1
+1
+2
+3
+4
+5
 ",
-@"-1044
+@"10
 "),
 //				new TestData("Test4",
 //@"1
