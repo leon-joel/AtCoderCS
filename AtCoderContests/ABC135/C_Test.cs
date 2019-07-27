@@ -6,34 +6,44 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC133.C
+namespace ABC135.C
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"2020 2040
-",
 @"2
+3 5 2
+4 5
+",
+@"9
 "),
 				new TestData("Test2",
-@"4 5
+@"3
+5 6 3 8
+5 100 8
 ",
-@"20
+@"22
 "),
 				new TestData("Test3",
-@"2019 5000
+@"2
+100 1 1
+1 100
 ",
-@"0
+@"3
 "),
-//				new TestData("Test4",
-//@"1 1 2 3",
-//@"1"),
-//				new TestData("Test5",
-//@"2018/12/23
-//",
-//@"Heisei"),
+				new TestData("Test4",
+@"1
+1 1
+1",
+@"1"),
+				new TestData("Test5",
+@"1
+1 1
+2
+",
+@"2"),
 //				new TestData("Test6",
 //@"2020/01/01
 //",

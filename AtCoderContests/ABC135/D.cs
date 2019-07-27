@@ -4,51 +4,64 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC133.C
+namespace ABC135.D
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			var L = ary[0];
-			var R = ary[1];
+			var S = ReadLine();
+			S = new string(S.Reverse().ToArray());
 
-			// 存在するセルには1を入れていく
-			var ms = new int[2019];
-			for (int i = L; i <= R; i++) {
-				var m = i % 2019;
-				if (ms[m] == 1)
-					break;
-
-				ms[m] = 1;
+			var ary = new int[13];
+			if (S[0] == '?') {
+				for (int i = 0; i < 10; i++) {
+					ary[i] = 1;
+				}
+			} else {
+				int x = int.Parse(S[0].ToString());
+				ary[x] = 1;
 			}
+			//Dump(ary);
 
-			// 2重ループで総当たり
-			int ans = int.MaxValue;
-			for (int i = 0; i < 2019 - 1; i++) {
-				if (ms[i] == 0) continue;
-				for (int j = i+1; j < 2019; j++) {
-					if (ms[j] == 0) continue;
+			var d = 1;
+			for (int i = 1; i < S.Length; i++) {
+				d = (d * 10) % 13;
+				if (S[i] != '?') {
+					int x = int.Parse(S[i].ToString());
 
-					var mul = (i * j) % 2019;
-					ReplaceIfSmaller(ref ans, mul);
+					var cd = (d * x) % 13;
+
+					// cdぶんだけシフト
+					var nary = new int[13];
+					for (int j = 0; j < 13; j++) {
+						var n = ary[j];
+						nary[(j + cd) % 13] = n;
+					}
+					ary = nary;
+
+				} else {
+					// ?の場合、cdぶんだけシフト を10回加算
+					var nary = new int[13];
+					for (int j = 0; j < 10; j++) {
+						var cd = (d * j) % 13;
+						for (int k = 0; k < 13; k++) {
+							var n = ary[k];
+							nary[(k + cd) % 13] = (nary[(k + cd) % 13] + n) % IMOD;
+						}
+					}
+
+					ary = nary;
 				}
 			}
+			Dump(ary);
 
-			WriteLine(ans);
-		}
-
-		private long CountDNums(long from, long to, long d) {
-			var cntF = (from - 1) / d;
-			var cntT = to / d;
-
-			return cntT - cntF;
+			WriteLine(ary[5]);
 		}
 
 #if !MYHOME
-		public static void Main(string[] args) {
+		static void Main(string[] args) {
 			new Solver().Run();
 		}
 #endif
@@ -56,6 +69,18 @@ namespace ABC133.C
 
 	public static class Util
 	{
+		public static int Gcd(int a, int b) {
+			if (a < b)
+				// 引数を入替えて自分を呼び出す
+				return Gcd(b, a);
+			while (b != 0) {
+				var remainder = a % b;
+				a = b;
+				b = remainder;
+			}
+			return a;
+		}
+		public readonly static int IMOD = 1000000007;
 		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
@@ -108,23 +133,6 @@ namespace ABC133.C
 			return min;
 		}
 
-		public static bool ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
-			if (r.CompareTo(v) < 0) {
-				r = v;
-				return true;
-			} else {
-				return false;
-			}
-		}
-		public static bool ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
-			if (0 < r.CompareTo(v)) {
-				r = v;
-				return true;
-			} else {
-				return false;
-			}
-		}
-
 		/// <summary>
 		/// ソート済み配列 ary に同じ値の要素が含まれている？
 		/// ※ソート順は昇順/降順どちらでもよい
@@ -142,6 +150,23 @@ namespace ABC133.C
 				}
 			}
 			return false;
+		}
+
+		public static bool ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
+			if (r.CompareTo(v) < 0) {
+				r = v;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		public static bool ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
+			if (0 < r.CompareTo(v)) {
+				r = v;
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		/// <summary>
@@ -199,6 +224,8 @@ namespace ABC133.C
 		[Conditional("DEBUG")]
 		protected void Dump(char c) => Console.WriteLine(c);
 		[Conditional("DEBUG")]
+		protected void Dump(int x) => Console.WriteLine(x);
+		[Conditional("DEBUG")]
 		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
 		[Conditional("DEBUG")]
 		protected void Dump<T>(IEnumerable<T> array) where T : IFormattable {
@@ -218,7 +245,7 @@ namespace ABC133.C
 			//_writer.WriteLine(sb.ToString());
 		}
 		[Conditional("DEBUG")]
-		protected void DumpDP<T>(T[,] dp) {
+		protected void DumpDP<T>(T[,] dp) where T : IFormattable {
 			var sb = new StringBuilder();
 			for (int i = 0; i < dp.GetLength(0); i++) {
 				for (int j = 0; j < dp.GetLength(1); j++) {

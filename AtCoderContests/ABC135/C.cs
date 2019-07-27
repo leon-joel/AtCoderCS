@@ -4,36 +4,40 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC133.C
+namespace ABC135.C
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			var L = ary[0];
-			var R = ary[1];
+			var N = ReadInt();
 
-			// 存在するセルには1を入れていく
-			var ms = new int[2019];
-			for (int i = L; i <= R; i++) {
-				var m = i % 2019;
-				if (ms[m] == 1)
-					break;
+			var As = ReadIntArray();
+			var Bs = ReadIntArray();
 
-				ms[m] = 1;
-			}
+			// 前から最大限に倒していく
+			long ans = 0;
+			for (int i = 0; i < N; i++) {
+				if (As[i] < Bs[i]) {
+					// 全部倒す
+					ans += As[i];
+					Bs[i] -= As[i];
 
-			// 2重ループで総当たり
-			int ans = int.MaxValue;
-			for (int i = 0; i < 2019 - 1; i++) {
-				if (ms[i] == 0) continue;
-				for (int j = i+1; j < 2019; j++) {
-					if (ms[j] == 0) continue;
+					// 余力で次のを倒す
+					if (As[i+1] < Bs[i]) {
+						// 全部倒す
+						ans += As[i + 1];
+						As[i + 1] = 0;
+					} else {
+						// 倒せるだけ倒す
+						ans += Bs[i];
+						As[i + 1] -= Bs[i];
+					}
 
-					var mul = (i * j) % 2019;
-					ReplaceIfSmaller(ref ans, mul);
+				} else {
+					// 倒せるだけ倒す
+					ans += Bs[i];
 				}
 			}
 
