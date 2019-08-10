@@ -4,24 +4,37 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC135.C
+namespace ABC137.B
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadInt();
+			var ary = ReadIntArray();
+			var K = ary[0];
+			var X = ary[1];
 
-			double price = N * 1.08;
-			var pf = Math.Floor(price);
-			var pc = Math.Ceiling(price);
+			var minB = X - (K - 1);
+			if (minB < -1000000) {
+				minB = -1000000;
+			}
+			var maxB = X + (K - 1);
+			if (1000000 < maxB) {
+				maxB = 1000000;
+			}
 
-			WriteLine($"{pf} {pc}");
+			StringBuilder sb = new StringBuilder();
+			sb.Append($"{minB}");
+			for (int i = minB + 1; i <= maxB; i++) {
+				sb.Append($" {i}");
+			}
+
+			WriteLine(sb.ToString());
 		}
 
 #if !MYHOME
-		public static void Main(string[] args) {
+		static void Main(string[] args) {
 			new Solver().Run();
 		}
 #endif
@@ -81,23 +94,6 @@ namespace ABC135.C
 			return min;
 		}
 
-		public static bool ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
-			if (r.CompareTo(v) < 0) {
-				r = v;
-				return true;
-			} else {
-				return false;
-			}
-		}
-		public static bool ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
-			if (0 < r.CompareTo(v)) {
-				r = v;
-				return true;
-			} else {
-				return false;
-			}
-		}
-
 		/// <summary>
 		/// ソート済み配列 ary に同じ値の要素が含まれている？
 		/// ※ソート順は昇順/降順どちらでもよい
@@ -115,6 +111,23 @@ namespace ABC135.C
 				}
 			}
 			return false;
+		}
+
+		public static bool ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
+			if (r.CompareTo(v) < 0) {
+				r = v;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		public static bool ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
+			if (0 < r.CompareTo(v)) {
+				r = v;
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		/// <summary>
@@ -172,6 +185,8 @@ namespace ABC135.C
 		[Conditional("DEBUG")]
 		protected void Dump(char c) => Console.WriteLine(c);
 		[Conditional("DEBUG")]
+		protected void Dump(int x) => Console.WriteLine(x);
+		[Conditional("DEBUG")]
 		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
 		[Conditional("DEBUG")]
 		protected void Dump<T>(IEnumerable<T> array) where T : IFormattable {
@@ -191,7 +206,7 @@ namespace ABC135.C
 			//_writer.WriteLine(sb.ToString());
 		}
 		[Conditional("DEBUG")]
-		protected void DumpDP<T>(T[,] dp) {
+		protected void DumpDP<T>(T[,] dp) where T : IFormattable {
 			var sb = new StringBuilder();
 			for (int i = 0; i < dp.GetLength(0); i++) {
 				for (int j = 0; j < dp.GetLength(1); j++) {

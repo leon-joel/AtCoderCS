@@ -6,41 +6,42 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC135.C
+namespace ABC137.B
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"560
+@"3 7
 ",
-@"604 605
+@"5 6 7 8 9
 "),
 				new TestData("Test2",
-@"12000
+@"4 0
 ",
-@"12960 12960
+@"-3 -2 -1 0 1 2 3
 "),
 				new TestData("Test3",
-@"1
+@"1 100
 ",
-@"1 2
+@"100
 "),
 				new TestData("Test4",
-@"100000
+@"1 -100
 ",
-@"108000 108000"),
+@"-100"),
 //				new TestData("Test5",
-//@"1
-//1 1
-//2
+//@"3
+//3 3 3
 //",
-//@"2"),
+//@"3"),
 //				new TestData("Test6",
-//@"2020/01/01
+//@"1 2
+//2
+//2 1
 //",
-//@"TBD"),
+//@"1"),
 //				new TestData("Test7",
 //@"3 1
 //3 2 1
@@ -114,7 +115,7 @@ namespace ABC135.C
 			// 文字列比較
 			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
 			// 浮動小数比較
-			//Assert.AreEqual(double.Parse(data.Expected.TrimEnd()), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
+			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}
 	}
 

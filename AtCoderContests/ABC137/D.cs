@@ -4,24 +4,165 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC135.C
+namespace ABC137.D
 {
 	using static Util;
+
+	public class XY : IComparable<XY>, IFormattable
+	{
+		public readonly int X;
+		public readonly int Y;
+
+		public XY() { }
+		public XY(int x, int y) {
+			X = x;
+			Y = y;
+		}
+		public XY(int[] ary) {
+			X = ary[0];
+			Y = ary[1];
+		}
+
+		public int CompareTo(XY other) {
+			var dx = this.X - other.X;
+			if (0 < dx)
+				return 1;
+			else if (dx < 0)
+				return -1;
+			else {
+				var dy = this.Y - other.Y;
+				if (0 < dy)
+					return 1;
+				else if (dy < 0)
+					return -1;
+				else
+					return 0;
+			}
+		}
+
+		public override string ToString() {
+			return ToString(null, null);
+		}
+		// format等の引数は一切無視
+		public string ToString(string format, IFormatProvider formatProvider) {
+			return $"({X}, {Y})";
+		}
+
+		public int Dist(XY other) {
+			return Math.Abs(X - other.X) + Math.Abs(Y - other.Y);
+		}
+
+		public IEnumerable<XY> Neighbors() {
+			yield return new XY(X - 1, Y);  // 上
+			yield return new XY(X, Y + 1);  // 右
+			yield return new XY(X + 1, Y);  // 下
+			yield return new XY(X, Y - 1);  // 左
+		}
+	}
+	public class PriorityQueue<T>
+	{
+		private readonly List<T> m_list;
+		private readonly Func<T, T, int> m_compare;
+		private int m_count;
+		public PriorityQueue(int capacity, Func<T, T, int> compare) {
+			m_list = new List<T>(capacity);
+			m_compare = compare;
+			m_count = 0;
+		}
+		int Add(T value) {
+			if (m_count == m_list.Count) {
+				m_list.Add(value);
+			} else {
+				m_list[m_count] = value;
+			}
+			return m_count++;
+		}
+		void Swap(int a, int b) {
+			T tmp = m_list[a];
+			m_list[a] = m_list[b];
+			m_list[b] = tmp;
+		}
+
+		public void Enqueue(T value) {
+			int c = Add(value);
+			while (c > 0) {
+				int p = (c - 1) / 2;
+				if (m_compare(m_list[c], m_list[p]) < 0) { Swap(p, c); } else { break; }
+				c = p;
+			}
+		}
+		public T Dequeue() {
+			if (m_list.Count == 0)
+				return default(T);
+			else if (m_list.Count == 1) {
+				--m_count;
+				var ret = m_list[0];
+				m_list.Clear();
+				return ret;
+			}
+
+			T value = m_list[0];
+			m_list[0] = m_list[--m_count];
+			int p = 0;
+			while (true) {
+				int c1 = p * 2 + 1;
+				int c2 = p * 2 + 2;
+				if (c1 >= m_count) { break; }
+				int c = (c2 >= m_count || m_compare(m_list[c1], m_list[c2]) < 0) ? c1 : c2;
+				if (m_compare(m_list[c], m_list[p]) < 0) { Swap(p, c); } else { break; }
+				p = c;
+			}
+			return value;
+		}
+	}
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadInt();
+			var ary = ReadIntArray();
+			var N = ary[0];
+			var M = ary[1];
 
-			double price = N * 1.08;
-			var pf = Math.Floor(price);
-			var pc = Math.Ceiling(price);
+			var list = new List<XY>(N);
 
-			WriteLine($"{pf} {pc}");
+			for (int i = 0; i < N; i++) {
+				var ar = ReadIntArray();
+				var day = ar[0];
+				var fee = ar[1];
+
+				list.Add(new XY(day, fee));
+			}
+			list.Sort();
+			//Dump(list);
+
+			PriorityQueue<int> pq = new PriorityQueue<int>(100000, (a, b) => {
+				if (a < b) return 1;
+				else if (a == b) return 0;
+				else return -1;
+			});
+			int idx = 0;
+			int cday = 1;
+
+			long ans = 0;
+			while (cday < M) {
+				while (idx < list.Count) {
+					var xy = list[idx];
+					if (cday < xy.X) {
+						break;
+					}
+					pq.Enqueue(xy.Y);
+					++idx;
+				}
+
+				ans += pq.Dequeue();
+				++cday;
+			}
+
+			WriteLine(ans);
 		}
 
 #if !MYHOME
-		public static void Main(string[] args) {
+		static void Main(string[] args) {
 			new Solver().Run();
 		}
 #endif
@@ -29,6 +170,18 @@ namespace ABC135.C
 
 	public static class Util
 	{
+		public static int Gcd(int a, int b) {
+			if (a < b)
+				// 引数を入替えて自分を呼び出す
+				return Gcd(b, a);
+			while (b != 0) {
+				var remainder = a % b;
+				a = b;
+				b = remainder;
+			}
+			return a;
+		}
+		public readonly static int IMOD = 1000000007;
 		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
@@ -81,23 +234,6 @@ namespace ABC135.C
 			return min;
 		}
 
-		public static bool ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
-			if (r.CompareTo(v) < 0) {
-				r = v;
-				return true;
-			} else {
-				return false;
-			}
-		}
-		public static bool ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
-			if (0 < r.CompareTo(v)) {
-				r = v;
-				return true;
-			} else {
-				return false;
-			}
-		}
-
 		/// <summary>
 		/// ソート済み配列 ary に同じ値の要素が含まれている？
 		/// ※ソート順は昇順/降順どちらでもよい
@@ -115,6 +251,23 @@ namespace ABC135.C
 				}
 			}
 			return false;
+		}
+
+		public static bool ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
+			if (r.CompareTo(v) < 0) {
+				r = v;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		public static bool ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
+			if (0 < r.CompareTo(v)) {
+				r = v;
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		/// <summary>
@@ -172,6 +325,8 @@ namespace ABC135.C
 		[Conditional("DEBUG")]
 		protected void Dump(char c) => Console.WriteLine(c);
 		[Conditional("DEBUG")]
+		protected void Dump(int x) => Console.WriteLine(x);
+		[Conditional("DEBUG")]
 		protected void Dump(double d) => Console.WriteLine($"{d:F9}");
 		[Conditional("DEBUG")]
 		protected void Dump<T>(IEnumerable<T> array) where T : IFormattable {
@@ -191,7 +346,7 @@ namespace ABC135.C
 			//_writer.WriteLine(sb.ToString());
 		}
 		[Conditional("DEBUG")]
-		protected void DumpDP<T>(T[,] dp) {
+		protected void DumpDP<T>(T[,] dp) where T : IFormattable {
 			var sb = new StringBuilder();
 			for (int i = 0; i < dp.GetLength(0); i++) {
 				for (int j = 0; j < dp.GetLength(1); j++) {

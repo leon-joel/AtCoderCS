@@ -6,37 +6,33 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC135.C
+namespace ABC137.A
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"560
+@"-13 3
 ",
-@"604 605
+@"-10
 "),
 				new TestData("Test2",
-@"12000
+@"1 -33
 ",
-@"12960 12960
+@"34
 "),
 				new TestData("Test3",
-@"1
+@"13 3
 ",
-@"1 2
-"),
-				new TestData("Test4",
-@"100000
-",
-@"108000 108000"),
+@"39"),
+//				new TestData("Test4",
+//@"0024",
+//@"Bad"),
 //				new TestData("Test5",
-//@"1
-//1 1
-//2
+//@"2018/12/23
 //",
-//@"2"),
+//@"Heisei"),
 //				new TestData("Test6",
 //@"2020/01/01
 //",
@@ -114,7 +110,7 @@ namespace ABC135.C
 			// 文字列比較
 			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
 			// 浮動小数比較
-			//Assert.AreEqual(double.Parse(data.Expected.TrimEnd()), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
+			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}
 	}
 

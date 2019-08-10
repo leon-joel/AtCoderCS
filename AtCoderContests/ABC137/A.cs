@@ -4,20 +4,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC135.C
+namespace ABC137.A
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadInt();
+			var ary = ReadIntArray();
+			var A = ary[0];
+			var B = ary[1];
 
-			double price = N * 1.08;
-			var pf = Math.Floor(price);
-			var pc = Math.Ceiling(price);
+			var p0 = A + B;
+			var p1 = A - B;
+			var p2 = A * B;
 
-			WriteLine($"{pf} {pc}");
+			WriteLine(Max(p0, p1, p2));
 		}
 
 #if !MYHOME

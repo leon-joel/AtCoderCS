@@ -4,20 +4,155 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC135.C
+namespace ABC137.C
 {
 	using static Util;
 
+	public class Modulo
+	{
+		private readonly static int M = 1000000007;
+
+		/// <summary>(a * b) % M</summary>
+		public static int Mul(int a, int b) {
+			return (int)(Math.BigMul(a, b) % M);
+		}
+
+		/// <summary>(aのm乗) % M</summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public static int Pow(int a, int m) {
+			switch (m) {
+				case 0:
+					return 1;
+				case 1:
+					return a % M;
+				default:
+					int p1 = Pow(a, m / 2);
+					int p2 = Mul(p1, p1);
+					return ((m % 2) == 0) ? p2 : Mul(p2, a);
+			}
+		}
+
+		/// <summary>
+		/// (a / b) % M
+		/// ※フェルマーの小定理による
+		/// </summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public static int Div(int a, int b) {
+			return Mul(a, Pow(b, M - 2));
+		}
+
+		/// <summary>
+		/// コンストラクタ ※n! % M および nCr % M を使用する場合には必要
+		/// </summary>
+		private readonly int[] m_facs;
+		public Modulo(int n) {
+			// x が n までの、x! % M の結果を配列に保持する
+			m_facs = new int[n + 1];
+			m_facs[0] = 1;
+			for (int i = 1; i <= n; ++i) {
+				m_facs[i] = Mul(m_facs[i - 1], i);
+			}
+		}
+
+		/// <summary>n! % M</summary>
+		public int Fac(int n) {
+			return m_facs[n];
+		}
+		/// <summary>
+		/// 組み合わせ nCr % M
+		/// </summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public int Ncr(int n, int r) {
+			if (n < r) { return 0; }
+			if (n == r) { return 1; }
+			int res = Fac(n);
+			res = Div(res, Fac(r));
+			res = Div(res, Fac(n - r));
+			return res;
+		}
+	}
+
 	public class Solver : SolverBase
 	{
+		public long NCM(long n, long m) {
+			if (m == 0) return 1;
+			if (n == 0) return 0;
+			return n * NCM(n - 1, m - 1) / m;
+		}
+
+		public static long Combination(long n, long r) {
+			if (n < 0 || r < 0 || r > n) throw new ArgumentException("不正な引数です．");
+
+			if (n - r < r) r = n - r;
+			if (r == 0) return 1;
+			if (r == 1) return n;
+
+			var numerator = new long[r];
+			var denominator = new long[r];
+
+			for (long k = 0; k < r; k++) {
+				numerator[k] = n - r + k + 1;
+				denominator[k] = k + 1;
+			}
+
+			for (long p = 2; p <= r; p++) {
+				var pivot = denominator[p - 1];
+				if (pivot > 1) {
+					var offset = (n - r) % p;
+					for (long k = p - 1; k < r; k += p) {
+						numerator[k - offset] /= pivot;
+						denominator[k] /= pivot;
+					}
+				}
+			}
+
+			long result = 1;
+			for (long k = 0; k < r; k++) {
+				if (numerator[k] > 1) result *= numerator[k];
+			}
+
+			return result;
+		}
+
+
 		public void Run() {
 			var N = ReadInt();
 
-			double price = N * 1.08;
-			var pf = Math.Floor(price);
-			var pc = Math.Ceiling(price);
+			//var cord = new int[10,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10];
+			var cord = new Dictionary<string, int>();
 
-			WriteLine($"{pf} {pc}");
+			for (int i = 0; i < N; i++) {
+				var t = new int[26];
+				var s = ReadLine();
+				for (int j = 0; j < 10; j++) {
+					t[s[j] - 'a'] += 1;
+				}
+				//Dump(cnum);
+				//cord[t[0], t[1], t[2], t[3], t[4], t[5], t[6], t[7], t[8], t[9], t[10], t[11], t[12], t[13], t[14], t[15], t[16], t[17], t[18], t[19], t[20], t[21], t[22], t[23], t[24], t[25]] += 1;
+
+				string vs = "";
+				for (int j = 0; j < 26; j++) {
+					vs += (char)('a' + t[j]);
+				}
+
+				if (cord.ContainsKey(vs)) {
+					cord[vs] += 1;
+				} else {
+					cord.Add(vs, 1);
+				}
+			}
+
+			long ans = 0;
+			//var m = new Modulo(100000);
+			foreach (var kv in cord) {
+				if (1 < kv.Value) {
+					//ans += m.Ncr(kv.Value, 2);
+					//ans += NCM(kv.Value, 2);
+					ans += Combination(kv.Value, 2);
+				}
+			}
+
+			WriteLine(ans);
 		}
 
 #if !MYHOME

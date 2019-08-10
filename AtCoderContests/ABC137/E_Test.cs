@@ -6,41 +6,50 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC135.C
+namespace ABC137.E
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"560
+@"2 3 3
+2 2
+RRL
+LUD
 ",
-@"604 605
-"),
+@"YES"),
 				new TestData("Test2",
-@"12000
+@"4 3 5
+2 2
+UDRRR
+LLDUD
 ",
-@"12960 12960
-"),
+@"NO"),
 				new TestData("Test3",
-@"1
+@"5 6 11
+2 1
+RLDRRUDDLRL
+URRDRLLDLRD
 ",
-@"1 2
-"),
-				new TestData("Test4",
-@"100000
-",
-@"108000 108000"),
-//				new TestData("Test5",
+@"NO"),
+//				new TestData("Test4",
 //@"1
-//1 1
-//2
+//50
+//1
 //",
-//@"2"),
+//@"49"),
+//				new TestData("Test5",
+//@"3
+//3 3 3
+//",
+//@"3"),
 //				new TestData("Test6",
-//@"2020/01/01
+//@"1 2
+//2
+//2 1
 //",
-//@"TBD"),
+//@"1"),
 //				new TestData("Test7",
 //@"3 1
 //3 2 1
@@ -112,9 +121,9 @@ namespace ABC135.C
 			sw.Stop();
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			// 文字列比較
-			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
+			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
 			// 浮動小数比較
-			//Assert.AreEqual(double.Parse(data.Expected.TrimEnd()), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
+			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}
 	}
 
