@@ -4,190 +4,53 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace ABC137.D
+namespace ABC139.E
 {
 	using static Util;
-
-	//public class PriorityQueue<T>
-	//{
-	//	private readonly List<T> m_list;
-	//	private readonly Func<T, T, int> m_compare;
-	//	private int m_count;
-	//	public PriorityQueue(int capacity, Func<T, T, int> compare) {
-	//		m_list = new List<T>(capacity);
-	//		m_compare = compare;
-	//		m_count = 0;
-	//	}
-	//	int Add(T value) {
-	//		if (m_count == m_list.Count) {
-	//			m_list.Add(value);
-	//		} else {
-	//			m_list[m_count] = value;
-	//		}
-	//		return m_count++;
-	//	}
-	//	void Swap(int a, int b) {
-	//		T tmp = m_list[a];
-	//		m_list[a] = m_list[b];
-	//		m_list[b] = tmp;
-	//	}
-
-	//	public void Enqueue(T value) {
-	//		int c = Add(value);
-	//		while (c > 0) {
-	//			int p = (c - 1) / 2;
-	//			if (m_compare(m_list[c], m_list[p]) < 0) { Swap(p, c); } else { break; }
-	//			c = p;
-	//		}
-	//	}
-	//	public T Dequeue() {
-	//		if (m_list.Count == 0)
-	//			return default(T);
-	//		else if (m_list.Count == 1) {
-	//			--m_count;
-	//			var ret = m_list[0];
-	//			m_list.Clear();
-	//			return ret;
-	//		}
-
-	//		T value = m_list[0];
-	//		m_list[0] = m_list[--m_count];
-	//		int p = 0;
-	//		while (true) {
-	//			int c1 = p * 2 + 1;
-	//			int c2 = p * 2 + 2;
-	//			if (c1 >= m_count) { break; }
-	//			int c = (c2 >= m_count || m_compare(m_list[c1], m_list[c2]) < 0) ? c1 : c2;
-	//			if (m_compare(m_list[c], m_list[p]) < 0) { Swap(p, c); } else { break; }
-	//			p = c;
-	//		}
-	//		return value;
-	//	}
-	//}
-
-	//public class PriorityQueue<T>
-	//{
-	//	List<T> list = new List<T>();
-	//	IComparer<T> comp = Comparer<T>.Default;
-	//	class Comparer : IComparer<T>
-	//	{
-	//		Comparison<T> comparison;
-	//		public Comparer(Comparison<T> comparison) { this.comparison = comparison; }
-	//		public int Compare(T x, T y) { return comparison(x, y); }
-	//	}
-	//	public PriorityQueue() { }
-	//	public PriorityQueue(Comparison<T> comp) { this.comp = new Comparer(comp); }
-	//	public void Enqueue(T item) { int i = list.BinarySearch(item, comp); list.Insert(i < 0 ? ~i : i, item); }
-	//	public T Dequeue() {
-	//		if (list.Count == 0) return default(T);
-	//		T r = list[0];
-	//		list.RemoveAt(0);
-	//		return r;
-	//	}
-	//	public T Peek() { return list[0]; }
-	//	public int Count { get { return list.Count; } }
-	//	public T this[int i] { get { return list[i]; } set { list[i] = value; } }
-	//}
-
-	class PriorityQueue<T> where T : IComparable<T>
-	{
-		public T[] _heap;
-		public int _size;
-		public int _sign;
-		public PriorityQueue(int initialSize, bool descend = false) {
-			_heap = new T[initialSize];
-			if (descend) _sign = -1;
-		}
-		public int Compare(T x, T y) {
-			return x.CompareTo(y) * _sign;
-		}
-		public void Push(T x) {
-			int i = _size++;
-			while (i > 0) {
-				int p = (i - 1) / 2;
-				if (Compare(x, _heap[p]) >= 0) {
-					break;
-				}
-				_heap[i] = _heap[p];
-				i = p;
-			}
-			_heap[i] = x;
-		}
-		/// <summary>
-		/// Countが0の場合はランタイムエラー
-		/// </summary>
-		public T Pop() {
-			T ret = _heap[0];
-			T x = _heap[--_size];
-			int i = 0;
-			while (i * 2 + 1 < _size) {
-				int a = i * 2 + 1;
-				int b = i * 2 + 2;
-				if (b < _size && Compare(_heap[a], _heap[b]) > 0) {
-					a = b;
-				}
-				if (Compare(_heap[a], x) >= 0) {
-					break;
-				}
-				_heap[i] = _heap[a];
-				i = a;
-			}
-			_heap[i] = x;
-			return ret;
-		}
-		/// <summary>
-		/// Countが0の場合は引数に与えた値を返す
-		/// </summary>
-		public T Pop(T defaultValue) {
-			if (Count() == 0)
-				return defaultValue;
-			else
-				return Pop();
-		}
-		public int Count() {
-			return _size;
-		}
-	}
-
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
 			var ary = ReadIntArray();
-			var N = ary[0];
-			var M = ary[1];
+			var H = ary[0];
+			var W = ary[1];
+			var N = ary[2];
+			ary = ReadIntArray();
+			var Sr = ary[0];
+			var Sc = ary[1];
+			var S = ReadLine();
+			var T = ReadLine();
 
-			var list = new List<int>[M];
+			// 左右生存限界 ※grid内を 1 ~ W とする
+			int limR = W;
+			int limL = 1;
+			int limU = 1;
+			int limD = H;
+			for (int i = N - 1; i >= 0; i--) {
+				// T側
+				var c = T[i];
+				if (c == 'R') limL = Math.Max(limL - 1, 1);
+				else if (c == 'L') limR = Math.Min(limR + 1, W);
+				else if (c == 'U') limD = Math.Min(limD + 1, H);
+				else if (c == 'D') limU = Math.Max(limU - 1, 1);
 
-			for (int i = 0; i < N; i++) {
-				var ar = ReadIntArray();
-				var day = ar[0]-1;
-				var fee = ar[1];
+				// S側
+				c = S[i];
+				if (c == 'R') limR--;
+				else if (c == 'L') limL++;
+				else if (c == 'U') limU++;
+				else if (c == 'D') limD--;
 
-				if (M <= day) continue;
-				if (list[day] == null)
-					list[day] = new List<int>();
-				list[day].Add(fee);
-			}
-
-			// 降順用優先度付きキュー
-			PriorityQueue<int> pq = new PriorityQueue<int>(100000, true);
-
-			long ans = 0;
-			for (int cday = 0; cday < M; cday++) {
-				var fees = list[cday];
-				if (fees != null) {
-					foreach (var fee in fees) {
-						pq.Push(fee);
-					}
+				// 生存限界が左右/上下逆転（＝どこにいても落とされる）していたらアウト
+				if (limR < limL || limD < limU) {
+					WriteLine("NO");
+					return;
 				}
-
-				ans += pq.Pop(0);
 			}
-
-			WriteLine(ans);
+			// 開始地点が生存範囲に入っている？
+			var ret = (limL <= Sc && Sc <= limR && limU <= Sr && Sr <= limD);
+			WriteLine(ret ? "YES" : "NO");
 		}
-
 #if !MYHOME
 		static void Main(string[] args) {
 			new Solver().Run();
@@ -208,7 +71,6 @@ namespace ABC137.D
 			}
 			return a;
 		}
-		public readonly static int IMOD = 1000000007;
 		public readonly static long MOD = 1000000007;
 
 		public static string DumpToString<T>(IEnumerable<T> array) where T : IFormattable {
