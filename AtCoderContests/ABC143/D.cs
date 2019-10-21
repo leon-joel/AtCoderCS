@@ -15,22 +15,15 @@ namespace ABC143.D
 			var ary = ReadIntArray();
 			Array.Sort(ary);
 
-			int le0 = 0;
 			long ans = 0;
 			for (int i = 0; i < N-2; i++) {
 				int e0 = ary[i];
-				if (le0 == e0) continue;
-				le0 = e0;
 
-				int le1 = 0;
 				for (int j = i+1; j < N-1; j++) {
 					int e1 = ary[j];
-					if (le1 == e1) continue;
-					le1 = e1;
 
 					// 上限を探しに行く
 					int maxE = e1 + e0 - 1;
-					int le2 = 0;
 					for (int k = j+1; k < N; k++) {
 						int e2 = ary[k];
 						if (maxE < e2) {
@@ -38,8 +31,6 @@ namespace ABC143.D
 							break;
 						}
 						// 上限は超えてない
-						if (le2 == e2) continue;
-						le2 = e2;
 						Dump(new[] { e0, e1, e2 });
 						++ans;
 					}

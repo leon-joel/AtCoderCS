@@ -31,7 +31,7 @@ namespace ABC143.D
 @"4
 1 1 1 1
 ",
-@"1"),
+@"4"),
 				new TestData("Test5",
 @"3
 1 1 1
