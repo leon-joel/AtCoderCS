@@ -29,6 +29,7 @@
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ABC116\A.cs" />
@@ -251,6 +252,10 @@
     <Compile Include="ABC143\D_Test.cs" />
     <Compile Include="ABC143\E.cs" />
     <Compile Include="ABC143\E_Test.cs" />
+    <Compile Include="ABC142\D.cs" />
+    <Compile Include="ABC142\D_Test.cs" />
+    <Compile Include="ABC142\E.cs" />
+    <Compile Include="ABC142\E_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -284,6 +289,7 @@
     <Folder Include="ABC137\" />
     <Folder Include="ABC139\" />
     <Folder Include="ABC143\" />
+    <Folder Include="ABC142\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
