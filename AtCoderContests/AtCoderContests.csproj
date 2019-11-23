@@ -256,6 +256,12 @@
     <Compile Include="ABC142\D_Test.cs" />
     <Compile Include="ABC142\E.cs" />
     <Compile Include="ABC142\E_Test.cs" />
+    <Compile Include="DISCO2019\D.cs" />
+    <Compile Include="DISCO2019\D_Test.cs" />
+    <Compile Include="DISCO2019\E.cs" />
+    <Compile Include="DISCO2019\E_Test.cs" />
+    <Compile Include="DISCO2019\C.cs" />
+    <Compile Include="DISCO2019\C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -290,6 +296,7 @@
     <Folder Include="ABC139\" />
     <Folder Include="ABC143\" />
     <Folder Include="ABC142\" />
+    <Folder Include="DISCO2019\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
