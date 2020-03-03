@@ -6,11 +6,13 @@ namespace Tools
 	class Node
 	{
 		public int Parent;
-		public int Rank;
+		//自分も含めたグループ全体のサイズ
+		//★ただし、自分がrootの場合にのみ正しい値が入っている
+		public int Size;
 
 		public Node(int id) {
 			Parent = id;
-			Rank = 0;
+			Size = 1;
 		}
 	}
 
@@ -39,23 +41,28 @@ namespace Tools
 		public bool Unite(int a, int b) {
 			var ra = Find(a);
 			var rb = Find(b);
-
 			if (ra == rb)
 				return false;
 
-			if (Nodes[ra].Rank < Nodes[rb].Rank) {
-				Nodes[ra].Parent = rb;
-			} else {
-				Nodes[rb].Parent = ra;
-				if (Nodes[ra].Rank == Nodes[rb].Rank)
-					Nodes[ra].Rank += 1;
+			if (Nodes[ra].Size < Nodes[rb].Size) {
+				int tmp = ra;
+				ra = rb;
+				rb = tmp;
 			}
+			// b を a にぶら下げてサイズを合計する
+			Nodes[rb].Parent = ra;
+			Nodes[ra].Size += Nodes[rb].Size;
 			return true;
 		}
 
 		// a, b が同一グループ？
 		public bool IsSame(int a, int b) {
 			return Find(a) == Find(b);
+		}
+
+		// aの所属グループのサイズ(要素数) ※aを含む
+		public int Size(int a) {
+			return Nodes[Find(a)].Size;
 		}
 	}
 }

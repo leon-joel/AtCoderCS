@@ -80,6 +80,21 @@ namespace Tools
 		public static void ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
 			if (0 < r.CompareTo(v)) r = v;
 		}
+
+		/// <summary>
+		/// lhsよりrhsのほうが大きい場合には lhs/rhsの値を入れ替える。
+		/// そうじゃない場合には何もしない。
+		/// </summary>
+		public static void SwapIfGreater<T>(ref T lhs, ref T rhs) where T : IComparable<T> {
+			T temp;
+			// rhsのほうが大きい場合には lhs と rhs の値を入れ替える
+			if (0 < lhs.CompareTo(rhs)) {
+				temp = lhs;
+				lhs = rhs;
+				rhs = temp;
+			}
+		}
+
 		public static T Max<T>(params T[] nums) where T : IComparable {
 			if (nums.Length == 0) return default(T);
 
