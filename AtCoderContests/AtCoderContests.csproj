@@ -278,6 +278,8 @@
     <Compile Include="ABC154\E_Test.cs" />
     <Compile Include="ABC157\E.cs" />
     <Compile Include="ABC157\E_Test.cs" />
+    <Compile Include="ABC156\C.cs" />
+    <Compile Include="ABC156\C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -316,6 +318,7 @@
     <Folder Include="ABC153\" />
     <Folder Include="ABC154\" />
     <Folder Include="ABC157\" />
+    <Folder Include="ABC156\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
