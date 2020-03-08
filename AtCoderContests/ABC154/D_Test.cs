@@ -13,46 +13,40 @@ namespace ABC154.D
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"3 4
-4 3
-4 1
-2 2
-",
-@"5"),
-				new TestData("Test2",
 @"5 3
-1 2
-1 3
-1 4
-2 1
-2 3
+1 2 2 4 5
 ",
-@"10"),
+@"7.000000000000
+"),
+				new TestData("Test2",
+@"4 1
+6 6 6 6
+",
+@"3.500000000000
+"),
 				new TestData("Test3",
-@"1 1
-2 1
+@"10 4
+17 13 13 12 15 20 10 13 17 11
 ",
-@"0"),
-				new TestData("Test4",
-@"3 4
-5 3
-4 1
-2 2
-",
-@"3"),
-				new TestData("Test5",
-@"2 2
-1 5
-1 6
-",
-@"11"),
-				new TestData("Test6",
-@"3 5
-3 3
-2 1
-1 2
-",
-@"6"),
+@"32.000000000000
+"),
+//				new TestData("Test4",
+//@"abc
+//1
+//1
+//",
+//@"cba"),
+//				new TestData("Test5",
+//@"3
+//3 3 3
+//",
+//@"3"),
+//				new TestData("Test6",
+//@"1 2
+//2
+//2 1
+//",
+//@"1"),
 //				new TestData("Test7",
 //@"3 1
 //3 2 1
@@ -111,6 +105,8 @@ namespace ABC154.D
 		override protected void WriteLine(string line) => _sb.AppendLine(line);
 		override protected void WriteLine(double d) => _sb.AppendLine($"{d:F9}");
 		override protected void WriteLine<T>(T value) => _sb.AppendLine(value.ToString());
+		override protected void WriteLine() => _sb.AppendLine();
+		override protected void Write<T>(T value) => _sb.Append(value);
 	}
 	[TestFixture()]
 	public class SolverTest
@@ -124,9 +120,9 @@ namespace ABC154.D
 			sw.Stop();
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			// 文字列比較
-			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
+			//Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
 			// 浮動小数比較
-			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
+			Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}
 	}
 
