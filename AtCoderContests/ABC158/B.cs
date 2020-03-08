@@ -173,14 +173,20 @@ namespace ABC158.B
 	{
 		virtual protected string ReadLine() => Console.ReadLine();
 		virtual protected int ReadInt() => int.Parse(ReadLine());
-		//virtual protected void ReadInt2(out int x, out int y) {
-		//	var aryS = ReadLine().Split(' ');
-		//	x = int.Parse(aryS[0]);
-		//	y = int.Parse(aryS[1]);
-		//}
 		virtual protected long ReadLong() => long.Parse(ReadLine());
 		virtual protected string[] ReadStringArray() => ReadLine().Split(' ');
 		virtual protected int[] ReadIntArray() => ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
+		virtual protected void ReadInt2(out int a, out int b) {
+			var ary = ReadIntArray();
+			a = ary[0];
+			b = ary[1];
+		}
+		virtual protected void ReadInt3(out int a, out int b, out int c) {
+			var ary = ReadIntArray();
+			a = ary[0];
+			b = ary[1];
+			c = ary[2];
+		}
 		virtual protected long[] ReadLongArray() => ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
 		virtual protected double[] ReadDoubleArray() => ReadLine().Split(' ').Select<string, double>(s => double.Parse(s)).ToArray();
 		virtual protected void WriteLine(string line) => Console.WriteLine(line);

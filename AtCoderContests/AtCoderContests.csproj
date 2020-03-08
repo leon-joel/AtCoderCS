@@ -292,6 +292,8 @@
     <Compile Include="ABC158\B_Test.cs" />
     <Compile Include="ABC158\D.cs" />
     <Compile Include="ABC158\E_Test.cs" />
+    <Compile Include="ABC156\D.cs" />
+    <Compile Include="ABC156\D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

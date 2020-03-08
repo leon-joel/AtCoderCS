@@ -13,6 +13,19 @@ namespace Tools
 		public static int Mul(int a, int b) {
 			return (int)(Math.BigMul(a, b) % M);
 		}
+		/// <summary>(a + b) % M</summary>
+		public static int Add(int a, int b) {
+			long v = a + b;
+			if (M <= v)
+				v = v - M + 1;
+			return (int)v;
+		}
+		/// <summary>(a - b) % M</summary>
+		public static int Sub(int a, int b) {
+			int v = a - b;
+			if (v < 0) v = M + v;
+			return v;
+		}
 
 		/// <summary>(aのm乗) % M</summary>
 		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
@@ -66,6 +79,25 @@ namespace Tools
 			res = Div(res, Fac(r));
 			res = Div(res, Fac(n - r));
 			return res;
+		}
+
+		/// <summary>
+		/// 組み合わせ nCr % M を高速に計算する
+		/// ※n!のテーブルを使用しない版
+		/// </summary>
+		public static int CalcNcr(int n, int r) {
+			if (n - r < r) return CalcNcr(n, n - r);
+
+			long ansMul = 1;
+			long ansDiv = 1;
+			for (int i = 0; i < r; i++) {
+				ansMul *= n - i;
+				ansDiv *= i + 1;
+				ansMul %= M;
+				ansDiv %= M;
+			}
+
+			return Div((int)ansMul, (int)ansDiv);
 		}
 	}
 }
