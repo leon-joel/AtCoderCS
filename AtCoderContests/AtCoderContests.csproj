@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>AtCoderContests</RootNamespace>
     <AssemblyName>AtCoderContests</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -17,12 +17,14 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -280,6 +282,16 @@
     <Compile Include="ABC157\E_Test.cs" />
     <Compile Include="ABC156\C.cs" />
     <Compile Include="ABC156\C_Test.cs" />
+    <Compile Include="ABC158\C.cs" />
+    <Compile Include="ABC158\C_Test.cs" />
+    <Compile Include="ABC158\E.cs" />
+    <Compile Include="ABC158\D_Test.cs" />
+    <Compile Include="ABC158\A.cs" />
+    <Compile Include="ABC158\A_Test.cs" />
+    <Compile Include="ABC158\B.cs" />
+    <Compile Include="ABC158\B_Test.cs" />
+    <Compile Include="ABC158\D.cs" />
+    <Compile Include="ABC158\E_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -319,6 +331,7 @@
     <Folder Include="ABC154\" />
     <Folder Include="ABC157\" />
     <Folder Include="ABC156\" />
+    <Folder Include="ABC158\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
