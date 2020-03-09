@@ -294,6 +294,8 @@
     <Compile Include="ABC156\D_Test.cs" />
     <Compile Include="ABC154\D.cs" />
     <Compile Include="ABC154\D_Test.cs" />
+    <Compile Include="ARC001\C.cs" />
+    <Compile Include="ARC001\C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -334,6 +336,7 @@
     <Folder Include="ABC157\" />
     <Folder Include="ABC156\" />
     <Folder Include="ABC158\" />
+    <Folder Include="ARC001\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
