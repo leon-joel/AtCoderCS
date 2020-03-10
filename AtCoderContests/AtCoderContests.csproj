@@ -298,6 +298,8 @@
     <Compile Include="ARC001\C_Test.cs" />
     <Compile Include="misc\ABC050_C.cs" />
     <Compile Include="misc\ABC050_C_Test.cs" />
+    <Compile Include="misc\ABC051_C.cs" />
+    <Compile Include="misc\ABC051_C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
