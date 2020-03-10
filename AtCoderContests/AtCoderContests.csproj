@@ -300,6 +300,8 @@
     <Compile Include="misc\ABC050_C_Test.cs" />
     <Compile Include="misc\ABC051_C.cs" />
     <Compile Include="misc\ABC051_C_Test.cs" />
+    <Compile Include="misc\ABC051_B.cs" />
+    <Compile Include="misc\ABC051_B_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
