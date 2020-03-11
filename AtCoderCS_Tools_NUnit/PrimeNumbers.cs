@@ -41,7 +41,7 @@ namespace Tools
 		}
 
 		/// <summary>
-		/// 素因数分解
+		/// 素因数分解 ※1は返さない
 		/// </summary>
 		public static IEnumerable<long> Factoring(long n) {
 			while (1 < n) {
