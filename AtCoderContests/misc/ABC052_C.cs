@@ -18,11 +18,7 @@ namespace ABC052.C
 			var dic = new Dictionary<long, int>();
 			for (int i = 1; i <= N; i++) {
 				foreach (var f in Factoring(i)) {
-					if (!dic.ContainsKey(f)) {
-						dic.Add(f, 1);
-					} else {
-						dic[f]++;
-					}
+					dic.AddTo(f, 1);
 				}
 			}
 			int ans = 1;
@@ -408,6 +404,17 @@ namespace ABC052.C
 				return true;
 			} else {
 				return false;
+			}
+		}
+
+		/// <summary>
+		/// dic[key]にadderを加算する。keyが存在しなかった場合はdic[key]=adder をセットする。
+		/// </summary>
+		public static void AddTo<TKey>(this Dictionary<TKey, int> dic, TKey key, int adder) {
+			if (dic.ContainsKey(key)) {
+				dic[key] += adder;
+			} else {
+				dic[key] = adder;
 			}
 		}
 

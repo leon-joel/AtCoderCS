@@ -83,7 +83,7 @@ namespace Tools
 
 		/// <summary>
 		/// 組み合わせ nCr % M を高速に計算する
-		/// ※n!のテーブルを使用しない版
+		/// ※n!のテーブルを使用しない版（Nが大きくても計算できる）
 		/// </summary>
 		public static int CalcNcr(int n, int r) {
 			if (n - r < r) return CalcNcr(n, n - r);
