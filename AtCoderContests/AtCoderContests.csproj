@@ -308,6 +308,8 @@
     <Compile Include="misc\ABC054_B_Test.cs" />
     <Compile Include="misc\ABC052_C.cs" />
     <Compile Include="misc\ABC052_C_Test.cs" />
+    <Compile Include="misc\ABC055_C.cs" />
+    <Compile Include="misc\ABC055_C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
