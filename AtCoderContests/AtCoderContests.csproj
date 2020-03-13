@@ -312,6 +312,8 @@
     <Compile Include="misc\ABC055_C_Test.cs" />
     <Compile Include="misc\ABC052_D.cs" />
     <Compile Include="misc\ABC052_D_Test.cs" />
+    <Compile Include="misc\ABC054_C.cs" />
+    <Compile Include="misc\ABC054_C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
