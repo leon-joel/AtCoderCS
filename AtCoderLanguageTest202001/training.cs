@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace Training
+namespace LanguageTest202001
 {
 	using static Util;
 

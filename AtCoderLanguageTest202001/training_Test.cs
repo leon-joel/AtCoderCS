@@ -6,36 +6,26 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Training
+namespace LanguageTest202001
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"3 3
-1 2
-1 3
-2 3
+@"1 2
 ",
-@"2
+@"Even
 "),
 				new TestData("Test2",
-@"7 7
-2 7
-1 3
-3 4
-4 5
-4 6
-5 6
-6 7
+@"3 1
 ",
-@"1
+@"Odd
 "),
-				new TestData("Test3",
-@"2 0
-",
-@"0"),
+//				new TestData("Test3",
+//@"2 0
+//",
+//@"0"),
 //				new TestData("Test4",
 //@"11
 //",
