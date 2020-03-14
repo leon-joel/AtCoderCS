@@ -187,7 +187,7 @@ namespace ABC057.C
 			foreach (var p in PrimeNumber.Factoring(N)) {
 				primes.Add(p);
 			}
-
+			
 			// bit全探索
 			// bit数
 			var n = primes.Count;

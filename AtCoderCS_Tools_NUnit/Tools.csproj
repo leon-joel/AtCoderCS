@@ -58,6 +58,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="PrimeNumberList.txt" />
+    <None Include="BIT全探索.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests\" />
