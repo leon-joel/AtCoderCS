@@ -320,6 +320,8 @@
     <Compile Include="misc\ABC057_C_Test.cs" />
     <Compile Include="misc\ABC042_C.cs" />
     <Compile Include="misc\ABC042_C_Test.cs" />
+    <Compile Include="misc\CODEFESTIVAL2016QA_C.cs" />
+    <Compile Include="misc\CODEFESTIVAL2016QA_C_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
