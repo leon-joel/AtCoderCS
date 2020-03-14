@@ -322,6 +322,16 @@
     <Compile Include="misc\ABC042_C_Test.cs" />
     <Compile Include="misc\CODEFESTIVAL2016QA_C.cs" />
     <Compile Include="misc\CODEFESTIVAL2016QA_C_Test.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_A.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_A_Test.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_B.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_B_Test.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_C.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_C_Test.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_D.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_D_Test.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_E.cs" />
+    <Compile Include="Panasonic2020\Panasonic2020_E_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -364,6 +374,7 @@
     <Folder Include="ABC158\" />
     <Folder Include="ARC001\" />
     <Folder Include="misc\" />
+    <Folder Include="Panasonic2020\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
