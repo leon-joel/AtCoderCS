@@ -13,14 +13,19 @@ namespace Panasonic2020.D
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"",
-@""),
+@"1",
+@"a"),
 				new TestData("Test2",
-@"",
-@""),
+@"2",
+@"aa
+ab"),
 				new TestData("Test3",
-@"",
-@""),
+@"3",
+@"aaa
+aab
+aba
+abb
+abc"),
 //				new TestData("Test4",
 //@"xyz
 //1

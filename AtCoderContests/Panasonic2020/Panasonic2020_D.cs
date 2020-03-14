@@ -11,36 +11,22 @@ namespace Panasonic2020.D
 
 	public class Solver : SolverBase
 	{
-		char[] S;
-		int K;
+		int N;
 		public void Run() {
-			S = ReadLine().ToCharArray();
-			//WriteLine(new string(S));
+			N = ReadInt();
 
-			K = ReadInt();
+			Dfs("", (char)('a'-1));
+		}
 
-			// 先頭から順に a にできるところを a にしていく
-			// ただし、すでに a のところは除く！！！
-			var r = K;
-			for (int i = 0; i < S.Length; i++) {
-				if (S[i] == 'a') continue;
-
-				var target = 'z' - S[i] + 1;
-
-				if (target <= r) {
-					r -= target;
-					S[i] = 'a';
-				}
+		void Dfs(string s, char maxC) {
+			if (s.Length == N) {
+				WriteLine(s);
+				return;
 			}
 
-			if (0 < r) {
-				// 残りは末尾に適用 ただし、26のあまりを
-				var c = S[S.Length - 1] - 'a';
-				var nc = (char)((c + r) % 26 + 'a');
-				S[S.Length - 1] = nc;
+			for (char c = 'a'; c <= maxC + 1; c++) {
+				Dfs(s + c, Max(maxC, c));
 			}
-
-			WriteLine(new string(S));
 		}
 
 #if !MYHOME
@@ -96,6 +82,11 @@ namespace Panasonic2020.D
 			}
 		}
 
+		/// <summary>charでも対応可能なMax</summary>
+		public static T Max<T>(T a, T b) where T : IComparable {
+			return 0 <= a.CompareTo(b) ? a : b;
+		}
+		/// <summary>3要素以上に対応するMax</summary>
 		public static T Max<T>(params T[] nums) where T : IComparable {
 			if (nums.Length == 0) return default(T);
 
@@ -105,6 +96,11 @@ namespace Panasonic2020.D
 			}
 			return max;
 		}
+		/// <summary>charでも対応可能なMin</summary>
+		public static T Min<T>(T a, T b) where T : IComparable {
+			return 0 < a.CompareTo(b) ? b : a;
+		}
+		/// <summary>3要素以上に対応するMin</summary>
 		public static T Min<T>(params T[] nums) where T : IComparable {
 			if (nums.Length == 0) return default(T);
 
