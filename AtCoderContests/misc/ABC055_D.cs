@@ -22,59 +22,28 @@ namespace ABC055.D
 			// 出なかったら -1 出力
 
 			var ani = new char[N];
-			if (S[0] == 'o') {
-				//     ○-> SSS
-				ani[N - 1] = 'S';
-				ani[0] = 'S';
-				ani[1] = 'S';
-				if (Test(ani)) return;
+			// SS
+			ani[0] = 'S';
+			ani[1] = 'S';
+			if (Test(ani)) return;
 
-				//         WSW
-				InitArray(ani, default(char));
-				ani[N - 1] = 'W';
-				ani[0] = 'S';
-				ani[1] = 'W';
-				if (Test(ani)) return;
+			// SW
+			InitArray(ani, default(char));
+			ani[0] = 'S';
+			ani[1] = 'W';
+			if (Test(ani)) return;
 
-				//     ○-> SWW
-				InitArray(ani, default(char));
-				ani[N - 1] = 'S';
-				ani[0] = 'W';
-				ani[1] = 'W';
-				if (Test(ani)) return;
+			// WW
+			InitArray(ani, default(char));
+			ani[0] = 'W';
+			ani[1] = 'W';
+			if (Test(ani)) return;
 
-				//         WWS
-				InitArray(ani, default(char));
-				ani[N - 1] = 'W';
-				ani[0] = 'W';
-				ani[1] = 'S';
-				if (Test(ani)) return;
-
-			} else {
-				//     ×-> WSS
-				ani[N - 1] = 'W';
-				ani[0] = 'S';
-				ani[1] = 'S';
-				if (Test(ani)) return;
-				//         SSW
-				InitArray(ani, default(char));
-				ani[N - 1] = 'S';
-				ani[0] = 'S';
-				ani[1] = 'W';
-				if (Test(ani)) return;
-				//     ×-> SWS
-				InitArray(ani, default(char));
-				ani[N - 1] = 'S';
-				ani[0] = 'W';
-				ani[1] = 'S';
-				if (Test(ani)) return;
-				//         WWW
-				InitArray(ani, default(char));
-				ani[N - 1] = 'W';
-				ani[0] = 'W';
-				ani[1] = 'W';
-				if (Test(ani)) return;
-			}
+			// WS
+			InitArray(ani, default(char));
+			ani[0] = 'W';
+			ani[1] = 'S';
+			if (Test(ani)) return;
 
 			// ここまで来た＝解無し
 			WriteLine("-1");
@@ -89,29 +58,33 @@ namespace ABC055.D
 			}
 		}
 		bool Check(char[] ani) {
-			for (int i = 1; i < N; i++) {
+			// 埋めていくフェーズ
+			for (int i = 1; i < N-1; i++) {
 				if ((S[i] == 'o' && ani[i] == 'S') ||
 					(S[i] == 'x' && ani[i] == 'W')) {
-					if (i < N - 2) {
-						ani[i + 1] = ani[i - 1];
-					} else if (i < N - 1) {
-						if (ani[i + 1] != ani[i - 1])
-							return false;
-					} else {
-						if (ani[0] != ani[i - 1])
-							return false;
-					}
+					ani[i + 1] = ani[i - 1];
 				} else {
-					if (i < N - 2) {
-						ani[i + 1] = ani[i - 1] == 'S' ? 'W' : 'S';
-					} else if (i < N - 1) {
-						if (ani[i + 1] == ani[i - 1])
-							return false;
-					} else {
-						if (ani[0] == ani[i - 1])
-							return false;
-					}
+					ani[i + 1] = ani[i - 1] == 'S' ? 'W' : 'S';
 				}
+			}
+
+			// チェックするフェーズ
+			if ((S[N - 1] == 'o' && ani[N - 1] == 'S') ||
+				(S[N - 1] == 'x' && ani[N - 1] == 'W')) {
+				if (ani[N - 2] != ani[0])
+					return false;
+			} else {
+				if (ani[N - 2] == ani[0])
+					return false;
+			}
+
+			if ((S[0] == 'o' && ani[0] == 'S') ||
+				(S[0] == 'x' && ani[0] == 'W')) {
+				if (ani[N - 1] != ani[1])
+					return false;
+			} else {
+				if (ani[N - 1] == ani[1])
+					return false;
 			}
 			return true;
 		}

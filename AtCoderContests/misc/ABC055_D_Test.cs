@@ -40,7 +40,7 @@ ooo
 @"3
 xxx
 ",
-@"WWW
+@"SSW
 "),
 //				new TestData("Test6",
 //@"1 2
