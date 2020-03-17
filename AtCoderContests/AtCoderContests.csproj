@@ -334,6 +334,8 @@
     <Compile Include="Panasonic2020\Panasonic2020_E_Test.cs" />
     <Compile Include="misc\ABC064_D.cs" />
     <Compile Include="misc\ABC064_D_Test.cs" />
+    <Compile Include="misc\ABC046_D.cs" />
+    <Compile Include="misc\ABC046_D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

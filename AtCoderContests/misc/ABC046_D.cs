@@ -5,40 +5,35 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace ABC064.D
+namespace ABC046.D
 {
 	using static Util;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			int N = ReadInt();
 			var S = ReadString();
 
-			string ans = "";
-			int ocnt = 0;
+			int ans = 0;
 			for (int i = 0; i < S.Length; i++) {
-				if (S[i] == ')') {
-					if (0 < ocnt) {
-						--ocnt;
-						ans += ')';
-					} else {
-						ans = '(' + ans + ')';
+				if (i % 2 == 0) {
+					// gを出す
+					if (S[i] == 'p') {
+						--ans;
 					}
 				} else {
-					++ocnt;
-					ans += '(';
+					// p を出す
+					if (S[i] == 'g') {
+						++ans;
+					}
 				}
-			}
-			for (int i = 0; i < ocnt; i++) {
-				ans += ')';
 			}
 
 			WriteLine(ans);
 		}
 
 #if !MYHOME
-		static void Main(string[] args) {
+	static void Main(string[] args) {
 			new Solver().Run();
 		}
 #endif
