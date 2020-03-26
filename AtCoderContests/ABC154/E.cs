@@ -11,46 +11,53 @@ namespace ABC154.E
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var ary = ReadIntArray();
-			var H = ary[0];
-			var W = ary[1];
-			var N = ary[2];
-			ary = ReadIntArray();
-			var Sr = ary[0];
-			var Sc = ary[1];
-			var S = ReadLine();
-			var T = ReadLine();
+			var S = ReadString();
+			var K = ReadInt();
 
-			// 左右生存限界 ※grid内を 1 ~ W とする
-			int limR = W;
-			int limL = 1;
-			int limU = 1;
-			int limD = H;
-			for (int i = N - 1; i >= 0; i--) {
-				// T側
-				var c = T[i];
-				if (c == 'R') limL = Math.Max(limL - 1, 1);
-				else if (c == 'L') limR = Math.Min(limR + 1, W);
-				else if (c == 'U') limD = Math.Min(limD + 1, H);
-				else if (c == 'D') limU = Math.Max(limU - 1, 1);
+			// 桁DP [配るDPのパターン]
+			// i: 上位からi桁目（文字列の先頭が1で、その前が0）
+			// j: j個の非0数字を使った
+			// k: 0 = 制限あり
+			//    1 = 制限なし
+			// 値: 何通りあるか
+			var dp = new int[105, 4, 2];
+			dp[0, 0, 0] = 1;
 
-				// S側
-				c = S[i];
-				if (c == 'R') limR--;
-				else if (c == 'L') limL++;
-				else if (c == 'U') limU++;
-				else if (c == 'D') limD--;
+			for (int i = 0; i < S.Length; i++) {
+				for (int j = 0; j < 4; j++) {
+					int nd = S[i] - '0';
+					for (int k = 0; k < 2; k++) {
+						// 0-9 それぞれについて配布先を決めて配布する
+						for (int d = 0; d < 10; d++) {
+							// 配布先
+							int ni = i + 1;
+							int nj = j;
+							int nk = k;
 
-				// 生存限界が左右/上下逆転（＝どこにいても落とされる）していたらアウト
-				if (limR < limL || limD < limU) {
-					WriteLine("NO");
-					return;
+							// 1以上の数字なのでjを増やす
+							if (0 < d) nj++;
+							// jを増やしたら K を超えちゃった！
+							if (K < nj) continue;
+
+							// 制限有りの場合
+							if (k == 0) {
+								// dが次の数を超えたらNG
+								if (nd < d) continue;
+								// dが次の数より小さかったら制限無しに配布
+								if (d < nd) nk = 1;
+								// dが次の数と同じ場合は制限あり(k=0)に配布
+							}
+
+							// 配布
+							dp[ni, nj, nk] += dp[i, j, k];
+						}
+					}
 				}
 			}
-			// 開始地点が生存範囲に入っている？
-			var ret = (limL <= Sc && Sc <= limR && limU <= Sr && Sr <= limD);
-			WriteLine(ret ? "YES" : "NO");
+			int ans = dp[S.Length, K, 0] + dp[S.Length, K, 1];
+			WriteLine(ans);
 		}
+
 #if !MYHOME
 		static void Main(string[] args) {
 			new Solver().Run();
@@ -104,6 +111,11 @@ namespace ABC154.E
 			}
 		}
 
+		/// <summary>charでも対応可能なMax</summary>
+		public static T Max<T>(T a, T b) where T : IComparable {
+			return 0 <= a.CompareTo(b) ? a : b;
+		}
+		/// <summary>3要素以上に対応するMax</summary>
 		public static T Max<T>(params T[] nums) where T : IComparable {
 			if (nums.Length == 0) return default(T);
 
@@ -113,6 +125,11 @@ namespace ABC154.E
 			}
 			return max;
 		}
+		/// <summary>charでも対応可能なMin</summary>
+		public static T Min<T>(T a, T b) where T : IComparable {
+			return 0 < a.CompareTo(b) ? b : a;
+		}
+		/// <summary>3要素以上に対応するMin</summary>
 		public static T Min<T>(params T[] nums) where T : IComparable {
 			if (nums.Length == 0) return default(T);
 
@@ -160,6 +177,27 @@ namespace ABC154.E
 		}
 
 		/// <summary>
+		/// dic[key]にadderを加算する。keyが存在しなかった場合はdic[key]=adder をセットする。
+		/// </summary>
+		public static void AddTo<TKey>(this Dictionary<TKey, int> dic, TKey key, int adder) {
+			if (dic.ContainsKey(key)) {
+				dic[key] += adder;
+			} else {
+				dic[key] = adder;
+			}
+		}
+
+		/// <summary>
+		/// 文字列 s が chars に含まれる文字を含んでいるか？
+		/// </summary>
+		public static bool ContainsAny(this string s, char[] chars) {
+			for (int j = 0; j < s.Length; j++) {
+				if (chars.Contains(s[j])) return true;
+			}
+			return false;
+		}
+
+		/// <summary>
 		/// 二分探索
 		/// ※条件を満たす最小のidxを返す
 		/// ※満たすものがない場合は ary.Length を返す
@@ -194,20 +232,64 @@ namespace ABC154.E
 	public class SolverBase
 	{
 		virtual protected string ReadLine() => Console.ReadLine();
+		virtual protected string ReadString() => ReadLine();
 		virtual protected int ReadInt() => int.Parse(ReadLine());
-		//virtual protected void ReadInt2(out int x, out int y) {
-		//	var aryS = ReadLine().Split(' ');
-		//	x = int.Parse(aryS[0]);
-		//	y = int.Parse(aryS[1]);
-		//}
 		virtual protected long ReadLong() => long.Parse(ReadLine());
 		virtual protected string[] ReadStringArray() => ReadLine().Split(' ');
+		virtual protected char[] ReadCharArray() => ReadLine().Split(' ').Select<string, char>(s => s[0]).ToArray();
 		virtual protected int[] ReadIntArray() => ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
+		virtual protected void ReadInt2(out int a, out int b) {
+			var ary = ReadIntArray();
+			a = ary[0];
+			b = ary[1];
+		}
+		virtual protected void ReadInt3(out int a, out int b, out int c) {
+			var ary = ReadIntArray();
+			a = ary[0];
+			b = ary[1];
+			c = ary[2];
+		}
+		virtual protected void ReadInt4(out int a, out int b, out int c, out int d) {
+			var ary = ReadIntArray();
+			a = ary[0];
+			b = ary[1];
+			c = ary[2];
+			d = ary[3];
+		}
 		virtual protected long[] ReadLongArray() => ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
+		virtual protected void ReadLong2(out long a, out long b) {
+			var ary = ReadLongArray();
+			a = ary[0];
+			b = ary[1];
+		}
+		virtual protected void ReadLong3(out long a, out long b, out long c) {
+			var ary = ReadLongArray();
+			a = ary[0];
+			b = ary[1];
+			c = ary[2];
+		}
+		virtual protected void ReadLong4(out long a, out long b, out long c, out long d) {
+			var ary = ReadLongArray();
+			a = ary[0];
+			b = ary[1];
+			c = ary[2];
+			d = ary[3];
+		}
 		virtual protected double[] ReadDoubleArray() => ReadLine().Split(' ').Select<string, double>(s => double.Parse(s)).ToArray();
+
 		virtual protected void WriteLine(string line) => Console.WriteLine(line);
 		virtual protected void WriteLine(double d) => Console.WriteLine($"{d:F9}");
 		virtual protected void WriteLine<T>(T value) where T : IFormattable => Console.WriteLine(value);
+		virtual protected void WriteGrid(IEnumerable<IEnumerable<char>> arrayOfArray) {
+			var sb = new StringBuilder();
+			foreach (var a in arrayOfArray) {
+				foreach (var c in a) {
+					sb.Append(c);
+				}
+				sb.AppendLine();
+			}
+			WriteLine(sb.ToString());
+		}
 
 		[Conditional("DEBUG")]
 		protected void Dump(string s) => Console.WriteLine(s);
@@ -225,6 +307,19 @@ namespace ABC154.E
 			//_writer.WriteLine(s);
 		}
 		[Conditional("DEBUG")]
+		protected void DumpGrid(IEnumerable<IEnumerable<char>> arrayOfArray) {
+			var sb = new StringBuilder();
+			foreach (var a in arrayOfArray) {
+				foreach (var c in a) {
+					sb.Append(c);
+				}
+				sb.AppendLine();
+			}
+			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
+			Console.WriteLine(sb.ToString());
+			//_writer.WriteLine(sb.ToString());
+		}
+		[Conditional("DEBUG")]
 		protected void DumpGrid<T>(IEnumerable<IEnumerable<T>> arrayOfArray) where T : IFormattable {
 			var sb = new StringBuilder();
 			foreach (var a in arrayOfArray) {
@@ -233,6 +328,29 @@ namespace ABC154.E
 			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
 			Console.WriteLine(sb.ToString());
 			//_writer.WriteLine(sb.ToString());
+		}
+		[Conditional("DEBUG")]
+		protected void DumpGrid(bool[,] grid) {
+			var sb = new StringBuilder();
+			for (int i = 0; i < grid.GetLength(0); i++) {
+				for (int j = 0; j < grid.GetLength(1); j++) {
+					sb.Append(grid[i, j] ? "x " : ". ");
+				}
+				sb.AppendLine();
+			}
+			Console.WriteLine(sb.ToString());
+		}
+		[Conditional("DEBUG")]
+		protected void DumpGrid(char[,] grid) {
+			var sb = new StringBuilder();
+			for (int i = 0; i < grid.GetLength(0); i++) {
+				for (int j = 0; j < grid.GetLength(1); j++) {
+					sb.Append(grid[i, j]);
+					sb.Append(" ");
+				}
+				sb.AppendLine();
+			}
+			Console.WriteLine(sb.ToString());
 		}
 		[Conditional("DEBUG")]
 		protected void DumpDP<T>(T[,] dp) where T : IFormattable {

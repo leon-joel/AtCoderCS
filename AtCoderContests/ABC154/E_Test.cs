@@ -13,62 +13,55 @@ namespace ABC154.E
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"2 3 3
-2 2
-RRL
-LUD
+@"100
+1
 ",
-@"YES"),
+@"19"),
 				new TestData("Test2",
-@"4 3 5
-2 2
-UDRRR
-LLDUD
+@"25
+2
 ",
-@"NO"),
+@"14"),
 				new TestData("Test3",
-@"5 6 11
-2 1
-RLDRRUDDLRL
-URRDRLLDLRD
+@"314159
+2
 ",
-@"NO"),
-//				new TestData("Test4",
-//@"1
-//50
-//1
-//",
-//@"49"),
+@"937"),
+				new TestData("Test4",
+@"9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+3
+",
+@"117879300
+"),
 //				new TestData("Test5",
+//@"0 3
+//",
 //@"3
-//3 3 3
-//",
-//@"3"),
+//"),
 //				new TestData("Test6",
-//@"1 2
-//2
-//2 1
+//@"zz
+//29
 //",
-//@"1"),
+//@"ab"),
 //				new TestData("Test7",
-//@"3 1
-//3 2 1
+//@"abc
 //3
 //",
-//@"1"),
+//@"abf"),
 //				new TestData("Test8",
-//@"3 3
-//1 2 3
-//1 2 3",
-//@"0"),
+//@"aaz
+//1000000000
+//",
+//@"aal"),
 //				new TestData("Test8-1",
-//@"1000000005
+//@"a
 //1",
-//@"1000000005"),
+//@"b"),
 //				new TestData("Test9",
-//@"1000000008
-//1",
-//@"1"),
+//@"aabbb
+//26
+//",
+//@"aaabc"),
 //				new TestData("Test9-1",
 //@"1000000009
 //1",
@@ -99,6 +92,7 @@ URRDRLLDLRD
 			_sb = writer;
 		}
 		override protected string ReadLine() => _reader.ReadLine();
+		override protected string ReadString() => ReadLine();
 		override protected int ReadInt() => int.Parse(_reader.ReadLine());
 		override protected long ReadLong() => long.Parse(_reader.ReadLine());
 		override protected string[] ReadStringArray() => _reader.ReadLine().Split(' ');
@@ -121,7 +115,7 @@ URRDRLLDLRD
 			sw.Stop();
 			Console.WriteLine($"Elapsed: {sw.Elapsed}");
 			// 文字列比較
-			Assert.AreEqual(data.Expected, sb.ToString().TrimEnd());
+			Assert.AreEqual(data.Expected.TrimEnd(), sb.ToString().TrimEnd());
 			// 浮動小数比較
 			//Assert.AreEqual(double.Parse(data.Expected), double.Parse(sb.ToString().TrimEnd()), 0.000000001);
 		}
