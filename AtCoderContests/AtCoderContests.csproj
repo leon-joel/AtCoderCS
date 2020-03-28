@@ -352,6 +352,8 @@
     <Compile Include="ABC159\ABC159_D_Test.cs" />
     <Compile Include="ABC159\ABC159_E.cs" />
     <Compile Include="ABC159\ABC159_E_Test.cs" />
+    <Compile Include="misc\ABC007_D.cs" />
+    <Compile Include="misc\ABC007_D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
