@@ -8,19 +8,33 @@ using System.Numerics;
 namespace ABC160.D
 {
 	using static Util;
+	using static Math;
 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			string S = ReadString();
+			int N, X, Y;
+			ReadInt3(out N, out X, out Y);
 
-			// 桁DP
-			// dp[桁][制限あり?]=使用した1の数
+			// 距離別組数
+			var ds = new int[N];
 
-			var dp = new long[11, 2];
-			dp[0, 1] = 1;
+			// i -> j（iより大きい他の点）の距離を求める
+			for (int i = 1; i < N; i++) {
+				for (int j = i+1; j <= N; j++) {
+					var d0 = j - i;
+					// i -> X -> Y -> j
+					var d1 = Abs(X - i) + 1 + Abs(j - Y);
+					// i -> Y -> X -> j
+					var d2 = Abs(Y - i) + 1 + Abs(j - X);
+					var minD = Min(d0, d1, d2);
+					++ds[minD];
+				}
+			}
 
-			
+			for (int k = 1; k < N; k++) {
+				WriteLine(ds[k]);
+			}
 		}
 
 #if !MYHOME
