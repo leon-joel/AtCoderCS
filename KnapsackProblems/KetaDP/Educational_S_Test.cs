@@ -6,37 +6,42 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC029.D
+namespace EducationalDP.S
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"12
+@"30
+4
 ",
-@"5
+@"6
 "),
 				new TestData("Test2",
-@"345
+@"1000000009
+1
 ",
-@"175
+@"2
 "),
 				new TestData("Test3",
-@"999999999
+@"98765432109876543210
+58
 ",
-@"900000000
+@"635270834
 "),
-//				new TestData("Test4",
-//@"1 7
-//",
-//@"0
-//"),
-//				new TestData("Test5",
-//@"0 3
-//",
-//@"3
-//"),
+				new TestData("Test4",
+@"1
+1
+",
+@"1
+"),
+				new TestData("Test5",
+@"10
+20
+",
+@"0
+"),
 //				new TestData("Test6",
 //@"zz
 //29

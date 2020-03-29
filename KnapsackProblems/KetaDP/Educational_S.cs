@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace ABC029.D
+namespace EducationalDP.S
 {
 	using static Util;
 
@@ -13,28 +13,24 @@ namespace ABC029.D
 	{
 		public void Run() {
 			string S = ReadString();
+			var D = ReadInt();
 
 			// 桁DP
-			// dp[桁][使用した1の数][制限あり?]=パターン数
+			// dp[桁][Dの余り][制限あり?]=パターン数modD
 
-			var dp = new long[11, 11, 2];
+			var dp = new long[10005, 101, 2];
 			dp[0, 0, 1] = 1;
 
 			for (int i = 0; i < S.Length; i++) {
-				for (int j = 0; j < 11; j++) {
+				for (int j = 0; j < 101; j++) {
 					for (int k = 0; k < 2; k++) {
-						var cnt = dp[i, j, k];
-						if (cnt == 0) continue;
+						if (dp[i, j, k] == 0) continue;
 
 						var ni = i + 1;
 						var sn = S[i] - '0';
 
 						for (int n = 0; n < 10; n++) {
-							var nj = j;
-							if (n == 1) {
-								nj++;
-							}
-
+							int nj = (j + n) % D;
 							var nk = k;
 							if (k == 1) {
 								// Sを上回っている場合はどこにも遷移しない
@@ -50,21 +46,16 @@ namespace ABC029.D
 								// 制約なし からは 制約なし にしか遷移しない
 							}
 
-							dp[ni, nj, nk] += dp[i, j, k];
+							dp[ni, nj, nk] = (dp[ni, nj, nk] + dp[i, j, k]) % MOD;
 						}
 					}
 				}
 			}
-			DumpDP3_Keta(dp);
 
-			// 1の数を加算する
-			long ans = 0;
-			for (int j = 0; j < 11; j++) {
-				for (int k = 0; k < 2; k++) {
-					ans += dp[S.Length, j, k] * j;
-				}
-			}
-
+			// 結果を加算する
+			// ※ all 0 の分を1個マイナスするのを忘れずに
+			// ※ MODの前処理で負数にならないように
+			long ans = (dp[S.Length, 0, 0] + dp[S.Length, 0, 1] + MOD - 1) % MOD;
 			WriteLine(ans);
 		}
 
