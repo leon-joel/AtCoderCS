@@ -52,6 +52,8 @@
     <Compile Include="KetaDP\ABC029_D_Test.cs" />
     <Compile Include="KetaDP\Educational_S.cs" />
     <Compile Include="KetaDP\Educational_S_Test.cs" />
+    <Compile Include="KetaDP\ABC117_D.cs" />
+    <Compile Include="KetaDP\ABC117_D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
