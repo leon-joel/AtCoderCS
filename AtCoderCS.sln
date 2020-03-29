@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Current", "Current\Current.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageTest202001", "AtCoderLanguageTest202001\LanguageTest202001.csproj", "{44F736D8-AEEA-4076-9C28-4C888142223E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContestsNetCore", "ContestsNetCore\ContestsNetCore.csproj", "{D1393EE7-D1B2-499B-B827-2E441025D62B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -67,6 +69,10 @@ Global
 		{44F736D8-AEEA-4076-9C28-4C888142223E}.Debug|x86.Build.0 = Debug|Any CPU
 		{44F736D8-AEEA-4076-9C28-4C888142223E}.Release|x86.ActiveCfg = Release|Any CPU
 		{44F736D8-AEEA-4076-9C28-4C888142223E}.Release|x86.Build.0 = Release|Any CPU
+		{D1393EE7-D1B2-499B-B827-2E441025D62B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1393EE7-D1B2-499B-B827-2E441025D62B}.Debug|x86.Build.0 = Debug|Any CPU
+		{D1393EE7-D1B2-499B-B827-2E441025D62B}.Release|x86.ActiveCfg = Release|Any CPU
+		{D1393EE7-D1B2-499B-B827-2E441025D62B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

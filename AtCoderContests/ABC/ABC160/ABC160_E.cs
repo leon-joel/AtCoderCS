@@ -23,61 +23,32 @@ namespace ABC160.E
 			var BA = ReadIntArray();
 			var CA = ReadIntArray();
 
-			var list = new List<XY>(A+B+C);
-			for (int i = 0; i < A; i++) {
-				list.Add(new XY(AA[i], 0));	//種類:0=A, 1=B, 2=どちらでもない
+			// AAから降順にX個取り出し、
+			// BAから降順にY個取り出し、
+			// CAは全部
+			var list = new List<int>(X+Y+C);
+			Array.Sort(AA);
+			Array.Reverse(AA);
+			for (int i = 0; i < X; i++) {
+				list.Add(AA[i]);
 			}
-			for (int i = 0; i < B; i++) {
-				list.Add(new XY(BA[i], 1));   //種類:0=A, 1=B, 2=どちらでもない
+			Array.Sort(BA);
+			Array.Reverse(BA);
+			for (int i = 0; i < Y; i++) {
+				list.Add(BA[i]);
 			}
 			for (int i = 0; i < C; i++) {
-				list.Add(new XY(CA[i], 2));   //種類:0=A, 1=B, 2=どちらでもない
+				list.Add(CA[i]);
 			}
+
+			// 降順でX+Y個取り出し
 			list.Sort();
-
-			var tA = X;	// 食べないといけない数
-			var tB = Y;
-			var rA = A;	// 残りの数
-			var rB = B;
-			var rC = C;
+			list.Reverse();
 			long ans = 0;
-			bool eatAll = false;
-			for (int i = 0; i < A+B+C; i++) {
-				var a = list[i];
-				if (eatAll) {
-					ans += a.X;
-					continue;
-				}
-				if (rA + rB + rC == tA + tB) {
-					// のこり全部食べる
-					ans += a.X;
-					eatAll = true;
-					continue;
-				}
-
-				if (a.Y == 0) {
-					if (rA + rC == tA) {
-						ans += a.X;
-						--tA;
-					}
-					--rA;
-				} else if (a.Y == 1) {
-					if (rB + rC == tB) {
-						ans += a.X;
-						--tB;
-					}
-					--rB;
-				} else {
-					if (rA + rC == tA) {
-						ans += a.X;
-						--tA;
-					} else if (rB + rC == tB) {
-						ans += a.X;
-						--tB;
-					}
-					--rC;
-				}
+			for (int i = 0; i < X+Y; i++) {
+				ans += list[i];
 			}
+
 			WriteLine(ans);
 		}
 
