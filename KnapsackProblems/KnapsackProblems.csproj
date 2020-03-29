@@ -37,20 +37,25 @@
     <Compile Include="2-Dim-Knapsack.cs" />
     <Compile Include="ABC099C_StrangeBank.cs" />
     <Compile Include="ABC113D_Amidakuji.cs" />
-    <Compile Include="KetaDP.cs" />
     <Compile Include="KnapsackProblem.cs" />
     <Compile Include="PartialSumProblems.cs" />
     <Compile Include="Test_2-Dim-Knapsack.cs" />
     <Compile Include="Test_ABC099C_StrangeBank.cs" />
     <Compile Include="Test_ABC113D_Amidakuji.cs" />
-    <Compile Include="Test_KetaDP.cs" />
     <Compile Include="Test_KnapsackProblem.cs" />
     <Compile Include="Test_PartialSumProblems.cs" />
-    <Compile Include="TypicalDP_D.cs" />
-    <Compile Include="TypicalDP_D_Test.cs" />
+    <Compile Include="KetaDP\KetaDP.cs" />
+    <Compile Include="KetaDP\Test_KetaDP.cs" />
+    <Compile Include="KetaDP\TypicalDP_D.cs" />
+    <Compile Include="KetaDP\TypicalDP_D_Test.cs" />
+    <Compile Include="KetaDP\ABC029_D.cs" />
+    <Compile Include="KetaDP\ABC029_D_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="KetaDP\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -31,24 +31,24 @@ namespace TypicalDP.D
 			
 			var curDP = dp0;
 			var destDP = dp1;
-
 			curDP[0, 0, 0] = 1;
+
+			// 1-6 を素因数分解した結果
+			var f2 = new int[6] { 0, 1, 0, 2, 0, 1 };
+			var f3 = new int[6] { 0, 0, 1, 0, 0, 1 };
+			var f5 = new int[6] { 0, 0, 0, 0, 1, 0 };
+
 			for (int i = 0; i < N; i++) {
 				for (int i2 = 0; i2 <= c2; i2++) {
 					for (int i3 = 0; i3 <= c3; i3++) {
 						for (int i5 = 0; i5 <= c5; i5++) {
-							// 1が出た
-							destDP[i2, i3, i5] += curDP[i2, i3, i5] / 6;
-							// 2が出た
-							destDP[Min(i2 + 1, c2), i3, i5] += curDP[i2, i3, i5] / 6;
-							// 3が出た
-							destDP[i2, Min(i3+1, c3), i5] += curDP[i2, i3, i5] / 6;
-							// 4が出た
-							destDP[Min(i2+2, c2), i3, i5] += curDP[i2, i3, i5] / 6;
-							// 5が出た
-							destDP[i2, i3, Min(i5+1, c5)] += curDP[i2, i3, i5] / 6;
-							// 6が出た
-							destDP[Min(i2 + 1, c2), Min(i3 + 1, c3), i5] += curDP[i2, i3, i5] / 6;
+							// 1-6 の6通りの確率をそれぞれ配る
+							for (int f = 0; f < 6; f++) {
+								var ni2 = Min(i2 + f2[f], c2);
+								var ni3 = Min(i3 + f3[f], c3);
+								var ni5 = Min(i5 + f5[f], c5);
+								destDP[ni2, ni3, ni5] += curDP[i2, i3, i5] / 6;
+							}
 						}
 					}
 				}
