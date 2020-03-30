@@ -56,6 +56,8 @@
     <Compile Include="KetaDP\ABC117_D_Test.cs" />
     <Compile Include="KetaDP\CodeFes2014_D.cs" />
     <Compile Include="KetaDP\CodeFes2014_D_Test.cs" />
+    <Compile Include="KetaDP\Ritsumei2018_F.cs" />
+    <Compile Include="KetaDP\Ritsumei2018_F_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
