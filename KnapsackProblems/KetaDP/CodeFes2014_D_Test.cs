@@ -50,7 +50,7 @@ namespace CodeFes2014.D
 				new TestData("Test6",
 @"21 1
 ",
-@"10
+@"1
 "),
 				new TestData("Test7",
 @"4156000 10
@@ -64,10 +64,10 @@ namespace CodeFes2014.D
 @"100000023498765 9
 ",
 @"1"),
-//				new TestData("Test9-1",
-//@"1000000009
-//1",
-//@"2"),
+				new TestData("Test9-1",
+@"262004 2
+",
+@"218"),
 
 //				new TestData("Test10",
 //@"2000000013

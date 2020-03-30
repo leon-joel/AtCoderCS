@@ -33,6 +33,10 @@ namespace CodeFes2014.D
 
 	public class Solver : SolverBase
 	{
+		const int Above = 0;
+		const int Match = 1;
+		const int Below = 2;
+
 		public void Run() {
 			string S, tmp;
 			ReadString2(out S, out tmp);
@@ -43,7 +47,7 @@ namespace CodeFes2014.D
 			// 最大でも 10C5 = 252通り
 			// それぞれについて桁DPをすればOK
 
-			long maxV = 0;
+			long nearestValue = long.MaxValue;
 
 			// Kに合わせて、使用できる数のパターンを列挙する
 			// 0−9の数字からK種類取り出す
@@ -52,11 +56,14 @@ namespace CodeFes2014.D
 				//DumpArray(nums);
 
 				// 桁DP
-				// dp[桁（上位から）][制限あり?]=現在桁まででの最大数
+				// dp[桁（上位から）][Sより大きい/Sに一致/Sより小さい]=現在桁まででの最もAに近い数
 
-				var dp = new long[18, 2];
+				var dp = new long[18, 3];
 				InitDP2(dp, -1);
-				dp[0, 1] = 0;
+				dp[0, Match] = 0;
+				// ★先頭の0だけはnumsに入っていないくても常に使用できる！
+				dp[1, Below] = 0;
+				//dp[1, Above] = 0;	// ←0を使って上に越えることはないのでこれはない
 
 				// ※loopはいつも昇順にしたほうが良さそう ※逆順にすると、遷移も逆方向にしないといけないので
 				// ※桁数を逆にする方が簡単
@@ -64,26 +71,36 @@ namespace CodeFes2014.D
 					var ni = i + 1;
 					var x = S[i] - '0';
 
-					// ★先頭から続く0はnumsに入っていないくても常に使用できる！
-					//  したがって、制約なし側には常に0で遷移すると考えてよい。
-					dp[ni, 0] = 0;
-
-					for (int k = 0; k < 2; k++) {
+					for (int k = 0; k < 3; k++) {
 						if (dp[i, k] < 0) continue;
 
 						foreach (var nx in nums) {
 							var nk = k; // ※nkは毎回初期化しないとおかしくなるよ！
 
-							if (k == 1) {
-								if (x < nx) continue;
-								if (nx < x) {
-									nk = 0;
+							if (k == Match) {
+								if (x < nx) {
+									nk = Above;
+								} else if (nx < x) {
+									nk = Below;
 								}
 							} else {
 							}
 
 							var v = nx * (long)Pow(10, S.Length - i - 1);
-							ReplaceIfBigger(ref dp[ni, nk], dp[i, k] + v);
+							if (dp[ni, nk] == -1) {
+								// まだ一度も入ってきていない場合は単に代入するだけ
+								// ※これをReplaceIfSmallerしてしまうと、初期値の -1 と比較することになり決して -1 を上書きできなくなるので注意！
+								dp[ni, nk] = dp[i, k] + v;
+
+							} else {
+								if (nk == Above) {
+									// 一度でも上に飛び出した場合はなるべく小さい数で更新する
+									ReplaceIfSmaller(ref dp[ni, nk], dp[i, k] + v);
+								} else if (nk == Below) {
+									// （下の場合は逆）
+									ReplaceIfBigger(ref dp[ni, nk], dp[i, k] + v);
+								}
+							}
 						}
 					}
 				}
@@ -91,12 +108,19 @@ namespace CodeFes2014.D
 
 				// 結果を計算
 				// ※ 配るDPの場合、結果は (最後のi + 1) に格納されている
-				// ※ 整数問題の場合、all 0 の分を1個マイナスするのを忘れずに
+				// ※ 整数問題の場合、all 0 の分を1個マイナスするのを忘れずに！先行0にも要注意！
 				// ※ MOD系は、最後のMODを忘れないことと、MODの前処理で負数にしないこと
-				var m = Max(dp[S.Length, 0], dp[S.Length, 1]);
-				ReplaceIfBigger(ref maxV, m);
+				nearestValue = Nearest(A, nearestValue, dp[S.Length, Above], dp[S.Length, Match], dp[S.Length, Below]);
+
+				//var sb = new StringBuilder();
+				//sb.Append($"  above: {dp[S.Length, Above]}");
+				//sb.Append($"  match: {dp[S.Length, Match]}");
+				//sb.Append($"  below: {dp[S.Length, Below]}");
+				//sb.Append($"  NEAR=> {nearestValue}");
+				//Console.WriteLine(sb.ToString());
 			}
-			WriteLine(A - maxV);
+			//Dump(nearestValue);
+			WriteLine(Abs(A - nearestValue));
 		}
 
 #if !MYHOME
@@ -181,6 +205,20 @@ namespace CodeFes2014.D
 			return min;
 		}
 
+		///<summary>targetValueに一番近い値を返す</summary>
+		public static long Nearest(long targetValue, params long[] values) {
+			Debug.Assert(0 < values.Length);
+			long minDiff = long.MaxValue;
+			long ans = long.MaxValue;
+			foreach (var v in values) {
+				var diff = Math.Abs(v - targetValue);
+				if (ReplaceIfSmaller(ref minDiff, diff)) {
+					ans = v;
+				}
+			}
+			return ans;
+		}
+
 		/// <summary>
 		/// ソート済み配列 ary に同じ値の要素が含まれている？
 		/// ※ソート順は昇順/降順どちらでもよい
@@ -200,6 +238,7 @@ namespace CodeFes2014.D
 			return false;
 		}
 
+		///<summary>v が r より大きい場合、r に v を代入し、trueを返す。それ以外（同値の場合を含む）は何もせずfalseを返す</summary>
 		public static bool ReplaceIfBigger<T>(ref T r, T v) where T : IComparable {
 			if (r.CompareTo(v) < 0) {
 				r = v;
@@ -208,6 +247,7 @@ namespace CodeFes2014.D
 				return false;
 			}
 		}
+		///<summary>v が r よりが小さい場合、r に v を代入し、trueを返す。それ以外（同値の場合を含む）は何もせずfalseを返す</summary>
 		public static bool ReplaceIfSmaller<T>(ref T r, T v) where T : IComparable {
 			if (0 < r.CompareTo(v)) {
 				r = v;
@@ -364,7 +404,7 @@ namespace CodeFes2014.D
 		[Conditional("DEBUG")]
 		protected void Dump<T>(T x) => Console.WriteLine(x);
 		[Conditional("DEBUG")]
-		protected void DumpArray<T>(IEnumerable<T> array) where T : IFormattable {
+		protected void DumpArray<T>(IEnumerable<T> array) {
 			string s = Util.JoinString(array);
 			// Consoleに出力すると、UnitTestの邪魔をしないというメリットあり。
 			Console.WriteLine(s);
@@ -429,7 +469,7 @@ namespace CodeFes2014.D
 			Console.WriteLine(sb.ToString());
 		}
 		[Conditional("DEBUG")]
-		protected void DumpDP3_Keta<T>(T[,,] dp) where T : IFormattable { 
+		protected void DumpDP3_Keta<T>(T[,,] dp) where T : IFormattable {
 			var sb = new StringBuilder();
 			for (int i = 0; i < dp.GetLength(0); i++) {
 				sb.Append($"{i,2}: ");
