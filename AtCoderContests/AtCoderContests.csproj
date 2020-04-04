@@ -364,6 +364,18 @@
     <Compile Include="ABC\ABC160\ABC160_D_Test.cs" />
     <Compile Include="ABC\ABC160\ABC160_E.cs" />
     <Compile Include="ABC\ABC160\ABC160_E_Test.cs" />
+    <Compile Include="ABC\ABC161\A.cs" />
+    <Compile Include="ABC\ABC161\A_Test.cs" />
+    <Compile Include="ABC\ABC161\B.cs" />
+    <Compile Include="ABC\ABC161\B_Test.cs" />
+    <Compile Include="ABC\ABC161\C.cs" />
+    <Compile Include="ABC\ABC161\C_Test.cs" />
+    <Compile Include="ABC\ABC161\D.cs" />
+    <Compile Include="ABC\ABC161\D_Test.cs" />
+    <Compile Include="ABC\ABC161\E.cs" />
+    <Compile Include="ABC\ABC161\E_Test.cs" />
+    <Compile Include="ABC\ABC161\F.cs" />
+    <Compile Include="ABC\ABC161\F_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -410,6 +422,7 @@
     <Folder Include="ABC\ABC158\" />
     <Folder Include="ABC\ABC159\" />
     <Folder Include="ABC\ABC160\" />
+    <Folder Include="ABC\ABC161\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
