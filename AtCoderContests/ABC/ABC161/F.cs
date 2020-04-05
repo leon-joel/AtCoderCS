@@ -57,7 +57,6 @@ namespace ABC161.F
 			for (ulong mask = 0; mask <= ((1ul << n) - 1); mask++) {
 				// N の約数 e を全部求める
 				long e = 1;
-				long e2 = 1;
 				// 各bitを下から舐める
 				for (int i = 0; i < n; i++) {
 
@@ -65,12 +64,14 @@ namespace ABC161.F
 					if (0 != (mask & (1ul << i))) {
 						// 何か処理する
 						e *= primes[i];
-					} else {
-						e2 *= primes[i];
 					}
 				}
-
-				if (e2 % e == 1) {
+				if (e == 1) continue;
+				var d = N;
+				while (d % e == 0) { 
+					d /= e;
+				}
+				if (d % e == 1) {
 					set.Add(e);
 				}
 			}
