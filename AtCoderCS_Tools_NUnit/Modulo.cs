@@ -17,7 +17,7 @@ namespace Tools
 		public static int Add(int a, int b) {
 			long v = a + b;
 			if (M <= v)
-				v = v - M + 1;
+				v -= M;
 			return (int)v;
 		}
 		/// <summary>(a - b) % M</summary>

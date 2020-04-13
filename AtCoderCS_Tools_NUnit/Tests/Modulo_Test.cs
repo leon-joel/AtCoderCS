@@ -8,6 +8,13 @@ namespace Tools
 	public class ModuloTests
 	{
 		[Test]
+		public void AddTest() {
+			Assert.AreEqual(0, Add(0, 0));
+			Assert.AreEqual(1000000006, Add(1000000000, 6));
+			Assert.AreEqual(0, Add(1000000000, 7));
+			Assert.AreEqual(1, Add(8, 1000000000));
+		}
+		[Test]
 		public void MulTest() {
 			Assert.AreEqual(6, Mul(2, 3));
 			Assert.AreEqual(1000000006, Mul(1000000006, 1));
