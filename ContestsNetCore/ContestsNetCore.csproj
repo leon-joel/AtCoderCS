@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <LangVersion>6</LangVersion>
-    <DefineConstants>TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;MYHOME</DefineConstants>
+    <LangVersion>8.0</LangVersion>
+    <DefineConstants>TRACE;MYHOME;DEBUG;NETCOREAPP;NETCOREAPP3_1</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <LangVersion>6</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.12.0" />
@@ -19,4 +19,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ABC162\" />
+  </ItemGroup>
 </Project>
