@@ -70,6 +70,9 @@ namespace Tools
 		}
 		/// <summary>
 		/// 組み合わせ nCr % M
+		/// ※Moduloコンストラクタで n! のテーブルを生成しておく必要あり
+		/// ※CalcNcr() より圧倒的に速いが n が大きくなると使えない。
+		///  n=2*10^5 くらいならメモリーも時間も大丈夫な実績あり。
 		/// </summary>
 		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
 		public int Ncr(int n, int r) {
