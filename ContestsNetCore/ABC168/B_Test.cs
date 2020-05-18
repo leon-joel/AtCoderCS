@@ -6,32 +6,34 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC167.A
+namespace ABC168.B
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"chokudai
-chokudaiz
+@"7
+nikoandsolstice
 ",
-@"Yes"),
+@"nikoand...
+"),
 				new TestData("Test2",
-@"snuke
-snekee
+@"40
+ferelibenterhominesidquodvoluntcredunt
 ",
-@"No"),
+@"ferelibenterhominesidquodvoluntcredunt
+"),
 				new TestData("Test3",
-@"a
+@"1
+a
+",
+@"a"),
+				new TestData("Test4",
+@"1
 aa
 ",
-@"Yes"),
-//				new TestData("Test4",
-//@"1
-//",
-//@"0
-//"),
+@"a..."),
 //				new TestData("Test5",
 //@"5102
 //",

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace ABC167.B
+namespace ABC168.D
 {
 	using static Util;
 	using static Math;
@@ -13,15 +13,48 @@ namespace ABC167.B
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			ReadInt4(out var A, out var B, out var C, out var K);
+			ReadInt2(out var V, out var E);
 
-			if (K <= A) {
-				WriteLine(K);
-			} else if (K <= A + B) {
-				WriteLine(A);
-			} else {
-				var c = K - A - B;
-				WriteLine(A - c);
+			var paths = new List<int>[V];
+			for (int i = 0; i < E; i++) {
+				ReadInt2(out var A, out var B);
+				--A; --B;
+				if (paths[A] == null) {
+					paths[A] = new List<int>() { B };
+				} else {
+					paths[A].Add(B);
+				}
+				if (paths[B] == null) {
+					paths[B] = new List<int>() { A };
+				} else {
+					paths[B].Add(A);
+				}
+			}
+			//for (int i = 0; i < E; i++) {
+			//	DumpArray(paths[i]);
+			//}
+
+			// BFS
+			var queue = new Queue<int>();
+			queue.Enqueue(0);
+			var signs = new int[V];
+			for (int i = 0; i < V; i++) {
+				signs[i] = -1;
+			}
+			signs[0] = 0;
+			while (0 < queue.Count) {
+				var v = queue.Dequeue();
+				var vs = paths[v];
+				foreach (var nv in vs) {
+					if (signs[nv] != -1) continue;
+					signs[nv] = v;
+					queue.Enqueue(nv);
+				}
+			}
+
+			WriteLine("Yes");
+			for (int i = 1; i < V; i++) {
+				WriteLine(signs[i]+1);
 			}
 		}
 
@@ -31,7 +64,6 @@ namespace ABC167.B
 		}
 #endif
 	}
-
 	public static class Util
 	{
 		public static int Gcd(int a, int b) {
@@ -159,7 +191,7 @@ namespace ABC167.B
 			}
 		}
 
-		public static void Swap<T>(ref T a, ref T b) where T : class {
+		public static void Swap<T>(ref T a, ref T b) {
 			var tmp = a;
 			a = b;
 			b = tmp;

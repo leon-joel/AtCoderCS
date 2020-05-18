@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContestsNetCore", "Contests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Current", "Current\Current.csproj", "{4D735AB3-F552-4C5A-A884-37554AEBF7E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphProblems", "GraphProblems\GraphProblems.csproj", "{5B5FA004-240A-4758-8F70-AFA2A5DB5D87}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -73,6 +75,10 @@ Global
 		{4D735AB3-F552-4C5A-A884-37554AEBF7E2}.Debug|x86.Build.0 = Debug|Any CPU
 		{4D735AB3-F552-4C5A-A884-37554AEBF7E2}.Release|x86.ActiveCfg = Release|Any CPU
 		{4D735AB3-F552-4C5A-A884-37554AEBF7E2}.Release|x86.Build.0 = Release|Any CPU
+		{5B5FA004-240A-4758-8F70-AFA2A5DB5D87}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5B5FA004-240A-4758-8F70-AFA2A5DB5D87}.Debug|x86.Build.0 = Debug|Any CPU
+		{5B5FA004-240A-4758-8F70-AFA2A5DB5D87}.Release|x86.ActiveCfg = Release|Any CPU
+		{5B5FA004-240A-4758-8F70-AFA2A5DB5D87}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

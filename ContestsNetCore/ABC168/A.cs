@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace ABC167.A
+namespace ABC168.A
 {
 	using static Util;
 	using static Math;
@@ -14,21 +14,15 @@ namespace ABC167.A
 	{
 		public void Run() {
 			var S = ReadLine();
-			var T = ReadLine();
 
-			if (S.Length + 1 != T.Length) {
-				WriteLine("No");
-				return;
+			var c = S[S.Length - 1];
+			if (c == '3') {
+				WriteLine("bon");
+			}else if (c == '0' || c == '1' || c == '6' || c == '8') {
+				WriteLine("pon");
+			} else {
+				WriteLine("hon");
 			}
-
-			for (int i = 0; i < S.Length; i++) {
-				if (S[i] != T[i]) {
-					WriteLine("No");
-					return;
-				}
-			}
-
-			WriteLine("Yes");
 		}
 
 #if !MYHOME

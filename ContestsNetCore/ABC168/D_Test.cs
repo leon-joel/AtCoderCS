@@ -6,44 +6,65 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ABC167.B
+namespace ABC168.D
 {
 	public static class TestDataFactory
 	{
 		public static TestData[] Cases() {
 			return new TestData[] {
 				new TestData("Test1",
-@"2 1 1 3
+@"4 4
+1 2
+2 3
+3 4
+4 2
 ",
-@"2"),
+@"Yes
+1
+2
+2
+"),
 				new TestData("Test2",
-@"1 2 3 4
+@"6 9
+3 4
+6 1
+2 4
+5 3
+4 6
+1 5
+6 2
+4 5
+5 6
 ",
-@"0"),
+@"Yes
+6
+5
+6
+1
+1
+"),
 				new TestData("Test3",
-@"2000000000 0 0 2000000000
+@"2 1
+1 2
 ",
-@"2000000000
+@"Yes
+1
 "),
-				new TestData("Test4",
-@"0 0 0 0
-",
-@"0
-"),
+//				new TestData("Test4",
+//@"",
+//@""),
 //				new TestData("Test5",
-//@"5102
-//",
-//@"0
+//@"6 2
+//5 3 4 2 4 3",
+//@"4
 //"),
 //				new TestData("Test6",
-//@"21 1
-//",
-//@"1
-//"),
+//@"20192019",
+//@"3"),
 //				new TestData("Test7",
-//@"4156000 10
+//@"201920192019
 //",
-//@"0"),
+//@"6"),
 //				new TestData("Test8",
 //@"123498765000000 9
 //",

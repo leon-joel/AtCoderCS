@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace ABC167.D
+namespace ABC168.B
 {
 	using static Util;
 	using static Math;
@@ -13,47 +13,15 @@ namespace ABC167.D
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			ReadLong2(out var N, out var K);
-			var As = ReadIntArray();
+			var K = ReadInt();
+			var S = ReadLine();
 
-			var Ts = new int[N+1];
-			InitArray(Ts, -1);
-
-			int t = 0;
-			Ts[0] = t;
-			int loopBegin = 0;
-			int loopLength = 0;
-			int curPos = 0;
-			while (true) { 
-				++t;
-				var nextPos = As[curPos] - 1;
-				if (Ts[nextPos] == -1) {
-					Ts[nextPos] = t;
-				} else {
-					// ループ発見！
-					loopBegin = Ts[nextPos];
-					loopLength = t - loopBegin;
-					break;
-				}
-				curPos = nextPos;
+			if (S.Length <= K) {
+				WriteLine(S);
+			} else {
+				var ans = S.AsSpan(0, K).ToString() + "...";
+				WriteLine(ans);
 			}
-
-			Dump(loopBegin);
-			Dump(loopLength);
-
-			long k = K;
-			if (loopBegin < K) {
-				k = (K - loopBegin) % loopLength + loopBegin;
-			}
-
-			curPos = 0;
-			int nPos = 0;
-			for (int i = 0; i < k; i++) {
-				nPos = As[curPos] - 1;
-				curPos = nPos;
-			}
-
-			WriteLine(nPos + 1);
 		}
 
 #if !MYHOME
@@ -62,6 +30,7 @@ namespace ABC167.D
 		}
 #endif
 	}
+
 	public static class Util
 	{
 		public static int Gcd(int a, int b) {

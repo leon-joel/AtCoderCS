@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace ABC167.C
+namespace ABC168.E
 {
 	using static Util;
 	using static Math;
@@ -13,64 +13,24 @@ namespace ABC167.C
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			ReadInt3(out var N, out var M, out var X);
+			ReadInt3(out var N, out var M, out var K);
 
-			var Cs = new int[N];
-			var As = new List<int[]>(N);
-
-			for (int i = 0; i < N; i++) {
-				var ary = ReadIntArray();
-
-				Cs[i] = ary[0];
-				As.Add(ary.AsSpan(1, M).ToArray());
-			}
-
-			// 全探索に使用する全bit数
-			var n = N;
-
-			var Ks = new int[M];    // 現在の理解度
-
-			int ans = int.MaxValue;
-
-			// bit mask の生成
-			// 2^n     = 1 << n
-			for (ulong mask = 0; mask <= ((1ul << n) - 1); mask++) {
-
-				int amount = 0;
-				InitArray(Ks, 0);
-
-				// 各bitを下から舐める
-				for (int i = 0; i < n; i++) {
-
-					//iビット目が立っている？
-					if (0 != (mask & (1ul << i))) {
-						// 何か処理する
-						amount += Cs[i];
-						for (int j = 0; j < M; j++) {
-							Ks[j] += As[i][j];
-						}
-					}
+			var modu = new Modulo(N);
+			int ans = 0;
+			for (int k = 0; k <= K; k++) {
+				// M * (M - 1)^(N - k - 1)
+				var m = 1;
+				if (0 < k) {
+					m = modu.Ncr(N - 1, k);// Modulo.CalcNcr(N-1, k);
 				}
 
-				if (CheckKX(Ks, X)) {
-					ReplaceIfSmaller(ref ans, amount);
-				}
-			}
+				var p = Modulo.Pow(M - 1, N - k - 1);
+				var mp = Modulo.Mul(M, p);
+				var mpm = Modulo.Mul(mp, m);
 
-			if (ans == int.MaxValue) {
-				WriteLine(-1);
-			} else {
-				WriteLine(ans);
+				ans = Modulo.Add(ans, mpm);
 			}
-		}
-
-		bool CheckKX(int[] ks, int x) {
-			for (int i = 0; i < ks.Length; i++) {
-				if(ks[i] < x) {
-					return false;
-				}
-			}
-			return true;
+			WriteLine(ans);
 		}
 
 #if !MYHOME
@@ -78,6 +38,105 @@ namespace ABC167.C
 			new Solver().Run();
 		}
 #endif
+	}
+	/// <summary>
+	/// Ｍを法とする除算、累乗、階乗、nCr
+	/// http://kumikomiya.com/competitive-programming-with-c-sharp/
+	/// </summary>
+	public class Modulo
+	{
+		private readonly static int M = 998244353;
+
+		/// <summary>(a * b) % M</summary>
+		public static int Mul(int a, int b) {
+			return (int)(Math.BigMul(a, b) % M);
+		}
+		/// <summary>(a + b) % M</summary>
+		public static int Add(int a, int b) {
+			long v = a + b;
+			if (M <= v)
+				v -= M;
+			return (int)v;
+		}
+		/// <summary>(a - b) % M</summary>
+		public static int Sub(int a, int b) {
+			int v = a - b;
+			if (v < 0) v = M + v;
+			return v;
+		}
+
+		/// <summary>(aのm乗) % M</summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public static int Pow(int a, int m) {
+			switch (m) {
+				case 0:
+					return 1;
+				case 1:
+					return a % M;
+				default:
+					int p1 = Pow(a, m / 2);
+					int p2 = Mul(p1, p1);
+					return ((m % 2) == 0) ? p2 : Mul(p2, a);
+			}
+		}
+
+		/// <summary>
+		/// (a / b) % M
+		/// ※フェルマーの小定理による
+		/// </summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public static int Div(int a, int b) {
+			return Mul(a, Pow(b, M - 2));
+		}
+
+		/// <summary>
+		/// コンストラクタ ※n! % M および nCr % M を使用する場合には必要
+		/// </summary>
+		private readonly int[] m_facs;
+		public Modulo(int n) {
+			// x が n までの、x! % M の結果を配列に保持する
+			m_facs = new int[n + 1];
+			m_facs[0] = 1;
+			for (int i = 1; i <= n; ++i) {
+				m_facs[i] = Mul(m_facs[i - 1], i);
+			}
+		}
+
+		/// <summary>n! % M</summary>
+		public int Fac(int n) {
+			return m_facs[n];
+		}
+		/// <summary>
+		/// 組み合わせ nCr % M
+		/// </summary>
+		/// <see cref="https://www.youtube.com/watch?v=gdQxKESnXKs のD問題"/>
+		public int Ncr(int n, int r) {
+			if (n < r) { return 0; }
+			if (n == r) { return 1; }
+			int res = Fac(n);
+			res = Div(res, Fac(r));
+			res = Div(res, Fac(n - r));
+			return res;
+		}
+
+		/// <summary>
+		/// 組み合わせ nCr % M を高速に計算する
+		/// ※n!のテーブルを使用しない版（Nが大きくても計算できる）
+		/// </summary>
+		public static int CalcNcr(int n, int r) {
+			if (n - r < r) return CalcNcr(n, n - r);
+
+			long ansMul = 1;
+			long ansDiv = 1;
+			for (int i = 0; i < r; i++) {
+				ansMul *= n - i;
+				ansDiv *= i + 1;
+				ansMul %= M;
+				ansDiv %= M;
+			}
+
+			return Div((int)ansMul, (int)ansDiv);
+		}
 	}
 
 	public static class Util
@@ -93,7 +152,6 @@ namespace ABC167.C
 			}
 			return a;
 		}
-		public readonly static long MOD = 1000000007;
 
 		public static string JoinString<T>(IEnumerable<T> array) {
 			var sb = new StringBuilder();
