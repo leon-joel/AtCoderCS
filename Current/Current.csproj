@@ -17,4 +17,14 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="H_Test.cs" />
+    <Compile Remove="J_Test.cs" />
+    <Compile Remove="J.cs" />
+    <Compile Remove="G_Test.cs" />
+    <Compile Remove="H.cs" />
+    <Compile Remove="F_Test.cs" />
+    <Compile Remove="G.cs" />
+    <Compile Remove="F.cs" />
+  </ItemGroup>
 </Project>
