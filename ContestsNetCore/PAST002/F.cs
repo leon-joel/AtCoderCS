@@ -15,11 +15,12 @@ namespace PAST002.F
 		public void Run() {
 			var N = ReadInt();
 
+			// まずはバケットソート
+			// ※1-Nまでのバケットに入れていくだけの O(N)時間で完了するソート
 			var bucket = new List<int>[N+1];
 			for (int i = 0; i < N+1; i++) {
 				bucket[i] = new List<int>();
 			}
-
 			for (int i = 0; i < N; i++) {
 				ReadInt2(out var A, out var B);
 				bucket[A].Add(B);
@@ -27,15 +28,26 @@ namespace PAST002.F
 
 			long ans = 0;
 
-			var q = new PriorityQueue<int>(N, true);
+			// タスクの個体識別する必要はないので、
+			// 経過日数分のタスクをポイント別にカウントアップしていく
+			var list = new int[101];
+
 			for (int i = 1; i <= N; i++) {
 				var tasks = bucket[i];
 
 				foreach (var t in tasks) {
-					q.Enqueue(t);
+					list[t] += 1;
 				}
 
-				ans += q.Pop();
+				// 最高ポイントのタスクを取り出す（デクリメントする）
+				for (int j = 100; j >= 1; j--) {
+					if (0 < list[j]) {
+						ans += j;
+						--list[j];
+						break;
+					}
+				}
+
 				WriteLine(ans);
 			}
 		}
@@ -45,75 +57,6 @@ namespace PAST002.F
 			new Solver().Run();
 		}
 #endif
-	}
-	/// <summary>
-	/// 優先度付きキュー
-	/// </summary>
-	class PriorityQueue<T> where T : IComparable<T>
-	{
-		public T[] _heap;
-		public int _size;
-		public int _sign;
-		/// <summary>
-		/// コンストラクタ
-		/// </summary>
-		/// <param name="initialSize">Heap(List)の初期サイズ</param>
-		/// <param name="descend">降順の場合はtrueを与える</param>
-		public PriorityQueue(int initialSize, bool descend = false) {
-			_heap = new T[initialSize];
-			if (descend) _sign = -1;
-		}
-		public int Compare(T x, T y) {
-			return x.CompareTo(y) * _sign;
-		}
-		public void Push(T x) {
-			int i = _size++;
-			while (i > 0) {
-				int p = (i - 1) / 2;
-				if (Compare(x, _heap[p]) >= 0) {
-					break;
-				}
-				_heap[i] = _heap[p];
-				i = p;
-			}
-			_heap[i] = x;
-		}
-		public void Enqueue(T x) => Push(x);
-		/// <summary>
-		/// Countが0の場合はランタイムエラー
-		/// </summary>
-		public T Pop() {
-			T ret = _heap[0];
-			T x = _heap[--_size];
-			int i = 0;
-			while (i * 2 + 1 < _size) {
-				int a = i * 2 + 1;
-				int b = i * 2 + 2;
-				if (b < _size && Compare(_heap[a], _heap[b]) > 0) {
-					a = b;
-				}
-				if (Compare(_heap[a], x) >= 0) {
-					break;
-				}
-				_heap[i] = _heap[a];
-				i = a;
-			}
-			_heap[i] = x;
-			return ret;
-		}
-		public T Dequeue() => Pop();
-		/// <summary>
-		/// Countが0の場合は引数に与えた値を返す
-		/// </summary>
-		public T Pop(T defaultValue) {
-			if (Count() == 0)
-				return defaultValue;
-			else
-				return Pop();
-		}
-		public int Count() {
-			return _size;
-		}
 	}
 
 	public static class Util
