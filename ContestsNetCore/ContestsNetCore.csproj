@@ -27,5 +27,6 @@
     <Folder Include="ABC167\" />
     <Folder Include="ABC168\" />
     <Folder Include="PAST003\" />
+    <Folder Include="PAST002\" />
   </ItemGroup>
 </Project>
