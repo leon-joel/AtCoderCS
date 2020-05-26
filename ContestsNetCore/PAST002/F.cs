@@ -65,6 +65,8 @@ namespace PAST002.F
 		public static string ReverseStr(this string s) {
 			return new string(s.Reverse().ToArray());
 		}
+		/// <summary>Array要素すべてをsep区切りでstring化する</summary>
+		public static string Join<T>(IEnumerable<T> array, string sep = null) => string.Join(sep, array);
 
 		public static int Gcd(int a, int b) {
 			if (a < b)

@@ -5,37 +5,57 @@ using System.Linq;
 using System.Text;
 using System.Numerics;
 
-namespace PAST002.E
+namespace PAST002.G
 {
 	using static Util;
 	using static Math;
 
+	public class CNum
+	{
+		public char Char { get; set; }
+		public long Num { get; set; }
+		public CNum(char c, long n) {
+			Char = c;
+			Num = n;
+		}
+	} 
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var N = ReadInt();
-			var AA = ReadIntArray();
+			var Q = ReadInt();
 
-			var ansA = new int[N];
-
-			for (int i = 0; i < N; i++) {
-				var cnt = 1;
-				var v = i;
-				while (true) {
-					if (i == AA[v]-1) {
-						ansA[i] = cnt;
-						break;
+			var queue = new Queue<CNum>();
+			
+			for (int i = 0; i < Q; i++) {
+				var ary = ReadStringArray();
+				if (ary[0] == "1") {
+					var c = ary[1][0];
+					var n = long.Parse(ary[2]);
+					queue.Enqueue(new CNum(c, n));
+				} else {
+					var n = long.Parse(ary[1]);
+					var deleted = new long[26];
+					while (0 < queue.Count && 0 < n) {
+						var cnum = queue.Peek();
+						if (n < cnum.Num) {
+							cnum.Num -= n;
+							deleted[cnum.Char - 'a'] += n;
+							n = 0;
+						} else {
+							deleted[cnum.Char - 'a'] += cnum.Num;
+							queue.Dequeue();
+							n -= cnum.Num;
+						}
 					}
-
-					v = AA[v]-1;
-					++cnt;
+					long ret = 0;
+					for (int j = 0; j < 26; j++) {
+						if (0 < deleted[j]) {
+							ret += deleted[j] * deleted[j];
+						}
+					}
+					WriteLine(ret);
 				}
 			}
-
-			//var result = string.Join(" ", ansA);
-			var result = Join(ansA, " ");
-
-			WriteLine(result);
 		}
 
 #if !MYHOME
@@ -44,6 +64,7 @@ namespace PAST002.E
 		}
 #endif
 	}
+
 	public static class Util
 	{
 		/// <summary>反転した新しいstringを返す</summary>
@@ -64,6 +85,7 @@ namespace PAST002.E
 			}
 			return a;
 		}
+		public readonly static long MOD = 1000000007;
 
 		public static string JoinString<T>(IEnumerable<T> array) {
 			var sb = new StringBuilder();
