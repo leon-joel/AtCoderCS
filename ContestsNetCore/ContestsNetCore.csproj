@@ -29,5 +29,6 @@
     <Folder Include="PAST003\" />
     <Folder Include="PAST002\" />
     <Folder Include="NOMURA2020\" />
+    <Folder Include="ABC169\" />
   </ItemGroup>
 </Project>

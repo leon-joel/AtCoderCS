@@ -23,8 +23,6 @@
     <Compile Remove="J.cs" />
     <Compile Remove="G_Test.cs" />
     <Compile Remove="H.cs" />
-    <Compile Remove="F_Test.cs" />
     <Compile Remove="G.cs" />
-    <Compile Remove="F.cs" />
   </ItemGroup>
 </Project>
