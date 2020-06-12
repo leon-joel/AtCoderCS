@@ -13,19 +13,48 @@ namespace PAST003.K
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			ReadInt2(out var N, out var M);
-			var sushi = ReadIntArray();
+			ReadInt2(out var N, out var Q);
 
-			var loves = new int[N];
+			// 各コンテナの直下にあるコンテナ番号 ※直下にコンテナがない場合は -1
+			var cs = new int[N];
+			for (int i = 0; i < N; i++) {
+				cs[i] = -1;
+			}
+			// 各テーブルの頂上にあるコンテナ番号 ※何も載っていない場合は -1
+			var ts = new int[N];
+			for (int i = 0; i < N; i++) {
+				ts[i] = i;
+			}
 
-			for (int i = 0; i < M; i++) {
-				var pos = BinarySearch(loves, sushi[i]);
-				if (pos == N) {
-					WriteLine(-1);
-				} else {
-					WriteLine(pos + 1);
-					loves[pos] = sushi[i];
+			for (int i = 0; i < Q; i++) {
+				ReadInt3(out var f, out var t, out var x);
+				--f; --t; --x;
+
+				var cx = cs[x];
+				var tf = ts[f];
+				var tt = ts[t];
+
+				// xの直下 = tの頂上 に変更
+				cs[x] = tt;
+				// fの頂上 = xの直下 に変更
+				ts[f] = cx;
+				// tの頂上 = fの頂上 に変更
+				ts[t] = tf;
+			}
+
+			// 各コンテナがどのテーブルに乗っているか
+			var result = new int[N];
+			for (int i = 0; i < N; i++) {
+				// テーブル頂上から下にたどっていく
+				var c = ts[i];
+				while (c != -1) {
+					result[c] = i;
+					c = cs[c];
 				}
+			}
+
+			for (int i = 0; i < N; i++) {
+				WriteLine(result[i] + 1);
 			}
 		}
 

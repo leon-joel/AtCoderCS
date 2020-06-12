@@ -14,26 +14,78 @@ namespace PAST003.L
 	{
 		public void Run() {
 			var N = ReadInt();
-			var ks = new List<int[]>();
+			var ks = new List<List<int>>();
 			for (int i = 0; i < N; i++) {
 				var ka = ReadIntArray();
 				var a = ka.AsSpan(1, ka.Length - 1).ToArray();
-				ks.Add(a);
+				ks.Add(new List<int>(a));
 			}
 
-			// 期限-棚番号
-			var l1 = new SortedList<int, int>(N);
-			var l2 = new SortedList<int, int>(N);
+			// 最前列の商品 <期限> - <棚番号>
+			var s1 = new SortedDictionary<int, int>(ReverseComparer.Instance());
+			var s2 = new SortedDictionary<int, int>(ReverseComparer.Instance());
+
 			for (int i = 0; i < N; i++) {
 				var k = ks[i];
-				l1.Add(k[0], i);
-				if (2 <= k.Length) {
-					l2.Add(k[1], i);
+				if (2 <= k.Count) {
+					s2.Add(k[1], i);
 				}
+				s1.Add(k[0], i);
 			}
 
-			Dump(l1);
-			Dump(l2);
+			var M = ReadInt();
+			var As = ReadIntArray();
+			for (int i = 0; i < M; i++) {
+				var a = As[i];
+
+				KeyValuePair<int, int> kv;
+				if (a == 1 || s2.Count == 0) {
+					kv = s1.First();
+					s1.Remove(kv.Key);
+				} else {
+					var i1 = s1.First();
+					var i2 = s2.First();
+					if (i1.Key < i2.Key) {
+						kv = i2;
+						s2.Remove(i2.Key);
+					} else {
+						kv = i1;
+						s1.Remove(i1.Key);
+					}
+				}
+				WriteLine(kv.Key);
+
+				// とられた商品を削除
+				var t = ks[kv.Value];
+				if (t[0] == kv.Key) {
+					t.RemoveAt(0);
+					// S2からS1に昇格
+					if (0 < t.Count) {
+						s2.Remove(t[0]);
+						s1.Add(t[0], kv.Value);
+					}
+				} else {
+					// 2列目をとられた
+					t.RemoveAt(1);
+				}
+
+				// S2に1つ補充
+				if (2 <= t.Count) {
+					s2.Add(t[1], kv.Value);
+				}
+
+				//Console.WriteLine($"{kv.Key}:{kv.Value}");
+				//Console.Write("  ");
+				//foreach (var item in s1) {
+				//	Console.Write($"{item.Key} ");
+				//}
+				//Console.WriteLine();
+				//Console.Write("  ");
+				//foreach (var item in s2) {
+				//	Console.Write($"{item.Key} ");
+				//}
+				//Console.WriteLine();
+			}
 		}
 #if !MYHOME
 		static void Main(string[] args) {
@@ -41,56 +93,20 @@ namespace PAST003.L
 		}
 #endif
 	}
-	public class XY : IComparable<XY>, IFormattable
+
+	/// <summary>
+	/// 降順Comparater
+	/// </summary>
+	/// <example>
+	/// var s1 = new SortedDictionary<int, int>(ReverseComparer.Instance());
+	/// </example>
+	public class ReverseComparer : IComparer<int>
 	{
-		public readonly int X;
-		public readonly int Y;
-
-		public XY() { }
-		public XY(int x, int y) {
-			X = x;
-			Y = y;
+		public int Compare(int x, int y) {
+			return -x.CompareTo(y);
 		}
-		public XY(int[] ary) {
-			X = ary[0];
-			Y = ary[1];
-		}
-
-		public int CompareTo(XY other) {
-			var dx = this.X - other.X;
-			if (0 < dx)
-				return 1;
-			else if (dx < 0)
-				return -1;
-			else {
-				var dy = this.Y - other.Y;
-				if (0 < dy)
-					return 1;
-				else if (dy < 0)
-					return -1;
-				else
-					return 0;
-			}
-		}
-
-		public override string ToString() {
-			return ToString(null, null);
-		}
-		// format等の引数は一切無視
-		public string ToString(string format, IFormatProvider formatProvider) {
-			return $"({X}, {Y})";
-		}
-
-		public int Dist(XY other) {
-			return Math.Abs(X - other.X) + Math.Abs(Y - other.Y);
-		}
-
-		public IEnumerable<XY> Neighbors() {
-			yield return new XY(X - 1, Y);  // 上
-			yield return new XY(X, Y + 1);  // 右
-			yield return new XY(X + 1, Y);  // 下
-			yield return new XY(X, Y - 1);  // 左
-		}
+		static ReverseComparer _instance = new ReverseComparer();
+		public static ReverseComparer Instance() => _instance;
 	}
 
 	public static class Util
