@@ -47,7 +47,7 @@
     <Compile Include="Modulo.cs" />
     <Compile Include="Tests\Modulo_Test.cs" />
     <Compile Include="PriorityQueue.cs" />
-    <Compile Include="BalancedTree.cs" />
+    <Compile Include="BalancedTree_Treap.cs" />
     <Compile Include="PrimeNumbers.cs" />
     <Compile Include="Tests\PrimeNumbers_Test.cs" />
     <Compile Include="Tests\Utils_Test.cs" />
@@ -55,6 +55,8 @@
     <Compile Include="MinimumSpanningTree.cs" />
     <Compile Include="Tests\MST_Test.cs" />
     <Compile Include="Combination.cs" />
+    <Compile Include="Set_MultiSet_BalancedTree.cs" />
+    <Compile Include="Tests\SetMultiSet_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
