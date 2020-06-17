@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Tools
+
+// ここから一番下までを提出コードの一番上にコピペする。
+// もしくはnamespace内のコードを提出コードのnamespace内にコピペする。
+using MySet;
+namespace MySet
 {
     /// <summary>
     /// C-like multiset
@@ -28,9 +32,14 @@ namespace Tools
 
         public T this[int idx] { get { return ElementAt(idx); } }
 
-        public int Count() {
-            return SB_BinarySearchTree<T>.Count(_root);
-        }
+		///<summary>先頭要素の値（最小値）を返す ※見つからなかったら例外がthrowされる</summary>
+		public T First() => ElementAt(0);
+		public T Min() => First();
+        ///<summary>末尾要素の値（最大値）を返す ※見つからなかったら例外がthrowされる</summary>
+        public T Last() => ElementAt(Count - 1);
+        public T Max() => Last();
+
+        public int Count => SB_BinarySearchTree<T>.Count(_root);
 
         public virtual void Insert(T v) {
             if (_root == null) _root = new SB_BinarySearchTree<T>.Node(v);
@@ -59,7 +68,7 @@ namespace Tools
             return node.Value;
         }
 		///<summary>指定値要素の格納数</summary>
-		public int Count(T v) {
+		public int CountByValue(T v) {
             return SB_BinarySearchTree<T>.UpperBound(_root, v) - SB_BinarySearchTree<T>.LowerBound(_root, v);
         }
 
