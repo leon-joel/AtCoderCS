@@ -137,16 +137,16 @@ namespace MySet
         /// <summary>
         /// split as [0, k), [k, n)
         /// </summary>
-        public static Tuple<Node, Node> Split(Node t, int k) {
-            if (t == null) return new Tuple<Node, Node>(null, null);
+        public static (Node left, Node right) Split(Node t, int k) {
+            if (t == null) return (null, null);
             if (k <= Count(t.LChild)) {
                 var s = Split(t.LChild, k);
-                t.LChild = s.Item2;
-                return new Tuple<Node, Node>(s.Item1, Update(t));
+                t.LChild = s.right;
+                return (s.left, Update(t));
             } else {
                 var s = Split(t.RChild, k - Count(t.LChild) - 1);
-                t.RChild = s.Item1;
-                return new Tuple<Node, Node>(Update(t), s.Item2);
+                t.RChild = s.left;
+                return (Update(t), s.right);
             }
         }
 
