@@ -6,8 +6,9 @@ using System.Text;
 using System.IO;
 using System.Numerics;
 
+// ここから一番下までを提出コードの一番上にコピペする。
+// もしくはnamespace内のコードを提出コードのnamespace内にコピペする。
 using MySet;
-
 namespace MySet
 {
 	/// <summary>
@@ -36,10 +37,10 @@ namespace MySet
 		public T this[int idx] { get { return ElementAt(idx); } }
 
 		///<summary>先頭要素の値（最小値）を返す ※見つからなかったら例外がthrowされる</summary>
-		public T First() => ElementAt(0);
+		public T First() => SB_BinarySearchTree<T>.First(_root).Value;
 		public T Min() => First();
 		///<summary>末尾要素の値（最大値）を返す ※見つからなかったら例外がthrowされる</summary>
-		public T Last() => ElementAt(Count - 1);
+		public T Last() => SB_BinarySearchTree<T>.Last(_root).Value;
 		public T Max() => Last();
 
 		public int Count => SB_BinarySearchTree<T>.Count(_root);
@@ -196,6 +197,21 @@ namespace MySet
 			return null;
 		}
 
+		public static Node First(Node root) {
+			while (root != null) {
+				if (root.LChild == null) return root;
+				else root = root.LChild;
+			}
+			return null;
+		}
+		public static Node Last(Node root) {
+			while (root != null) {
+				if (root.RChild == null) return root;
+				else root = root.RChild;
+			}
+			return null;
+		}
+
 		public static int UpperBound(Node t, T v) {
 			var torg = t;
 			if (t == null) return -1;
@@ -291,6 +307,7 @@ namespace ABC170.E
 			// 各園の最強園児達の集合: multiset<レート>
 			var maxs = new MultiSet<int>();
 
+			#region ローカル関数
 			// ■転園時の処理
 			// 現在所属園idx(from園)を取得
 			// 所属園情報を転園先園idx(to園)に更新
@@ -321,10 +338,13 @@ namespace ABC170.E
 				gs[ci.Garden].Insert(ci.Rate);
 				maxs.Insert(gs[ci.Garden].Max());
 			};
+			#endregion
 
 			for (int i = 0; i < N; i++) {
 				ReadInt2(out var rate, out var gidx);
-				cs[i] = new CI(rate, gidx);
+				cs[i] = new CI(rate, gidx);	// new ではなくバラで代入しても速度は全然変わらない
+				//cs[i].Rate = rate;
+				//cs[i].Garden = gidx;
 				addEnji(i);
 			}
 

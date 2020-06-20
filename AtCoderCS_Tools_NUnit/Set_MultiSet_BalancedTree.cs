@@ -32,11 +32,11 @@ namespace MySet
 
         public T this[int idx] { get { return ElementAt(idx); } }
 
-		///<summary>先頭要素の値（最小値）を返す ※見つからなかったら例外がthrowされる</summary>
-		public T First() => ElementAt(0);
+        ///<summary>先頭要素の値（最小値）を返す ※見つからなかったら例外がthrowされる</summary>
+        public T First() =>  SB_BinarySearchTree<T>.First(_root).Value;
 		public T Min() => First();
         ///<summary>末尾要素の値（最大値）を返す ※見つからなかったら例外がthrowされる</summary>
-        public T Last() => ElementAt(Count - 1);
+        public T Last() => SB_BinarySearchTree<T>.Last(_root).Value;
         public T Max() => Last();
 
         public int Count => SB_BinarySearchTree<T>.Count(_root);
@@ -190,6 +190,21 @@ namespace MySet
                 }
             }
 
+            return null;
+        }
+
+        public static Node First(Node root) {
+            while (root != null) {
+                if (root.LChild == null) return root;
+                else root = root.LChild;
+			}
+            return null;
+		}
+        public static Node Last(Node root) {
+            while (root != null) {
+                if (root.RChild == null) return root;
+                else root = root.RChild;
+            }
             return null;
         }
 
