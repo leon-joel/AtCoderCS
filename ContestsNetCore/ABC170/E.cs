@@ -298,18 +298,18 @@ namespace ABC170.E
 			// from園の最強レートを maxs からいったん削除する
 			// from園から当該幼児Rateを削除する
 			// from園の最強レートを maxs に追加する
-			var delEnji = new Action<int>((int i) => {
+			void delEnji(int i) {
 				var ci = cs[i];
 				maxs.Remove(gs[ci.Garden].Max());
 				gs[ci.Garden].Remove(ci.Rate);
 				if (0 < gs[ci.Garden].Count) {
 					maxs.Insert(gs[ci.Garden].Max());
 				}
-			});
+			};
 			// to園  の最強レートを maxs からいったん削除する
 			// to園  に当該幼児idxを追加する
 			// to園  の最強レートを maxs に追加する
-			var addEnji = new Action<int>((int i) => {
+			void addEnji(int i) {
 				var ci = cs[i];
 				if (gs[ci.Garden] == null) {
 					gs[ci.Garden] = new MultiSet<int>();
@@ -320,7 +320,7 @@ namespace ABC170.E
 				}
 				gs[ci.Garden].Insert(ci.Rate);
 				maxs.Insert(gs[ci.Garden].Max());
-			});
+			};
 
 			for (int i = 0; i < N; i++) {
 				ReadInt2(out var rate, out var gidx);
