@@ -269,7 +269,7 @@ namespace ABC170.E
 	using static Util;
 	using static Math;
 
-	class CI
+	struct CI
 	{
 		public int Rate;
 		public int Garden;
