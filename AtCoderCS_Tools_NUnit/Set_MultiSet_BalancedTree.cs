@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-
-// ここから一番下までを提出コードの一番上にコピペする。
-// もしくはnamespace内のコードを提出コードのnamespace内にコピペする。
-using MySet;
-namespace MySet
+namespace Tools
 {
-    /// <summary>
-    /// C-like multiset
+	#region Set/MultiSet
+	/// <summary>
+	/// C-like multiset
 	/// ・要素は昇順に並ぶ
 	/// ・同値を複数格納可
 	/// ・ほぼすべての操作が O(logN) ※Count()は O(1)
-    /// </summary>
-    public class MultiSet<T> : Set<T> where T : IComparable
+	/// </summary>
+	public class MultiSet<T> : Set<T> where T : IComparable
     {
         public override void Insert(T v) {
             if (_root == null) _root = new SB_BinarySearchTree<T>.Node(v);
@@ -274,4 +271,5 @@ namespace MySet
             Enumerate(t.RChild, ret);
         }
     }
+    #endregion
 }

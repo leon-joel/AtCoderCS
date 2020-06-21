@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AtCoderCS_Tools_NUnit
+namespace Tools
 {
     public static class Combination
     {

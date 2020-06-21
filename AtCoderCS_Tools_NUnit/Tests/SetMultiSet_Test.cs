@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 
-using MySet;
 using System.Diagnostics;
 
 namespace Tools

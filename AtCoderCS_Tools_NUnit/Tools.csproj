@@ -57,6 +57,8 @@
     <Compile Include="Combination.cs" />
     <Compile Include="Set_MultiSet_BalancedTree.cs" />
     <Compile Include="Tests\SetMultiSet_Test.cs" />
+    <Compile Include="SegmentTree.cs" />
+    <Compile Include="Tests\SegmentTree_Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

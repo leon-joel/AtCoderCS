@@ -2,7 +2,13 @@
 namespace Tools
 {
 	/// <summary>
-	/// 1-indexedなBIT
+	/// Binary Indexed Tree(BIT) [1-indexed] (別名:Fenwick Tree)
+	/// ＜用途＞
+	/// ・区間の和の取得 ※更新は加算のみ（代入・減算は不可）
+	/// ・LIS
+	/// ＜解説放送＞
+	/// ABC136-F
+	/// https://www.youtube.com/watch?v=lyHk98daDJo&feature=youtu.be&t=7915
 	/// </summary>
 	public class BinaryIndexedTree
 	{
@@ -10,13 +16,14 @@ namespace Tools
 
 		int[] bit;
 
+		// maxNum: 要素数 ※2べき(2のN乗)じゃなくてもよい
 		public BinaryIndexedTree(int maxNum) {
 			MaxNum = maxNum;
 			bit = new int[maxNum + 1];
 		}
 
 		/// <summary>
-		/// i の個数を x 増加
+		/// i の個数を v 増加
 		/// ※i は1以上
 		/// </summary>
 		public void Add(int i, int v) {
