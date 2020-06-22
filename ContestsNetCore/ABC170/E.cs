@@ -49,28 +49,19 @@ namespace ABC170.E
 			// 現在所属園idx(from園)を取得
 			// 所属園情報を転園先園idx(to園)に更新
 
-			// from園の最強レートを maxs からいったん削除する
 			// from園から当該幼児Rateを削除する
-			// from園の最強レートを maxs に追加する
+			// maxsのfrom園最強レートを更新する
 			void delEnji(int i) {
 				var ci = cs[i];
-				maxs[ci.Garden] = int.MaxValue;
 				gs[ci.Garden].Remove(ci);
-				if (0 < gs[ci.Garden].Count) {
-					maxs[ci.Garden] = gs[ci.Garden][0].Rate;
-				}
+				maxs[ci.Garden] = gs[ci.Garden].Count == 0 ? int.MaxValue : gs[ci.Garden][0].Rate;
 			};
-			// to園  の最強レートを maxs からいったん削除する
 			// to園  に当該幼児idxを追加する
-			// to園  の最強レートを maxs に追加する
+			// maxsのto園最強レートを更新する
 			void addEnji(int i) {
 				var ci = cs[i];
-				var g = gs[ci.Garden];
-				if (0 < g.Count) {
-					maxs[ci.Garden] = int.MaxValue;
-				}
 				gs[ci.Garden].Add(ci);
-				maxs[ci.Garden] = gs[ci.Garden][0].Rate;
+				maxs[ci.Garden] = gs[ci.Garden].Count == 0 ? int.MaxValue : gs[ci.Garden][0].Rate;
 			};
 			#endregion
 
