@@ -95,6 +95,7 @@ namespace ABC170.E
 		override protected int[] ReadIntArray() => _reader.ReadLine().Split(' ').Select<string, int>(s => int.Parse(s)).ToArray();
 		override protected long[] ReadLongArray() => _reader.ReadLine().Split(' ').Select<string, long>(s => long.Parse(s)).ToArray();
 		override protected double[] ReadDoubleArray() => _reader.ReadLine().Split(' ').Select<string, double>(s => double.Parse(s)).ToArray();
+		override protected void Write(StringBuilder sb) => _sb.Append(sb);
 		override protected void WriteLine(string line) => _sb.AppendLine(line);
 		override protected void WriteLine(double d) => _sb.AppendLine($"{d:F9}");
 		override protected void WriteLine<T>(T value) => _sb.AppendLine(value.ToString());

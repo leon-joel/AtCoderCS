@@ -74,6 +74,7 @@ namespace ABC170.E
 				addEnji(i);
 			}
 
+			var sb = new StringBuilder();
 			for (int i = 0; i < Q; i++) {
 				var C = sc.NextInt() - 1;   //園児0-indexed
 				var D = sc.NextInt();
@@ -82,8 +83,9 @@ namespace ABC170.E
 				addEnji(C);
 
 				var ans = maxs.Query();
-				WriteLine(ans);
+				sb.AppendLine(ans.ToString());
 			}
+			Write(sb);
 		}
 
 #if !MYHOME
@@ -646,6 +648,7 @@ namespace ABC170.E
 		}
 		virtual protected double[] ReadDoubleArray() => ReadLine().Split(' ').Select<string, double>(s => double.Parse(s)).ToArray();
 
+		virtual protected void Write(StringBuilder sb) => Console.WriteLine(sb);
 		virtual protected void WriteLine(string line) => Console.WriteLine(line);
 		virtual protected void WriteLine(double d) => Console.WriteLine($"{d:F9}");
 		virtual protected void WriteLine<T>(T value) where T : IFormattable => Console.WriteLine(value);
