@@ -23,9 +23,10 @@ namespace ABC170.E
 	}
 	public class Solver : SolverBase
 	{
-
 		public void Run() {
-			ReadInt2(out var N, out var Q);
+			var sc = new Scanner();
+			var N = sc.NextInt();
+			var Q = sc.NextInt();
 			// 児童リスト cs[園児idx] = {レート, 園番号}
 			var cs = new CI[N];
 			// 園ごとのレート集合 [園番号] = Set<CI>
@@ -74,7 +75,8 @@ namespace ABC170.E
 			#endregion
 
 			for (int i = 0; i < N; i++) {
-				ReadInt2(out var rate, out var gidx);
+				var rate = sc.NextInt();
+				var gidx = sc.NextInt();
 				cs[i] = new CI(rate, gidx);	// new ではなくバラで代入しても速度は全然変わらない
 				//cs[i].Rate = rate;
 				//cs[i].Garden = gidx;
@@ -82,8 +84,8 @@ namespace ABC170.E
 			}
 
 			for (int i = 0; i < Q; i++) {
-				ReadInt2(out var C, out var D);
-				--C;    //園児0-indexed
+				var C = sc.NextInt() - 1;   //園児0-indexed
+				var D = sc.NextInt();
 				delEnji(C);
 				cs[C].Garden = D;
 				addEnji(C);
@@ -553,6 +555,45 @@ namespace ABC170.E
 			else
 				return 1;
 		}
+	}
+
+	class Scanner
+	{
+		private string[] _line;
+		private int _index;
+		private const char Separator = ' ';
+
+		public Scanner() {
+			_line = new string[0];
+			_index = 0;
+		}
+
+		public string Next() {
+			while (_index >= _line.Length) {
+				_line = Console.ReadLine().Split(Separator);
+				_index = 0;
+			}
+
+			return _line[_index++];
+		}
+
+		public int NextInt() => int.Parse(Next());
+		public long NextLong() => long.Parse(Next());
+		public double NextDouble() => double.Parse(Next());
+		public decimal NextDecimal() => decimal.Parse(Next());
+		public char NextChar() => Next()[0];
+		public char[] NextCharArray() => Next().ToCharArray();
+
+		public string[] Array() {
+			_line = Console.ReadLine().Split(Separator);
+			_index = _line.Length;
+			return _line;
+		}
+
+		public int[] IntArray() => Array().Select(int.Parse).ToArray();
+		public long[] LongArray() => Array().Select(long.Parse).ToArray();
+		public double[] DoubleArray() => Array().Select(double.Parse).ToArray();
+		public decimal[] DecimalArray() => Array().Select(decimal.Parse).ToArray();
 	}
 
 	public class SolverBase
