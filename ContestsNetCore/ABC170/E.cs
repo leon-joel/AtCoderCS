@@ -24,9 +24,8 @@ namespace ABC170.E
 	public class Solver : SolverBase
 	{
 		public void Run() {
-			var sc = new Scanner();
-			var N = sc.NextInt();
-			var Q = sc.NextInt();
+			var N = NextInt();
+			var Q = NextInt();
 			// 児童リスト cs[園児idx] = {レート, 園番号}
 			var cs = new CI[N];
 			// 園ごとのレート集合 [園番号] = Set<CI>
@@ -66,8 +65,8 @@ namespace ABC170.E
 			#endregion
 
 			for (int i = 0; i < N; i++) {
-				var rate = sc.NextInt();
-				var gidx = sc.NextInt();
+				var rate = NextInt();
+				var gidx = NextInt();
 				cs[i] = new CI(rate, gidx);	// new ではなくバラで代入しても速度は全然変わらない
 				//cs[i].Rate = rate;
 				//cs[i].Garden = gidx;
@@ -76,8 +75,8 @@ namespace ABC170.E
 
 			var sb = new StringBuilder();
 			for (int i = 0; i < Q; i++) {
-				var C = sc.NextInt() - 1;   //園児0-indexed
-				var D = sc.NextInt();
+				var C = NextInt() - 1;   //園児0-indexed
+				var D = NextInt();
 				delEnji(C);
 				cs[C].Garden = D;
 				addEnji(C);
@@ -550,23 +549,22 @@ namespace ABC170.E
 		}
 	}
 
-	class Scanner
+	public class SolverBase
 	{
 		private string[] _line;
 		private int _index;
 		private const char Separator = ' ';
 
-		public Scanner() {
+		public SolverBase() {
 			_line = new string[0];
 			_index = 0;
 		}
 
 		public string Next() {
 			while (_index >= _line.Length) {
-				_line = Console.ReadLine().Split(Separator);
+				_line = ReadLine().Split(Separator);
 				_index = 0;
 			}
-
 			return _line[_index++];
 		}
 
@@ -578,7 +576,7 @@ namespace ABC170.E
 		public char[] NextCharArray() => Next().ToCharArray();
 
 		public string[] Array() {
-			_line = Console.ReadLine().Split(Separator);
+			_line = ReadLine().Split(Separator);
 			_index = _line.Length;
 			return _line;
 		}
@@ -587,10 +585,7 @@ namespace ABC170.E
 		public long[] LongArray() => Array().Select(long.Parse).ToArray();
 		public double[] DoubleArray() => Array().Select(double.Parse).ToArray();
 		public decimal[] DecimalArray() => Array().Select(decimal.Parse).ToArray();
-	}
 
-	public class SolverBase
-	{
 		virtual protected string ReadLine() => Console.ReadLine();
 		virtual protected string ReadString() => ReadLine();
 		virtual protected int ReadInt() => int.Parse(ReadLine());
