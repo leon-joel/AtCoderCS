@@ -5,388 +5,6 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Numerics;
-using MyBalancedTree;
-
-// ここから一番下までを提出コードの一番上にコピペする。
-// もしくはnamespace内のコードを提出コードのnamespace内にコピペする。
-using MySet;
-namespace MySet
-{
-	/// <summary>
-	/// C-like multiset
-	/// ・要素は昇順に並ぶ
-	/// ・同値を複数格納可
-	/// ・ほぼすべての操作が O(logN) ※Count()は O(1)
-	/// </summary>
-	public class MultiSet<T> : Set<T> where T : IComparable
-	{
-		public override void Insert(T v) {
-			if (_root == null) _root = new SB_BinarySearchTree<T>.Node(v);
-			else _root = SB_BinarySearchTree<T>.Insert(_root, v);
-		}
-	}
-
-	/// <summary>
-	/// C-like set
-	/// ・要素は昇順に並ぶ
-	/// ・ほぼすべての操作が O(logN) ※Count()は O(1)
-	/// </summary>
-	public class Set<T> where T : IComparable
-	{
-		protected SB_BinarySearchTree<T>.Node _root;
-
-		public T this[int idx] { get { return ElementAt(idx); } }
-
-		///<summary>先頭要素の値（最小値）を返す ※見つからなかったら例外がthrowされる</summary>
-		public T First() => SB_BinarySearchTree<T>.First(_root).Value;
-		public T Min() => First();
-		///<summary>末尾要素の値（最大値）を返す ※見つからなかったら例外がthrowされる</summary>
-		public T Last() => SB_BinarySearchTree<T>.Last(_root).Value;
-		public T Max() => Last();
-
-		public int Count => SB_BinarySearchTree<T>.Count(_root);
-
-		public virtual void Insert(T v) {
-			if (_root == null) _root = new SB_BinarySearchTree<T>.Node(v);
-			else {
-				if (SB_BinarySearchTree<T>.Find(_root, v) != null) return;
-				_root = SB_BinarySearchTree<T>.Insert(_root, v);
-			}
-		}
-
-		public void Clear() {
-			_root = null;
-		}
-
-		///<summary>指定値要素を1つだけ削除 ★C++のmultisetは指定値要素をすべて削除する</summary>
-		public void Remove(T v) {
-			_root = SB_BinarySearchTree<T>.Remove(_root, v);
-		}
-
-		public bool Contains(T v) {
-			return SB_BinarySearchTree<T>.Contains(_root, v);
-		}
-		/// <summary>Indexによる取り出し ※見つからない場合は IndexOutOfRangeException がthrowされる</summary>
-		public T ElementAt(int idx) {
-			var node = SB_BinarySearchTree<T>.FindByIndex(_root, idx);
-			if (node == null) throw new IndexOutOfRangeException();
-			return node.Value;
-		}
-		///<summary>指定値要素の格納数</summary>
-		public int CountByValue(T v) {
-			return SB_BinarySearchTree<T>.UpperBound(_root, v) - SB_BinarySearchTree<T>.LowerBound(_root, v);
-		}
-
-		///<summary>前に挿入する場合のidxが返される</summary>
-		public int LowerBound(T v) {
-			return SB_BinarySearchTree<T>.LowerBound(_root, v);
-		}
-		///<summary>後ろに挿入する場合のidxが返される</summary>
-		public int UpperBound(T v) {
-			return SB_BinarySearchTree<T>.UpperBound(_root, v);
-		}
-
-		public Tuple<int, int> EqualRange(T v) {
-			if (!Contains(v)) return new Tuple<int, int>(-1, -1);
-			return new Tuple<int, int>(SB_BinarySearchTree<T>.LowerBound(_root, v), SB_BinarySearchTree<T>.UpperBound(_root, v) - 1);
-		}
-
-		public List<T> ToList() {
-			return new List<T>(SB_BinarySearchTree<T>.Enumerate(_root));
-		}
-	}
-
-	/// <summary>
-	/// Self-Balancing Binary Search Tree
-	/// (using Randamized BST)
-	/// </summary>
-	/// <remarks>Thanks to http://yambe2002.hatenablog.com/entry/2017/02/07/122421 </remarks>
-	public class SB_BinarySearchTree<T> where T : IComparable
-	{
-		public class Node
-		{
-			public T Value;
-			public Node LChild;
-			public Node RChild;
-			public int Count;     //size of the sub tree
-
-			public Node(T v) {
-				Value = v;
-				Count = 1;
-			}
-		}
-
-		static readonly Random _rnd = new Random();
-
-		public static int Count(Node t) {
-			return t == null ? 0 : t.Count;
-		}
-
-		static Node Update(Node t) {
-			t.Count = Count(t.LChild) + Count(t.RChild) + 1;
-			return t;
-		}
-
-		public static Node Merge(Node l, Node r) {
-			if (l == null || r == null) return l == null ? r : l;
-
-			if ((double)Count(l) / (double)(Count(l) + Count(r)) > _rnd.NextDouble()) {
-				l.RChild = Merge(l.RChild, r);
-				return Update(l);
-			} else {
-				r.LChild = Merge(l, r.LChild);
-				return Update(r);
-			}
-		}
-
-		/// <summary>
-		/// split as [0, k), [k, n)
-		/// </summary>
-		public static (Node left, Node right) Split(Node t, int k) {
-			if (t == null) return (null, null);
-			if (k <= Count(t.LChild)) {
-				var s = Split(t.LChild, k);
-				t.LChild = s.right;
-				return (s.left, Update(t));
-			} else {
-				var s = Split(t.RChild, k - Count(t.LChild) - 1);
-				t.RChild = s.left;
-				return (Update(t), s.right);
-			}
-		}
-
-		public static Node Remove(Node t, T v) {
-			if (Find(t, v) == null) return t;
-			return RemoveAt(t, LowerBound(t, v));
-		}
-
-		public static Node RemoveAt(Node t, int k) {
-			var s = Split(t, k);
-			var s2 = Split(s.Item2, 1);
-			return Merge(s.Item1, s2.Item2);
-		}
-
-		public static bool Contains(Node t, T v) {
-			return Find(t, v) != null;
-		}
-
-		public static Node Find(Node t, T v) {
-			while (t != null) {
-				var cmp = t.Value.CompareTo(v);
-				if (cmp > 0) t = t.LChild;
-				else if (cmp < 0) t = t.RChild;
-				else break;
-			}
-			return t;
-		}
-
-		public static Node FindByIndex(Node t, int idx) {
-			if (t == null) return null;
-
-			var currentIdx = Count(t) - Count(t.RChild) - 1;
-			while (t != null) {
-				if (currentIdx == idx) return t;
-				if (currentIdx > idx) {
-					t = t.LChild;
-					currentIdx -= (Count(t == null ? null : t.RChild) + 1);
-				} else {
-					t = t.RChild;
-					currentIdx += (Count(t == null ? null : t.LChild) + 1);
-				}
-			}
-
-			return null;
-		}
-
-		public static Node First(Node root) {
-			while (root != null) {
-				if (root.LChild == null) return root;
-				else root = root.LChild;
-			}
-			return null;
-		}
-		public static Node Last(Node root) {
-			while (root != null) {
-				if (root.RChild == null) return root;
-				else root = root.RChild;
-			}
-			return null;
-		}
-
-		public static int UpperBound(Node t, T v) {
-			var torg = t;
-			if (t == null) return -1;
-
-			var ret = Int32.MaxValue;
-			var idx = Count(t) - Count(t.RChild) - 1;
-			while (t != null) {
-				var cmp = t.Value.CompareTo(v);
-
-				if (cmp > 0) {
-					ret = Math.Min(ret, idx);
-					t = t.LChild;
-					idx -= (Count(t == null ? null : t.RChild) + 1);
-				} else if (cmp <= 0) {
-					t = t.RChild;
-					idx += (Count(t == null ? null : t.LChild) + 1);
-				}
-			}
-			return ret == Int32.MaxValue ? Count(torg) : ret;
-		}
-
-		public static int LowerBound(Node t, T v) {
-			var torg = t;
-			if (t == null) return -1;
-
-			var idx = Count(t) - Count(t.RChild) - 1;
-			var ret = Int32.MaxValue;
-			while (t != null) {
-				var cmp = t.Value.CompareTo(v);
-				if (cmp >= 0) {
-					if (cmp == 0) ret = Math.Min(ret, idx);
-					t = t.LChild;
-					if (t == null) ret = Math.Min(ret, idx);
-					idx -= t == null ? 0 : (Count(t.RChild) + 1);
-				} else if (cmp < 0) {
-					t = t.RChild;
-					idx += (Count(t == null ? null : t.LChild) + 1);
-					if (t == null) return idx;
-				}
-			}
-			return ret == Int32.MaxValue ? Count(torg) : ret;
-		}
-
-		public static Node Insert(Node t, T v) {
-			var ub = LowerBound(t, v);
-			return InsertByIdx(t, ub, v);
-		}
-
-		static Node InsertByIdx(Node t, int k, T v) {
-			var s = Split(t, k);
-			return Merge(Merge(s.Item1, new Node(v)), s.Item2);
-		}
-
-		public static IEnumerable<T> Enumerate(Node t) {
-			var ret = new List<T>();
-			Enumerate(t, ret);
-			return ret;
-		}
-
-		static void Enumerate(Node t, List<T> ret) {
-			if (t == null) return;
-			Enumerate(t.LChild, ret);
-			ret.Add(t.Value);
-			Enumerate(t.RChild, ret);
-		}
-	}
-}
-namespace MyBalancedTree
-{
-	/// <summary>
-	/// 平衡二分木
-	/// http://kumikomiya.com/competitive-programming-with-c-sharp/
-	/// </summary>
-	public class Treap<T> where T : IComparable
-	{
-		private class Node
-		{
-			private static Random g_rand = new Random();
-			private readonly int m_rank = g_rand.Next();
-			private readonly T m_value;
-			private Node m_lch;
-			private Node m_rch;
-			private int m_count;
-
-			public Node(T value) {
-				m_value = value;
-				m_count = 1;
-			}
-
-			private static int Count(Node node) {
-				return (node != null) ? node.m_count : 0;
-			}
-
-			private Node Update() {
-				m_count = Count(m_lch) + Count(m_rch) + 1;
-				return this;
-			}
-
-			public static Node Merge(Node a, Node b) {
-				if (a == null) { return b; }
-				if (b == null) { return a; }
-
-				if (a.m_rank < b.m_rank) {
-					a.m_rch = Merge(a.m_rch, b);
-					return a.Update();
-				} else {
-					b.m_lch = Merge(a, b.m_lch);
-					return b.Update();
-				}
-			}
-
-			public static Tuple<Node, Node> Split(Node t, int k) {
-				if (t == null) { return new Tuple<Node, Node>(null, null); }
-
-				if (k <= Count(t.m_lch)) {
-					var pair = Split(t.m_lch, k);
-					t.m_lch = pair.Item2;
-					return new Tuple<Node, Node>(pair.Item1, t.Update());
-				} else {
-					var pair = Split(t.m_rch, k - Count(t.m_lch) - 1);
-					t.m_rch = pair.Item1;
-					return new Tuple<Node, Node>(t.Update(), pair.Item2);
-				}
-			}
-
-			public int FindIndex(T value) {
-				int L = Count(m_lch);
-				if (value.CompareTo(m_value) < 0) {
-					return (m_lch != null) ? m_lch.FindIndex(value) : 0;
-				} else if (value.CompareTo(m_value) > 0) {
-					return (m_rch != null) ? m_rch.FindIndex(value) + L + 1 : L + 1;
-				} else {
-					return L;
-				}
-			}
-
-			public T this[int i] {
-				get {
-					int L = Count(m_lch);
-					if (i < L) {
-						return m_lch[i];
-					} else if (i > L) {
-						return m_rch[i - L - 1];
-					} else {
-						return m_value;
-					}
-				}
-			}
-		}
-
-		private Node node;
-
-		public void Insert(T value) {
-			if (node != null) {
-				int k = node.FindIndex(value);
-				var pair = Node.Split(node, k);
-				node = Node.Merge(Node.Merge(pair.Item1, new Node(value)), pair.Item2);
-			} else {
-				node = new Node(value);
-			}
-		}
-
-		public int FindIndex(T value) {
-			return node.FindIndex(value);
-		}
-
-		public T this[int i] {
-			get {
-				return node[i];
-			}
-		}
-	}
-
-}
 
 namespace ABC170.E
 {
@@ -410,10 +28,20 @@ namespace ABC170.E
 			ReadInt2(out var N, out var Q);
 			// 児童リスト cs[園児idx] = {レート, 園番号}
 			var cs = new CI[N];
-			// 園ごとのレート集合 [園番号] = multiset<レート>
-			var gs = new Treap<int>[200005];
-			// 各園の最強園児達の集合: multiset<レート>
-			var maxs = new Treap<int>();
+			// 園ごとのレート集合 [園番号] = Set<CI>
+			var gs = new Set<CI>[200005];
+			for (int i = 0; i < 200005; i++) {
+				// 降順に並ぶようにラムダをセットする
+				gs[i] = new Set<CI>((l, r) => {
+					if (l.Rate != r.Rate)
+						return r.Rate.CompareTo(l.Rate);
+					else 
+						return l.Garden.CompareTo(r.Garden);
+				});
+			}
+
+			// 各園の最強園児RateをSegTreeに格納 ※minをO(logN)で取得
+			var maxs = new SegmentTree<int>(200005, Math.Min, int.MaxValue);
 
 			#region ローカル関数
 			// ■転園時の処理
@@ -425,10 +53,10 @@ namespace ABC170.E
 			// from園の最強レートを maxs に追加する
 			void delEnji(int i) {
 				var ci = cs[i];
-				maxs.Remove(gs[ci.Garden].Equals());
-				gs[ci.Garden].Remove(ci.Rate);
+				maxs[ci.Garden] = int.MaxValue;
+				gs[ci.Garden].Remove(ci);
 				if (0 < gs[ci.Garden].Count) {
-					maxs.Insert(gs[ci.Garden].Max());
+					maxs[ci.Garden] = gs[ci.Garden][0].Rate;
 				}
 			};
 			// to園  の最強レートを maxs からいったん削除する
@@ -436,15 +64,12 @@ namespace ABC170.E
 			// to園  の最強レートを maxs に追加する
 			void addEnji(int i) {
 				var ci = cs[i];
-				if (gs[ci.Garden] == null) {
-					gs[ci.Garden] = new MultiSet<int>();
-				}
 				var g = gs[ci.Garden];
 				if (0 < g.Count) {
-					maxs.Remove(gs[ci.Garden].Max());
+					maxs[ci.Garden] = int.MaxValue;
 				}
-				gs[ci.Garden].Insert(ci.Rate);
-				maxs.Insert(gs[ci.Garden].Max());
+				gs[ci.Garden].Add(ci);
+				maxs[ci.Garden] = gs[ci.Garden][0].Rate;
 			};
 			#endregion
 
@@ -463,7 +88,7 @@ namespace ABC170.E
 				cs[C].Garden = D;
 				addEnji(C);
 
-				var ans = maxs.First();
+				var ans = maxs.Query();
 				WriteLine(ans);
 			}
 		}
@@ -478,6 +103,256 @@ namespace ABC170.E
 			Console.Out.Flush();
 		}
 #endif
+	}
+
+	public class Set<T>
+	{
+		Node root;
+		readonly IComparer<T> comparer;
+		readonly Node nil;
+		public bool IsMultiSet { get; set; }
+		public Set(IComparer<T> comparer) {
+			nil = new Node(default(T));
+			root = nil;
+			this.comparer = comparer;
+		}
+		public Set(Comparison<T> comaprison) : this(Comparer<T>.Create(comaprison)) { }
+		public Set() : this(Comparer<T>.Default) { }
+		public bool Add(T v) {
+			return insert(ref root, v);
+		}
+		public bool Remove(T v) {
+			return remove(ref root, v);
+		}
+		public T this[int index] { get { return find(root, index); } }
+		public int Count { get { return root.Count; } }
+		public void RemoveAt(int k) {
+			if (k < 0 || k >= root.Count) throw new ArgumentOutOfRangeException();
+			removeAt(ref root, k);
+		}
+		public T[] Items {
+			get {
+				var ret = new T[root.Count];
+				var k = 0;
+				walk(root, ret, ref k);
+				return ret;
+			}
+		}
+		void walk(Node t, T[] a, ref int k) {
+			if (t.Count == 0) return;
+			walk(t.lst, a, ref k);
+			a[k++] = t.Key;
+			walk(t.rst, a, ref k);
+		}
+
+		bool insert(ref Node t, T key) {
+			if (t.Count == 0) { t = new Node(key); t.lst = t.rst = nil; t.Update(); return true; }
+			var cmp = comparer.Compare(t.Key, key);
+			bool res;
+			if (cmp > 0)
+				res = insert(ref t.lst, key);
+			else if (cmp == 0) {
+				if (IsMultiSet) res = insert(ref t.lst, key);
+				else return false;
+			} else res = insert(ref t.rst, key);
+			balance(ref t);
+			return res;
+		}
+		bool remove(ref Node t, T key) {
+			if (t.Count == 0) return false;
+			var cmp = comparer.Compare(key, t.Key);
+			bool ret;
+			if (cmp < 0) ret = remove(ref t.lst, key);
+			else if (cmp > 0) ret = remove(ref t.rst, key);
+			else {
+				ret = true;
+				var k = t.lst.Count;
+				if (k == 0) { t = t.rst; return true; }
+				if (t.rst.Count == 0) { t = t.lst; return true; }
+
+
+				t.Key = find(t.lst, k - 1);
+				removeAt(ref t.lst, k - 1);
+			}
+			balance(ref t);
+			return ret;
+		}
+		void removeAt(ref Node t, int k) {
+			var cnt = t.lst.Count;
+			if (cnt < k) removeAt(ref t.rst, k - cnt - 1);
+			else if (cnt > k) removeAt(ref t.lst, k);
+			else {
+				if (cnt == 0) { t = t.rst; return; }
+				if (t.rst.Count == 0) { t = t.lst; return; }
+
+				t.Key = find(t.lst, k - 1);
+				removeAt(ref t.lst, k - 1);
+			}
+			balance(ref t);
+		}
+		void balance(ref Node t) {
+			var balance = t.lst.Height - t.rst.Height;
+			if (balance == -2) {
+				if (t.rst.lst.Height - t.rst.rst.Height > 0) { rotR(ref t.rst); }
+				rotL(ref t);
+			} else if (balance == 2) {
+				if (t.lst.lst.Height - t.lst.rst.Height < 0) rotL(ref t.lst);
+				rotR(ref t);
+			} else t.Update();
+		}
+
+		T find(Node t, int k) {
+			if (k < 0 || k > root.Count) throw new ArgumentOutOfRangeException();
+			for (; ; )
+			{
+				if (k == t.lst.Count) return t.Key;
+				else if (k < t.lst.Count) t = t.lst;
+				else { k -= t.lst.Count + 1; t = t.rst; }
+			}
+		}
+		public int LowerBound(T v) {
+			var k = 0;
+			var t = root;
+			for (; ; )
+			{
+				if (t.Count == 0) return k;
+				if (comparer.Compare(v, t.Key) <= 0) t = t.lst;
+				else { k += t.lst.Count + 1; t = t.rst; }
+			}
+		}
+		public int UpperBound(T v) {
+			var k = 0;
+			var t = root;
+			for (; ; )
+			{
+				if (t.Count == 0) return k;
+				if (comparer.Compare(t.Key, v) <= 0) { k += t.lst.Count + 1; t = t.rst; } else t = t.lst;
+			}
+		}
+
+		void rotR(ref Node t) {
+			var l = t.lst;
+			t.lst = l.rst;
+			l.rst = t;
+			t.Update();
+			l.Update();
+			t = l;
+		}
+		void rotL(ref Node t) {
+			var r = t.rst;
+			t.rst = r.lst;
+			r.lst = t;
+			t.Update();
+			r.Update();
+			t = r;
+		}
+
+
+		class Node
+		{
+			public Node(T key) {
+				Key = key;
+			}
+			public int Count { get; private set; }
+			public sbyte Height { get; private set; }
+			public T Key { get; set; }
+			public Node lst, rst;
+			public void Update() {
+				Count = 1 + lst.Count + rst.Count;
+				Height = (sbyte)(1 + Math.Max(lst.Height, rst.Height));
+			}
+			public override string ToString() {
+				return string.Format("Count = {0}, Key = {1}", Count, Key);
+			}
+		}
+	}
+
+	/// <summary>
+	/// ■使い方
+	/// <code>
+	/// // 要素数, 比較演算, 初期値 を与えられる
+	/// var st = new SegmentTree<int>(200000, Math.Min, int.MaxValue);
+	/// // 更新
+	/// st[0] = 100;
+	/// st[1] = 120;
+	/// st[0] = int.MaxValue;
+	/// // 範囲内の最小値(比較演算子による)を取得
+	/// var minV = st.Query(0, 200000);
+	/// </code>
+	/// </summary>
+	public class SegmentTree<T>
+	{
+		// 制約に合った2の冪
+		private readonly int N;
+		private T[] _array;
+
+		// コンストラクタで与えられた値 ※引数なしQueryを実装するために追加
+		private int _size;
+
+		private T _identity;
+		private Func<T, T, T> _operation;
+
+		/// <summary>
+		/// コンストラクタ
+		/// </summary>
+		/// <param name="size">Treeの幅（内部Arrayの要素数ではない）</param>
+		/// <param name="operation">Query/Update時の操作関数</param>
+		/// <param name="identity">初期値</param>
+		public SegmentTree(int size, Func<T, T, T> operation, T identity) {
+			_size = size;
+			N = 1;
+			while (N < size) {
+				N *= 2;
+			}
+
+			_identity = identity;
+			_operation = operation;
+			_array = new T[N * 2];
+			for (int i = 1; i < N * 2; i++) {
+				_array[i] = _identity;
+			}
+		}
+
+		/// <summary>
+		/// A[i]をnに更新 O(log N)
+		/// </summary>
+		public void Update(int i, T n) {
+			i += N;
+			_array[i] = n;
+			while (i > 1) {
+				i /= 2;
+				_array[i] = _operation(_array[i * 2], _array[i * 2 + 1]);
+			}
+		}
+
+		/// <summary>
+		/// [0, size) から検索
+		/// </summary>
+		public T Query() => Query(0, _size);
+
+		/// <summary>
+		/// [left, right) から検索
+		/// A[left] op A[left+1] ... op A[right-1]を求める
+		/// </summary>
+		public T Query(int left, int right) => Query(left, right, 1, 0, N);
+
+		private T Query(int left, int right, int k, int l, int r) {
+			if (r <= left || right <= l) {
+				return _identity;
+			}
+
+			if (left <= l && r <= right) {
+				return _array[k];
+			}
+
+			return _operation(Query(left, right, k * 2, l, (l + r) / 2),
+				Query(left, right, k * 2 + 1, (l + r) / 2, r));
+		}
+
+		public T this[int i] {
+			set { Update(i, value); }
+			get { return _array[i + N]; }
+		}
 	}
 
 	public static class Util
