@@ -3,13 +3,26 @@
 // ・IComparerを外部から与えられる
 // ・IsMultiSetをtrueにすることでMultiSetになる
 
-
 using System;
 using System.Collections.Generic;
 
 namespace CompLib.Collections
 {
     #region Set
+    /// <summary>
+	/// Set/MultiSet
+	/// <code>
+	/// // 降順 ＆ 重複あり
+	/// var set = new Set<int>((l, r) => r - l) { IsMultiSet = true };
+	/// // 降順の場合 0番目＝最大値
+	/// if (0 < set.Count)
+	///     var maxValue = set[0];
+	/// </code>
+	///
+	/// <code>
+	/// </code>
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
     public class Set<T>
     {
         Node root;
@@ -26,7 +39,11 @@ namespace CompLib.Collections
         public bool Add(T v) {
             return insert(ref root, v);
         }
-        public bool Remove(T v) {
+		///<summary>
+		///当該値を1つ削除する
+		///※C++のmultisetのerase()は当該値をすべて削除するが、これは1つだけ削除するように実装している
+		///</summary>
+		public bool Remove(T v) {
             return remove(ref root, v);
         }
         public T this[int index] { get { return find(root, index); } }

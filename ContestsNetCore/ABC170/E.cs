@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Numerics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ABC170.E
 {
@@ -13,12 +14,23 @@ namespace ABC170.E
 
 	struct CI
 	{
-		public int Rate;
-		public int Garden;
+		public int Rate { readonly get; set; }
+		public int Garden { readonly get; set; }
 
 		public CI(int rate, int garden) {
 			Rate = rate;
 			Garden = garden;
+		}
+
+		//Comparisonを定義しておく ※使ってない
+		public static int CompareDesc(CI l, CI r) {
+			if (l.Rate != r.Rate)
+				// 降順
+				//return r.Rate.CompareTo(l.Rate);
+				return r.Rate - l.Rate; // box化が発生しないのでこちらの方が速い？
+			else
+				//return l.Garden.CompareTo(r.Garden);
+				return l.Garden - r.Garden;
 		}
 	}
 	public class Solver : SolverBase
@@ -28,16 +40,14 @@ namespace ABC170.E
 			var Q = NextInt();
 			// 児童リスト cs[園児idx] = {レート, 園番号}
 			var cs = new CI[N];
-			// 園ごとのレート集合 [園番号] = Set<CI>
-			var gs = new Set<CI>[200005];
+			// 園ごとのレート集合 [園番号] = set of rate
+			// ※重複を許さないSetを使っていたのでCIを要素にしていたが、
+			//  MultiSetを使うことでint(Rate)を要素に使えるようになった
+			//  → 100ms弱の高速化
+			var gs = new Set<int>[200005];
 			for (int i = 0; i < 200005; i++) {
-				// 降順に並ぶようにラムダをセットする
-				gs[i] = new Set<CI>((l, r) => {
-					if (l.Rate != r.Rate)
-						return r.Rate.CompareTo(l.Rate);
-					else 
-						return l.Garden.CompareTo(r.Garden);
-				});
+				// 降順に並ぶようにComparisonをセットする
+				gs[i] = new Set<int>((l, r) => r - l) { IsMultiSet = true };
 			}
 
 			// 各園の最強園児RateをSegTreeに格納 ※minをO(logN)で取得
@@ -52,15 +62,15 @@ namespace ABC170.E
 			// maxsのfrom園最強レートを更新する
 			void delEnji(int i) {
 				var ci = cs[i];
-				gs[ci.Garden].Remove(ci);
-				maxs[ci.Garden] = gs[ci.Garden].Count == 0 ? int.MaxValue : gs[ci.Garden][0].Rate;
+				gs[ci.Garden].Remove(ci.Rate);
+				maxs[ci.Garden] = gs[ci.Garden].Count == 0 ? int.MaxValue : gs[ci.Garden][0];
 			};
 			// to園  に当該幼児idxを追加する
 			// maxsのto園最強レートを更新する
 			void addEnji(int i) {
 				var ci = cs[i];
-				gs[ci.Garden].Add(ci);
-				maxs[ci.Garden] = gs[ci.Garden].Count == 0 ? int.MaxValue : gs[ci.Garden][0].Rate;
+				gs[ci.Garden].Add(ci.Rate);
+				maxs[ci.Garden] = gs[ci.Garden].Count == 0 ? int.MaxValue : gs[ci.Garden][0];
 			};
 			#endregion
 
