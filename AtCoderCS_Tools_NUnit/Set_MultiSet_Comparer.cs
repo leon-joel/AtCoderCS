@@ -17,12 +17,24 @@ namespace CompLib.Collections
 	/// // 降順の場合 0番目＝最大値
 	/// if (0 < set.Count)
 	///     var maxValue = set[0];
+	/// // MultiSetの場合でも削除されるのは1要素のみ ※C++のmultiset.erase(x)とは異なる
+	/// set.Remove(213);
 	/// </code>
 	///
+	/// struct を要素に使う場合はこんな感じ
 	/// <code>
+	/// var set = new Set<Child>((l, r) => {
+	///     if (l.Rate != r.Rate)
+	///         // 第1ソートキー: 降順
+    ///         //return r.Rate.CompareTo(l.Rate);
+	///         return r.Rate - l.Rate; // box化が発生しないのでこちらの方が速い？→殆ど変わらない
+    ///     else
+	///         // 第2ソートキー: 昇順
+    ///         //return l.Garden.CompareTo(r.Garden);
+    ///         return l.Garden - r.Garden;
+	/// });
 	/// </code>
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
     public class Set<T>
     {
         Node root;

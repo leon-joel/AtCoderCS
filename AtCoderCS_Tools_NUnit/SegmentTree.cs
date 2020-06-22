@@ -6,6 +6,11 @@ namespace Tools
 	//
 
 	/// <summary>
+	/// SegmentTree
+	/// BITは和しか取得できないし、値を加算することしかできないが、
+	/// SegmentTreeはmin/maxなど operation で表現できるものなら
+	/// 何でも(?)取得できる上に、値の置き換えが可能。
+	/// 
 	/// ■使い方
 	/// <code>
 	/// // 要素数, 比較演算, 初期値 を与えられる
@@ -64,12 +69,12 @@ namespace Tools
 		}
 
 		/// <summary>
-		/// [0, size) から検索
+		/// 全範囲（[0, size)）から検索
 		/// </summary>
 		public T Query() => Query(0, _size);
 
 		/// <summary>
-		/// [left, right) から検索
+		/// [left, right) から検索。
 		/// A[left] op A[left+1] ... op A[right-1]を求める
 		/// </summary>
 		public T Query(int left, int right) => Query(left, right, 1, 0, N);
